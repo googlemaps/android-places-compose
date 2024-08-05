@@ -1,0 +1,75 @@
+<!--
+ Copyright 2024 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources>
+    <string name="app_name">Android Places Compose Demo</string>
+
+    <string name="main_activity_title">Maps compose widgets</string>
+    <string name="autocomplete_button">Autocomplete</string>
+    <string name="landmark_selection_button">Landmark selector</string>
+
+    <string name="search_call_to_action">Search here</string>
+
+    <string name="landmark">Landmark</string>
+    <string name="user_location">User location</string>
+    <string name="address_validation_button">Address completion</string>
+    <string name="distance">Distance</string>
+
+    <string name="address_street_address">Street address</string>
+    <string name="address_apt_suite_unit">Apt, suite, or unit</string>
+    <string name="address_city">City</string>
+    <string name="address_state">State</string>
+    <string name="address_zip_code">Zip code</string>
+    <string name="address_country">Country</string>
+
+    <string name="address_correction_text">Spelling corrected: \"%1$s\"</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="country">Country</string>
+    <string name="select_country">Select Country</string>
+    <string name="use_current_location">Use current location</string>
+
+    <string name="map_id">DEMO_MAP_ID</string>
+    <string name="address_descriptor_demo">Address descriptors</string>
+
+    <string name="no_address_to_show">No address to show</string>
+    <string name="location_bias">Location bias</string>
+    <string name="cart">Cart</string>
+    <string name="minimal_autocomplete_button">Minimal autocomplete</string>
+    <string name="next_mock_location">Next Mock Location</string>
+    <string name="refresh_landmark_list">Refresh landmark list</string>
+
+    <string name="delivery_information">Delivery information</string>
+    <string name="getting_current_location">Getting current location</string>
+    <string name="loading">Loading…</string>
+    <string name="close_the_map">Close the map</string>
+
+    <!-- US Address field labels -->
+    <string name="us_address_address">Address</string>
+    <string name="us_address_suite_unit_floor">Suite, Unit, Floor</string>
+    <string name="us_address_city">City</string>
+    <string name="us_address_state">State</string>
+    <string name="us_address_zip">Zip</string>
+    <string name="us_address_country">Country</string>
+
+    <!-- India Address field labels -->
+    <string name="india_address_unit_number">Apt, suite, unit</string>
+    <string name="india_address_street_address">Street address</string>
+    <string name="india_address_city">City</string>
+    <string name="india_address_state">State</string>
+    <string name="india_address_pincode">Pincode</string>
+    <string name="india_address_landmark">Landmark</string>
+    <string name="india_address_area_sector_locality">Area/sector/locality</string>
+</resources>

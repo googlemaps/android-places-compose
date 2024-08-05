@@ -1,0 +1,231 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+package com.google.android.libraries.places.compose.demo.presentation.landmark
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.GenericShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import com.google.android.libraries.places.compose.demo.R
+import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
+import com.google.maps.android.compose.AdvancedMarker
+import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MarkerComposable
+import com.google.maps.android.compose.MarkerState
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
+import com.google.android.gms.maps.model.PinConfig
+
+@Composable
+fun NearbyLandmarksMap(
+    cameraPositionState: CameraPositionState,
+    userMarker: MarkerState,
+    modifier: Modifier = Modifier,
+    onMapClick: (LatLng) -> Unit = {},
+    nearbyObjectsWithLocations: List<Pair<NearbyObject, Place>>,
+) {
+    val mapId = stringResource(id = R.string.map_id)
+
+    var showAsMarkers by remember { mutableStateOf(true) }
+
+    LaunchedEffect(cameraPositionState.position.zoom) {
+        showAsMarkers = cameraPositionState.position.zoom < 16f
+    }
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+    ) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            onMapClick = onMapClick,
+            googleMapOptionsFactory = {
+                GoogleMapOptions().mapId(mapId)
+            },
+        ) {
+            val droppedPinPinConfig = with(PinConfig.builder()) {
+                setBackgroundColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
+                setBorderColor(MaterialTheme.colorScheme.primary.toArgb())
+                build()
+            }
+
+            AdvancedMarker(
+                state = userMarker,
+                title = stringResource(R.string.user_location),
+                snippet = "",
+                zIndex = 2f
+            )
+
+            if (showAsMarkers) {
+
+                nearbyObjectsWithLocations.forEach { (nearbyObject, place) ->
+                    AdvancedMarker(
+                        state = MarkerState(position = place.latLng!!),
+                        title = nearbyObject.name,
+                        snippet = nearbyObject.spatialRelationship(),
+                        zIndex = 1f,
+                        pinConfig = droppedPinPinConfig
+                    )
+                }
+            } else {
+                nearbyObjectsWithLocations.forEach { (nearbyObject, place) ->
+                    MarkerComposable(
+                        state = MarkerState(position = place.latLng!!),
+                        zIndex = 1f,
+                    ) {
+                        LandmarkMarker(nearbyObject.name)
+                    }
+                }
+            }
+        }
+    }
+}
+
+// TODO: better outline for the landmark marker
+@Composable
+fun LandmarkMarker(label: String) {
+    val dipSize = 16.dp
+    val dipHeight = 12.dp
+    val cornerRadius = 12.dp // Adjust corner radius as needed
+    val density = LocalDensity.current
+
+    val borderShape = GenericShape { size, _ ->
+        with(density) {
+            reset()
+//            // Start in the top center
+//            moveTo(size.width / 2f, 0f)
+//
+//            // relative line to the right to where the arc will start
+//            lineTo(size.width - cornerRadius.toPx(), 0f)
+//
+//            arcTo(
+//                rect = Rect(
+//                    top = 0f,
+//                    left = size.width - cornerRadius.toPx() / 2,
+//                    bottom = cornerRadius.toPx(),
+//                    right = size.width
+//                ),
+//                startAngleDegrees = 0f,
+//                sweepAngleDegrees = 90f,
+//                forceMoveTo = false
+//            )
+//
+//            lineTo(size.width, size.height)
+//            lineTo(0f, size.height)
+//            lineTo(0f, 0f)
+
+            addRoundRect(
+                roundRect = androidx.compose.ui.geometry.RoundRect(
+                    rect = Rect(
+                        offset = Offset(
+                            x = 0f,
+                            y = 0f
+                        ),
+                        size = Size(
+                            width = size.width,
+                            height = size.height
+                        )
+                    ),
+                    topLeft = CornerRadius(cornerRadius.toPx()),
+                    topRight = CornerRadius(cornerRadius.toPx()),
+                    bottomRight = CornerRadius(cornerRadius.toPx()), // No corner radius at the dip
+                    bottomLeft = CornerRadius(cornerRadius.toPx()) // No corner radius at the dip
+                )
+            )
+
+            moveTo(size.width / 2f, size.height + dipHeight.toPx())
+            lineTo(size.width / 2f + (dipSize.toPx() / 2), size.height)
+            lineTo(size.width / 2f - (dipSize.toPx() / 2), size.height)
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .padding(bottom = 12.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.primary,
+                shape = borderShape
+            )
+            .background(
+                color = MaterialTheme.colorScheme.secondaryContainer,
+                shape = borderShape
+            )
+            .padding(top = 2.dp, bottom = 2.dp, end = 6.dp, start = 2.dp), // Add padding around the text
+
+    ) {
+        Box(
+            modifier = Modifier
+                .size(24.dp)
+                .background(
+                    shape = CircleShape,
+                    color = MaterialTheme.colorScheme.primary,
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                modifier = Modifier.size(16.dp),
+                painter = painterResource(id = R.drawable.outline_pin_drop_24),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondaryContainer
+            )
+        }
+        Text(
+            modifier = Modifier.padding(start = 4.dp),
+            text = label,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LandmarkMarkerPreview() {
+    AndroidPlacesComposeDemoTheme {
+        LandmarkMarker(label = "Landmark")
+    }
+}

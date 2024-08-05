@@ -1,0 +1,1539 @@
+{
+  "plus_code" :
+  {
+    "compound_code" : "C2GX+JGM Gurugram, Haryana, India",
+    "global_code" : "7JWVC2GX+JGM"
+  },
+  "results" :
+  [
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "93",
+          "short_name" : "93",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "White Wood Street",
+          "short_name" : "White Wood St",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122022",
+          "short_name" : "122022",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "93, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122022, India",
+      "geometry" :
+      {
+        "location" :
+        {
+          "lat" : 28.4266628,
+          "lng" : 77.04879579999999
+        },
+        "location_type" : "ROOFTOP",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4280117802915,
+            "lng" : 77.0501447802915
+          },
+          "southwest" :
+          {
+            "lat" : 28.4253138197085,
+            "lng" : 77.04744681970848
+          }
+        }
+      },
+      "place_id" : "ChIJlwHXHXkYDTkRIBehkfORPFs",
+      "plus_code" :
+      {
+        "compound_code" : "C2GX+MG Gurugram, Haryana, India",
+        "global_code" : "7JWVC2GX+MG"
+      },
+      "types" :
+      [
+        "street_address"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "96",
+          "short_name" : "96",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "White Wood Street",
+          "short_name" : "White Wood St",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122018",
+          "short_name" : "122018",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "96, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122018, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.426746,
+            "lng" : 77.04896549999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.4265994,
+            "lng" : 77.0487837
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.426671,
+          "lng" : 77.04886809999999
+        },
+        "location_type" : "ROOFTOP",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4280216802915,
+            "lng" : 77.05022358029152
+          },
+          "southwest" :
+          {
+            "lat" : 28.4253237197085,
+            "lng" : 77.04752561970849
+          }
+        }
+      },
+      "place_id" : "ChIJUeZ6HnkYDTkRxGluNdvc3vo",
+      "types" :
+      [
+        "premise"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "WW-94",
+          "short_name" : "WW-94",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "White Wood Street",
+          "short_name" : "White Wood St",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122022",
+          "short_name" : "122022",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "WW-94, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122022, India",
+      "geometry" :
+      {
+        "location" :
+        {
+          "lat" : 28.4267065,
+          "lng" : 77.0486545
+        },
+        "location_type" : "ROOFTOP",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4280554802915,
+            "lng" : 77.05000348029151
+          },
+          "southwest" :
+          {
+            "lat" : 28.42535751970849,
+            "lng" : 77.0473055197085
+          }
+        }
+      },
+      "place_id" : "ChIJAfyztGsZDTkR8o9urRjTtss",
+      "plus_code" :
+      {
+        "compound_code" : "C2GX+MF Gurugram, Haryana, India",
+        "global_code" : "7JWVC2GX+MF"
+      },
+      "types" :
+      [
+        "establishment",
+        "point_of_interest"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "96",
+          "short_name" : "96",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "White Wood Street",
+          "short_name" : "White Wood St",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122018",
+          "short_name" : "122018",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "96, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122018, India",
+      "geometry" :
+      {
+        "location" :
+        {
+          "lat" : 28.4266708,
+          "lng" : 77.04911079999999
+        },
+        "location_type" : "RANGE_INTERPOLATED",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4280197802915,
+            "lng" : 77.05045978029149
+          },
+          "southwest" :
+          {
+            "lat" : 28.4253218197085,
+            "lng" : 77.04776181970848
+          }
+        }
+      },
+      "place_id" : "Eko5NiwgV2hpdGUgV29vZCBTdCwgTWFsaWJ1IFRvd24sIFNlY3RvciA0NywgR3VydWdyYW0sIEhhcnlhbmEgMTIyMDE4LCBJbmRpYSIaEhgKFAoSCZNtBR95GA05EUFN_a7yDIkgEGA",
+      "types" :
+      [
+        "street_address"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "C2GX+JG",
+          "short_name" : "C2GX+JG",
+          "types" :
+          [
+            "plus_code"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "C2GX+JG Gurugram, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.426625,
+            "lng" : 77.048875
+          },
+          "southwest" :
+          {
+            "lat" : 28.4265,
+            "lng" : 77.04875
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4265905,
+          "lng" : 77.04881159999999
+        },
+        "location_type" : "GEOMETRIC_CENTER",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4279114802915,
+            "lng" : 77.05016148029149
+          },
+          "southwest" :
+          {
+            "lat" : 28.42521351970849,
+            "lng" : 77.04746351970849
+          }
+        }
+      },
+      "place_id" : "GhIJx0j2CDVtPEARlmqwuh9DU0A",
+      "plus_code" :
+      {
+        "compound_code" : "C2GX+JG Gurugram, Haryana, India",
+        "global_code" : "7JWVC2GX+JG"
+      },
+      "types" :
+      [
+        "plus_code"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "White Wood Street",
+          "short_name" : "White Wood St",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122018",
+          "short_name" : "122018",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122018, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.426781,
+            "lng" : 77.0491109
+          },
+          "southwest" :
+          {
+            "lat" : 28.4265039,
+            "lng" : 77.04911059999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4266424,
+          "lng" : 77.0491107
+        },
+        "location_type" : "GEOMETRIC_CENTER",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4279914302915,
+            "lng" : 77.05045973029149
+          },
+          "southwest" :
+          {
+            "lat" : 28.4252934697085,
+            "lng" : 77.04776176970849
+          }
+        }
+      },
+      "place_id" : "ChIJk20FH3kYDTkRQE39rvIMiSA",
+      "types" :
+      [
+        "route"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Malibu Town",
+          "short_name" : "Malibu Town",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_2"
+          ]
+        },
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "122018",
+          "short_name" : "122018",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "Malibu Town, Sector 47, Gurugram, Haryana 122018, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4277178,
+            "lng" : 77.0549419
+          },
+          "southwest" :
+          {
+            "lat" : 28.4171381,
+            "lng" : 77.03797999999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4219698,
+          "lng" : 77.0463719
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4277178,
+            "lng" : 77.0549419
+          },
+          "southwest" :
+          {
+            "lat" : 28.4171381,
+            "lng" : 77.03797999999999
+          }
+        }
+      },
+      "place_id" : "ChIJvc8lCXgYDTkRpufH6C-PvR4",
+      "types" :
+      [
+        "political",
+        "sublocality",
+        "sublocality_level_2"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Sector 47",
+          "short_name" : "Sector 47",
+          "types" :
+          [
+            "political",
+            "sublocality",
+            "sublocality_level_1"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Sector 47, Gurugram, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.434597,
+            "lng" : 77.0583731
+          },
+          "southwest" :
+          {
+            "lat" : 28.4171381,
+            "lng" : 77.03677399999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4275535,
+          "lng" : 77.0491679
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.434597,
+            "lng" : 77.0583731
+          },
+          "southwest" :
+          {
+            "lat" : 28.4171381,
+            "lng" : 77.03677399999999
+          }
+        }
+      },
+      "place_id" : "ChIJd2hVVngYDTkRllQ7iRgzeTY",
+      "types" :
+      [
+        "political",
+        "sublocality",
+        "sublocality_level_1"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "122018",
+          "short_name" : "122018",
+          "types" :
+          [
+            "postal_code"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Gurugram, Haryana 122018, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4373602,
+            "lng" : 77.07430649999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.4014119,
+            "lng" : 77.0373
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4180814,
+          "lng" : 77.0506896
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.4373602,
+            "lng" : 77.07430649999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.4014119,
+            "lng" : 77.0373
+          }
+        }
+      },
+      "place_id" : "ChIJ_0AJ458iDTkRQni99ZPIG38",
+      "types" :
+      [
+        "postal_code"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Gurugram, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5421201,
+            "lng" : 77.12257989999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.303795,
+            "lng" : 76.85691829999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4594965,
+          "lng" : 77.0266383
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5421201,
+            "lng" : 77.12257989999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.303795,
+            "lng" : 76.85691829999999
+          }
+        }
+      },
+      "place_id" : "ChIJWYjjgtUZDTkRHkvG5ehfzwI",
+      "types" :
+      [
+        "locality",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_4",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Gurugram, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.1237623
+          },
+          "southwest" :
+          {
+            "lat" : 28.2345922,
+            "lng" : 76.703788
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.4592937,
+          "lng" : 77.02652999999999
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.1237623
+          },
+          "southwest" :
+          {
+            "lat" : 28.2345922,
+            "lng" : 76.703788
+          }
+        }
+      },
+      "place_id" : "ChIJ9eKLSQs-DTkRaubTCoVg1Ck",
+      "types" :
+      [
+        "administrative_area_level_4",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Gurugram",
+          "short_name" : "Gurugram",
+          "types" :
+          [
+            "administrative_area_level_3",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Gurugram, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.24186829999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.1990038,
+            "lng" : 76.6502874
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.360613,
+          "lng" : 76.87209609999999
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.24186829999999
+          },
+          "southwest" :
+          {
+            "lat" : 28.1990038,
+            "lng" : 76.6502874
+          }
+        }
+      },
+      "place_id" : "ChIJlYyNFyQYDTkRQzFwSRfgzY4",
+      "types" :
+      [
+        "administrative_area_level_3",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Gurgaon Division",
+          "short_name" : "Gurgaon Division",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Gurgaon Division, Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.24186829999999
+          },
+          "southwest" :
+          {
+            "lat" : 27.7973912,
+            "lng" : 75.8951764
+          }
+        },
+        "location" :
+        {
+          "lat" : 28.2828311,
+          "lng" : 76.5488232
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 28.5414072,
+            "lng" : 77.24186829999999
+          },
+          "southwest" :
+          {
+            "lat" : 27.7973912,
+            "lng" : 75.8951764
+          }
+        }
+      },
+      "place_id" : "ChIJY07YChg-DTkRFaZ2d1kcGrk",
+      "types" :
+      [
+        "administrative_area_level_2",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Haryana",
+          "short_name" : "HR",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Haryana, India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 30.9285428,
+            "lng" : 77.6045912
+          },
+          "southwest" :
+          {
+            "lat" : 27.652271,
+            "lng" : 74.47325859999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 29.0587757,
+          "lng" : 76.085601
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 30.9285428,
+            "lng" : 77.6045912
+          },
+          "southwest" :
+          {
+            "lat" : 27.652271,
+            "lng" : 74.47325859999999
+          }
+        }
+      },
+      "place_id" : "ChIJC0BwhguwDTkRQ8GmqrSqLnM",
+      "types" :
+      [
+        "administrative_area_level_1",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "India",
+          "short_name" : "IN",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "India",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 35.6733149,
+            "lng" : 97.39535869999999
+          },
+          "southwest" :
+          {
+            "lat" : 6.4626999,
+            "lng" : 68.1097
+          }
+        },
+        "location" :
+        {
+          "lat" : 20.593684,
+          "lng" : 78.96288
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 35.6733149,
+            "lng" : 97.39535869999999
+          },
+          "southwest" :
+          {
+            "lat" : 6.4626999,
+            "lng" : 68.1097
+          }
+        }
+      },
+      "place_id" : "ChIJkbeSa_BfYzARphNChaFPjNc",
+      "types" :
+      [
+        "country",
+        "political"
+      ]
+    }
+  ],
+  "status" : "OK"
+}

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright 2024 Google LLC
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<resources>
+    <string name="back">Back</string>
+    <string name="clear">Clear</string>
+
+    <string name="in_feet">%1$,.0f ft</string>
+    <string name="in_miles">%1$,.1f miles</string>
+    <string name="in_meters">%1$,.0f m</string>
+    <string name="in_kilometers">%1$,.1f km</string>
+    <string name="distance">Distance</string>
+
+    <string name="spatial_relationship_within">Within %1$s</string>
+    <string name="spatial_relationship_beside">Beside %1$s</string>
+    <string name="spatial_relationship_across_the_road">Across the road from %1$s</string>
+    <string name="spatial_relationship_down_the_road">Down the road from %1$s</string>
+    <string name="spatial_relationship_around_the_corner">Around the corner from %1$s</string>
+    <string name="spatial_relationship_behind">Behind %1$s</string>
+    <string name="spatial_relationship_near">Near %1$s</string>
+
+    <string name="spatial_relationship_outskirts_of">Outskirts of %1$s</string>
+    <string name="show_more">Show more</string>
+    <string name="show_less">Show less</string>
+    <string name="google">Google</string>
+    <string name="search_for_places">Search here</string>
+    <string name="collapse_entry">Collapse entry</string>
+    <string name="expand_entry">Expand entry</string>
+</resources>

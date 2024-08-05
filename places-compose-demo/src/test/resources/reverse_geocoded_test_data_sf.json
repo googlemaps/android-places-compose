@@ -1,0 +1,1132 @@
+{
+  "address_descriptor" :
+  {
+    "areas" :
+    [
+      {
+        "containment" : "OUTSKIRTS",
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Financial District"
+        },
+        "place_id" : "ChIJzTVIQGCAhYARfKdHVy3QcLk"
+      },
+      {
+        "containment" : "WITHIN",
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Embarcadero"
+        },
+        "place_id" : "ChIJrUM2mWaAhYARfx6a1ZmDF3c"
+      },
+      {
+        "containment" : "NEAR",
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Parking lot"
+        },
+        "place_id" : "ChIJmzbhrmWAhYARcwCorspXiEg"
+      }
+    ],
+    "landmarks" :
+    [
+      {
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Ferry Building"
+        },
+        "place_id" : "ChIJWTGPjmaAhYARxz6l1hOj92w",
+        "spatial_relationship" : "DOWN_THE_ROAD",
+        "straight_line_distance_meters" : 200.1121520996094,
+        "travel_distance_meters" : 135.8284301757812,
+        "types" :
+        [
+          "establishment",
+          "food",
+          "grocery_or_supermarket",
+          "point_of_interest",
+          "store"
+        ]
+      },
+      {
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "The Commonwealth Club"
+        },
+        "place_id" : "ChIJ75fLhWKAhYARDxivfRW3Vr4",
+        "spatial_relationship" : "DOWN_THE_ROAD",
+        "straight_line_distance_meters" : 67.45888519287109,
+        "travel_distance_meters" : 63.18876647949219,
+        "types" :
+        [
+          "establishment",
+          "point_of_interest"
+        ]
+      },
+      {
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "San Francisco Railway Museum"
+        },
+        "place_id" : "ChIJ_f7xMWSAhYARThFhbatwJak",
+        "spatial_relationship" : "DOWN_THE_ROAD",
+        "straight_line_distance_meters" : 105.7992477416992,
+        "travel_distance_meters" : 172.3575439453125,
+        "types" :
+        [
+          "establishment",
+          "museum",
+          "point_of_interest",
+          "store",
+          "tourist_attraction"
+        ]
+      },
+      {
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Mohandas K. Gandhi"
+        },
+        "place_id" : "ChIJh1HWZGaAhYARPM5OKeMEw8k",
+        "spatial_relationship" : "DOWN_THE_ROAD",
+        "straight_line_distance_meters" : 154.2532806396484,
+        "travel_distance_meters" : 135.6979827880859,
+        "types" :
+        [
+          "establishment",
+          "point_of_interest",
+          "tourist_attraction"
+        ]
+      },
+      {
+        "display_name" :
+        {
+          "language_code" : "en",
+          "text" : "Embarcadero YMCA"
+        },
+        "place_id" : "ChIJ41m1p2WAhYARrReqL2tNixw",
+        "spatial_relationship" : "NEAR",
+        "straight_line_distance_meters" : 141.5358428955078,
+        "travel_distance_meters" : 222.3216094970703,
+        "types" :
+        [
+          "establishment",
+          "gym",
+          "health",
+          "point_of_interest"
+        ]
+      }
+    ]
+  },
+  "plus_code" :
+  {
+    "compound_code" : "QJV5+H3C Embarcadero, San Francisco, CA, USA",
+    "global_code" : "849VQJV5+H3C"
+  },
+  "results" :
+  [
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "suite 200",
+          "short_name" : "suite 200",
+          "types" :
+          [
+            "subpremise"
+          ]
+        },
+        {
+          "long_name" : "101",
+          "short_name" : "101",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "The Embarcadero",
+          "short_name" : "The Embarcadero",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Embarcadero",
+          "short_name" : "Embarcadero",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "94105",
+          "short_name" : "94105",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "101 The Embarcadero suite 200, San Francisco, CA 94105, USA",
+      "geometry" :
+      {
+        "location" :
+        {
+          "lat" : 37.7939412,
+          "lng" : -122.3922797
+        },
+        "location_type" : "ROOFTOP",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.7952901802915,
+            "lng" : -122.3909307197085
+          },
+          "southwest" :
+          {
+            "lat" : 37.7925922197085,
+            "lng" : -122.3936286802915
+          }
+        }
+      },
+      "place_id" : "ChIJAf9gS2eAhYARJz92e6zleQs",
+      "plus_code" :
+      {
+        "compound_code" : "QJV5+H3 Embarcadero, San Francisco, CA, USA",
+        "global_code" : "849VQJV5+H3"
+      },
+      "types" :
+      [
+        "establishment",
+        "general_contractor",
+        "point_of_interest"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "101",
+          "short_name" : "101",
+          "types" :
+          [
+            "street_number"
+          ]
+        },
+        {
+          "long_name" : "Bay Trail",
+          "short_name" : "Bay Trail",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Embarcadero",
+          "short_name" : "Embarcadero",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "94105",
+          "short_name" : "94105",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "101 Bay Trail, San Francisco, CA 94105, USA",
+      "geometry" :
+      {
+        "location" :
+        {
+          "lat" : 37.7940261,
+          "lng" : -122.392346
+        },
+        "location_type" : "ROOFTOP",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.7953750802915,
+            "lng" : -122.3909970197085
+          },
+          "southwest" :
+          {
+            "lat" : 37.7926771197085,
+            "lng" : -122.3936949802915
+          }
+        }
+      },
+      "place_id" : "ChIJjbmwz2WAhYARJmLTcDz8fj8",
+      "plus_code" :
+      {
+        "compound_code" : "QJV5+J3 Embarcadero, San Francisco, CA, USA",
+        "global_code" : "849VQJV5+J3"
+      },
+      "types" :
+      [
+        "street_address"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "San Francisco Bay Trail",
+          "short_name" : "San Francisco Bay Trail",
+          "types" :
+          [
+            "route"
+          ]
+        },
+        {
+          "long_name" : "Embarcadero",
+          "short_name" : "Embarcadero",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "94105",
+          "short_name" : "94105",
+          "types" :
+          [
+            "postal_code"
+          ]
+        }
+      ],
+      "formatted_address" : "San Francisco Bay Trail, San Francisco, CA 94105, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.7939079,
+            "lng" : -122.3922166
+          },
+          "southwest" :
+          {
+            "lat" : 37.7937662,
+            "lng" : -122.3923621
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7938371,
+          "lng" : -122.3922893
+        },
+        "location_type" : "GEOMETRIC_CENTER",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.7951860302915,
+            "lng" : -122.3909403697085
+          },
+          "southwest" :
+          {
+            "lat" : 37.7924880697085,
+            "lng" : -122.3936383302915
+          }
+        }
+      },
+      "place_id" : "ChIJT6lMz2WAhYARypO74otHxNc",
+      "types" :
+      [
+        "route"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "QJV5+H3",
+          "short_name" : "QJV5+H3",
+          "types" :
+          [
+            "plus_code"
+          ]
+        },
+        {
+          "long_name" : "Embarcadero",
+          "short_name" : "Embarcadero",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "QJV5+H3 Embarcadero, San Francisco, CA, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.794,
+            "lng" : -122.39225
+          },
+          "southwest" :
+          {
+            "lat" : 37.793875,
+            "lng" : -122.392375
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.793941,
+          "lng" : -122.3923581
+        },
+        "location_type" : "GEOMETRIC_CENTER",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.7952864802915,
+            "lng" : -122.3909635197085
+          },
+          "southwest" :
+          {
+            "lat" : 37.7925885197085,
+            "lng" : -122.3936614802915
+          }
+        }
+      },
+      "place_id" : "GhIJDfrS25_lQkARh_QlZRyZXsA",
+      "plus_code" :
+      {
+        "compound_code" : "QJV5+H3 Embarcadero, San Francisco, CA, USA",
+        "global_code" : "849VQJV5+H3"
+      },
+      "types" :
+      [
+        "plus_code"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Financial District",
+          "short_name" : "Financial District",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Financial District, San Francisco, CA, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.797508,
+            "lng" : -122.3893098
+          },
+          "southwest" :
+          {
+            "lat" : 37.7874504,
+            "lng" : -122.4046134
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7936658,
+          "lng" : -122.3964729
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.797508,
+            "lng" : -122.3893098
+          },
+          "southwest" :
+          {
+            "lat" : 37.7874504,
+            "lng" : -122.4046134
+          }
+        }
+      },
+      "place_id" : "ChIJzTVIQGCAhYARfKdHVy3QcLk",
+      "types" :
+      [
+        "neighborhood",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "94105",
+          "short_name" : "94105",
+          "types" :
+          [
+            "postal_code"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "San Francisco, CA 94105, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.80018200000001,
+            "lng" : -122.381681
+          },
+          "southwest" :
+          {
+            "lat" : 37.7824491,
+            "lng" : -122.4035291
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7890183,
+          "lng" : -122.3915063
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.80018200000001,
+            "lng" : -122.381681
+          },
+          "southwest" :
+          {
+            "lat" : 37.7824491,
+            "lng" : -122.4035291
+          }
+        }
+      },
+      "place_id" : "ChIJDXK6UmKAhYARfzuOY6DDgeM",
+      "types" :
+      [
+        "postal_code"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "Embarcadero",
+          "short_name" : "Embarcadero",
+          "types" :
+          [
+            "neighborhood",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "Embarcadero, San Francisco, CA, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.8110893,
+            "lng" : -122.3843266
+          },
+          "southwest" :
+          {
+            "lat" : 37.7782628,
+            "lng" : -122.4096465
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7992627,
+          "lng" : -122.3976732
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.8110893,
+            "lng" : -122.3843266
+          },
+          "southwest" :
+          {
+            "lat" : 37.7782628,
+            "lng" : -122.4096465
+          }
+        }
+      },
+      "place_id" : "ChIJrUM2mWaAhYARfx6a1ZmDF3c",
+      "types" :
+      [
+        "neighborhood",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "San Francisco, CA, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.9298239,
+            "lng" : -122.28178
+          },
+          "southwest" :
+          {
+            "lat" : 37.6398299,
+            "lng" : -123.1328309
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7749295,
+          "lng" : -122.4194155
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.9298239,
+            "lng" : -122.28178
+          },
+          "southwest" :
+          {
+            "lat" : 37.6398299,
+            "lng" : -123.1328309
+          }
+        }
+      },
+      "place_id" : "ChIJIQBpAG2ahYAR_6128GcTUEo",
+      "types" :
+      [
+        "locality",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "San Francisco County",
+          "short_name" : "San Francisco County",
+          "types" :
+          [
+            "administrative_area_level_2",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "San Francisco",
+          "short_name" : "SF",
+          "types" :
+          [
+            "locality",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "San Francisco County, San Francisco, CA, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.929824,
+            "lng" : -122.28178
+          },
+          "southwest" :
+          {
+            "lat" : 37.63983,
+            "lng" : -123.1328309
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.7618219,
+          "lng" : -122.5146439
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 37.929824,
+            "lng" : -122.28178
+          },
+          "southwest" :
+          {
+            "lat" : 37.63983,
+            "lng" : -123.1328309
+          }
+        }
+      },
+      "place_id" : "ChIJIQBpAG2ahYARUksNqd0_1h8",
+      "types" :
+      [
+        "administrative_area_level_2",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "California",
+          "short_name" : "CA",
+          "types" :
+          [
+            "administrative_area_level_1",
+            "political"
+          ]
+        },
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "California, USA",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 42.009503,
+            "lng" : -114.131211
+          },
+          "southwest" :
+          {
+            "lat" : 32.528832,
+            "lng" : -124.482003
+          }
+        },
+        "location" :
+        {
+          "lat" : 36.778261,
+          "lng" : -119.4179324
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 42.009503,
+            "lng" : -114.131211
+          },
+          "southwest" :
+          {
+            "lat" : 32.528832,
+            "lng" : -124.482003
+          }
+        }
+      },
+      "place_id" : "ChIJPV4oX_65j4ARVW8IJ6IJUYs",
+      "types" :
+      [
+        "administrative_area_level_1",
+        "political"
+      ]
+    },
+    {
+      "address_components" :
+      [
+        {
+          "long_name" : "United States",
+          "short_name" : "US",
+          "types" :
+          [
+            "country",
+            "political"
+          ]
+        }
+      ],
+      "formatted_address" : "United States",
+      "geometry" :
+      {
+        "bounds" :
+        {
+          "northeast" :
+          {
+            "lat" : 74.071038,
+            "lng" : -66.885417
+          },
+          "southwest" :
+          {
+            "lat" : 18.7763,
+            "lng" : 166.9999999
+          }
+        },
+        "location" :
+        {
+          "lat" : 37.09024,
+          "lng" : -95.712891
+        },
+        "location_type" : "APPROXIMATE",
+        "viewport" :
+        {
+          "northeast" :
+          {
+            "lat" : 74.071038,
+            "lng" : -66.885417
+          },
+          "southwest" :
+          {
+            "lat" : 18.7763,
+            "lng" : 166.9999999
+          }
+        }
+      },
+      "place_id" : "ChIJCzYy5IS16lQRQrfeQ5K5Oxw",
+      "types" :
+      [
+        "country",
+        "political"
+      ]
+    }
+  ],
+  "status" : "OK"
+}
