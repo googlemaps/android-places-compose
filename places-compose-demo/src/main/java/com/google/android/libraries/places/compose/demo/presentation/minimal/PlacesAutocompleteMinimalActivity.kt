@@ -47,7 +47,7 @@ import com.google.android.libraries.places.compose.demo.BuildConfig
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.data.repositories.ApiKeyProvider
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepositoryImpl
+import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 import com.google.android.libraries.places.ktx.api.net.awaitFindAutocompletePredictions
@@ -75,7 +75,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
         val placesClient = Places.createClient(this)
 
         // These should normally be injected by DI and held in a view model
-        val locationRepository = LocationRepositoryImpl(this, GlobalScope)
+        val locationRepository = LocationRepository(this, GlobalScope)
         val apiKeyProvider = ApiKeyProvider(this)
         val geocoder = GeocoderRepository(this, apiKeyProvider)
 

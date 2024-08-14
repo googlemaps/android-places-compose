@@ -98,7 +98,9 @@ fun AutocompleteDemoScreen(viewModel: AutocompleteViewModel, onNavigateBack: () 
                                 contentDescription = "Set the bias to the current location"
                             )
                         }
-                        NextLocationButton {
+                        NextLocationButton(
+                            isSelected = false
+                        ) {
                             viewModel.onEvent(AutocompleteEvent.OnQueryChanged(""))
                             viewModel.onEvent(AutocompleteEvent.OnNextMockLocation)
                         }

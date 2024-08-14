@@ -55,6 +55,14 @@ data class AutocompleteViewState(
     val locationLabel: String? = null,
 )
 
+// TODO: expose this from the view model instead of AutocompleteViewState
+data class ViewState(
+    val location: LatLng = LatLng(0.0, 0.0),
+    val locationLabel: String = "",
+    val showMap: Boolean = false,
+    val autocompleteViewState: AutocompleteViewState = AutocompleteViewState()
+)
+
 private data class AutocompleteQuery(
     val query: String,
     val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {}
@@ -95,7 +103,7 @@ constructor(
             }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), emptyList())
 
-    val autocompletePlaces = predictions.map { predictions ->
+    private val autocompletePlaces = predictions.map { predictions ->
         predictions.map(AutocompletePrediction::toPlaceDetails)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), emptyList())
 

@@ -40,7 +40,6 @@ fun UsAddressForm(
     address: UsDisplayAddress,
     nearbyObjects: List<NearbyObject>,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    onStreetFocused: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
@@ -52,11 +51,6 @@ fun UsAddressForm(
             value = address.streetAddress,
             label = R.string.us_address_address,
             onValueChange = { onAddressChanged?.invoke(address.copy(streetAddress = it)) },
-            onFocusChanged = if (onStreetFocused != null) {
-                { if (it) onStreetFocused() }
-            } else {
-                null
-            }
         )
 
         AddressTextField(

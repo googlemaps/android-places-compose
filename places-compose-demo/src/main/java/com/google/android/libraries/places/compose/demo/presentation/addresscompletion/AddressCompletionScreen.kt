@@ -14,18 +14,17 @@
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,8 +44,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -79,7 +78,7 @@ fun AddressCompletionScreen(
     onNavigateUp: () -> Unit = {}
 ) {
     val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
-    val addressValidationViewState by viewModel.viewState.collectAsState()
+    val viewState by viewModel.viewState.collectAsState()
 
     var showAutocomplete by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -129,28 +128,31 @@ fun AddressCompletionScreen(
                     },
                     actions = {
                         // TODO: viewModel is creeping into the UI.
-                        IconButton(onClick = { viewModel.onEvent(AddressCompletionEvent.OnUseLocation) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_my_location_24),
-                                contentDescription = "Fill in the address from the current location"
-                            )
-                        }
-                        NextLocationButton {
+                        SelectableButton(
+                            viewState.buttonStates.currentLocation == ButtonState.SELECTED,
+                            { viewModel.onEvent(AddressCompletionEvent.OnUseSystemLocation) },
+                            R.drawable.baseline_my_location_24,
+                            R.string.fill_address_from_current_location
+                        )
+                        NextLocationButton(
+                            isSelected = viewState.buttonStates.mockLocation == ButtonState.SELECTED
+                        ) {
                             viewModel.onEvent(AddressCompletionEvent.OnNextMockLocation)
                         }
-                        IconButton(onClick = { viewModel.onEvent(AddressCompletionEvent.OnToggleMap) }) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_map_24),
-                                contentDescription = "Toggle map"
-                            )
-                        }
+
+                        SelectableButton(
+                            isSelected = viewState.buttonStates.map == ButtonState.SELECTED,
+                            iconId = R.drawable.baseline_map_24,
+                            contentDescription = R.string.toggle_map,
+                            onClick = { viewModel.onEvent(AddressCompletionEvent.OnToggleMap) }
+                        )
                     }
                 )
             },
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { paddingValues ->
             MainContent(
-                addressValidationViewState = addressValidationViewState,
+                viewState = viewState,
                 autocompleteViewState = autocompleteViewState,
                 onQueryChanged = { request, actions ->
                     autocompleteViewModel.onEvent(AutocompleteEvent.OnQueryChanged(request, actions))
@@ -158,21 +160,16 @@ fun AddressCompletionScreen(
                 onAddressSelected = { autocompletePlace ->
                     viewModel.onEvent(AddressCompletionEvent.OnAddressSelected(autocompletePlace))
                 },
-                showAutocomplete = showAutocomplete,
                 onHideAutocomplete = {
                     showAutocomplete = false
                 },
-                onStreetFocused = {
-                    // Need to snapshot the address here
-                    showAutocomplete = true
-                },
                 countryCode = countryCode,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
                 onAddressChanged = { displayAddress ->
                     viewModel.onEvent(AddressCompletionEvent.OnAddressChanged(displayAddress))
                 },
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
                 onMapClick = { latLng ->
                     viewModel.onEvent(AddressCompletionEvent.OnMapClicked(latLng))
                 },
@@ -185,64 +182,80 @@ fun AddressCompletionScreen(
 }
 
 @Composable
+private fun SelectableButton(
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    iconId: Int,
+    contentDescription: Int
+) {
+    IconButton(
+        modifier = Modifier
+            .then(
+                if (isSelected) {
+                    Modifier
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                } else {
+                    Modifier
+                }
+            ),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(iconId),
+            contentDescription = stringResource(contentDescription),
+        )
+    }
+}
+
+@Composable
 private fun MainContent(
-    addressValidationViewState: AddressValidationViewState,
+    viewState: ViewState,
     autocompleteViewState: AutocompleteViewState,
     onQueryChanged: (String, FindAutocompletePredictionsRequest.Builder.() -> Unit) -> Unit,
     onAddressSelected: (AutocompletePlace) -> Unit,
-    showAutocomplete: Boolean,
     onHideAutocomplete: () -> Unit,
-    onStreetFocused: () -> Unit,
     countryCode: String,
-    onAddressChanged: ((DisplayAddress) -> Unit),
+    onAddressChanged: (DisplayAddress) -> Unit,
     modifier: Modifier = Modifier,
     onMapClick: (LatLng) -> Unit = {},
     onMapCloseClick: () -> Unit = {}
 ) {
-    when (addressValidationViewState) {
-        is AddressValidationViewState.Error -> {
-            Text(text = addressValidationViewState.message)
-        }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-        AddressValidationViewState.Loading -> {
-            Column(
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.loading))
-            }
-        }
-
-        is AddressValidationViewState.AddressEntry -> {
+    when (viewState.addressCompletionViewState) {
+        is AddressCompletionViewState.Autocomplete -> {
             fun updateQuery(query: String) {
                 onQueryChanged(query) {
                     locationBias = CircularBounds.newInstance(
-                        /* center = */ addressValidationViewState.location,
+                        /* center = */ viewState.location,
                         /* radius = */ 1000.0
                     )
-                    origin = addressValidationViewState.location
+                    origin = viewState.location
                     countries = listOf(countryCode)
                 }
             }
 
-            CartContent(
-                showAutocomplete = showAutocomplete,
+            PlaceAutocompleteScreen(
                 modifier = modifier,
                 autocompleteViewState = autocompleteViewState,
                 onQueryChanged = { query ->
                     updateQuery(query)
                 },
-                onAddressSelected = onAddressSelected,
-                onHideAutocomplete = onHideAutocomplete,
-                addressValidationViewState = addressValidationViewState,
-                onStreetFocused = {
-                    // This set the initial query to the current address
-                    updateQuery(addressValidationViewState.displayAddress.toFormattedAddress())
-                    onStreetFocused()
+                onAddressSelected = { autocompletePlace ->
+                    onAddressSelected(autocompletePlace)
+                    onHideAutocomplete()
+                    keyboardController?.hide()
                 },
+                onHideAutocomplete = onHideAutocomplete
+            )
+        }
+
+        is AddressCompletionViewState.AddressEntry -> {
+            AddressEntryForm(
+                viewState = viewState,
+                addressEntryViewState = viewState.addressCompletionViewState,
+                modifier = modifier,
                 onAddressChanged = onAddressChanged,
                 onMapClick = onMapClick,
                 onMapCloseClick = onMapCloseClick
@@ -252,61 +265,35 @@ private fun MainContent(
 }
 
 @Composable
-private fun CartContent(
-    showAutocomplete: Boolean,
-    modifier: Modifier,
+fun PlaceAutocompleteScreen(
     autocompleteViewState: AutocompleteViewState,
+    modifier: Modifier,
     onQueryChanged: (String) -> Unit,
     onAddressSelected: (AutocompletePlace) -> Unit,
     onHideAutocomplete: () -> Unit,
-    addressValidationViewState: AddressValidationViewState.AddressEntry,
-    onStreetFocused: () -> Unit,
-    onAddressChanged: ((DisplayAddress) -> Unit),
-    onMapClick: (LatLng) -> Unit = {},
-    onMapCloseClick: () -> Unit = {}
 ) {
-    if (showAutocomplete) {
-        val keyboardController = LocalSoftwareKeyboardController.current
-
-        Column(modifier = modifier) {
-            // TODO: make this compatible with the form and move it there instead.
-            PlacesAutocompleteTextField(
-                searchText = autocompleteViewState.searchText,
-                predictions = autocompleteViewState.predictions,
-                onQueryChanged = onQueryChanged,
-                modifier = Modifier.weight(1f),
-                onSelected = { autocompletePlace ->
-                    onAddressSelected(autocompletePlace)
-                    onHideAutocomplete()
-                    keyboardController?.hide()
-                },
-                selectedPlace = autocompleteViewState.selectedPlace,
-                textFieldMaxLines = 4,
-                onBackClicked = onHideAutocomplete,
-                scrollable = false,
-                placeHolderText = stringResource(R.string.search_call_to_action)
-            )
-        }
-    } else {
-        AddressEntryForm(
-            viewState = addressValidationViewState,
-            onStreetFocused = onStreetFocused,
-            modifier = modifier,
-            onAddressChanged = onAddressChanged,
-            onMapClick = onMapClick,
-            onMapCloseClick = onMapCloseClick
-        )
-    }
+    PlacesAutocompleteTextField(
+        modifier = modifier,
+        searchText = autocompleteViewState.searchText,
+        predictions = autocompleteViewState.predictions,
+        onQueryChanged = onQueryChanged,
+        onSelected = onAddressSelected,
+        selectedPlace = autocompleteViewState.selectedPlace,
+        textFieldMaxLines = 4,
+        onBackClicked = onHideAutocomplete,
+        scrollable = false,
+        placeHolderText = stringResource(R.string.search_call_to_action)
+    )
 }
 
 @Composable
 private fun AddressEntryForm(
-    viewState: AddressValidationViewState.AddressEntry,
-    onStreetFocused: () -> Unit,
+    addressEntryViewState: AddressCompletionViewState.AddressEntry,
     modifier: Modifier = Modifier,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
     onMapClick: (LatLng) -> Unit = {},
     onMapCloseClick: () -> Unit = {},
+    viewState: ViewState,
 ) {
     Column(
         modifier = modifier
@@ -324,18 +311,15 @@ private fun AddressEntryForm(
             .verticalScroll(rememberScrollState()),
         ) {
             AddressDisplay(
-                address = viewState.displayAddress,
+                address = addressEntryViewState.displayAddress,
                 modifier = Modifier.fillMaxWidth(),
-                nearbyObjects = viewState.nearbyObjects,
-                onAddressChanged = onAddressChanged,
-                onStreetFocused = onStreetFocused
+                nearbyObjects = addressEntryViewState.nearbyObjects,
+                onAddressChanged = onAddressChanged
             )
         }
         if (viewState.showMap) {
-            val label = viewState.locationLabel ?: stringResource(R.string.location_bias)
-
             LaunchedEffect(viewState.locationLabel) {
-                val headerString = viewState.locationLabel ?: "Not set"
+                val headerString = viewState.locationLabel
                 println(headerString)
             }
 
@@ -346,12 +330,12 @@ private fun AddressEntryForm(
                     .height(350.dp),
                 header = {
                     Text(
-                        text = label,
+                        text = viewState.locationLabel,
                         style = MaterialTheme.typography.labelMedium,
                     )
                 },
                 markerLatLng = viewState.location,
-                markerTitle = label,
+                markerTitle = viewState.locationLabel,
                 onMapClick = onMapClick,
                 onMapCloseClick = onMapCloseClick
             )
@@ -359,20 +343,18 @@ private fun AddressEntryForm(
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
 @Composable
-private fun CartContentPreview_loading() {
+private fun CartContentPreview_autocomplete() {
     MainContent(
-        addressValidationViewState = AddressValidationViewState.Loading,
+        viewState = ViewState(),
         autocompleteViewState = AutocompleteViewState(),
-        onQueryChanged = { _, _ -> },
+        onQueryChanged =  { _, _ -> },
         onAddressSelected = {},
-        modifier = Modifier.fillMaxSize(),
-        onStreetFocused = {},
         onHideAutocomplete = {},
-        showAutocomplete = false,
         countryCode = "US",
-        onAddressChanged = {}
+        onAddressChanged = {},
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -380,29 +362,29 @@ private fun CartContentPreview_loading() {
 @Composable
 private fun CartContentPreview_us_addressEntry() {
     MainContent(
-        addressValidationViewState = AddressValidationViewState.AddressEntry(
-            displayAddress = UsDisplayAddress(
-                streetAddress = "123 Main St",
-                additionalAddressInfo = "Suite #110",
-                city = "Boulder",
-                state = "CO",
-                zipCode = "80301",
-                country = "United States",
-                countryCode = "US",
-            ),
+        viewState = ViewState(
             showMap = false,
             location = LatLng(40.01924246438453, -105.259858527573),
-            locationLabel = "Boulder, CO"
+            locationLabel = "Boulder, CO",
+            addressCompletionViewState = AddressCompletionViewState.AddressEntry(
+                displayAddress = UsDisplayAddress(
+                    streetAddress = "123 Main St",
+                    additionalAddressInfo = "Suite #110",
+                    city = "Boulder",
+                    state = "CO",
+                    zipCode = "80301",
+                    country = "United States",
+                    countryCode = "US",
+                ),
+            )
         ),
         autocompleteViewState = AutocompleteViewState(),
         onQueryChanged =  { _, _ -> },
         onAddressSelected = {},
-        modifier = Modifier.fillMaxSize(),
-        onStreetFocused = {},
         onHideAutocomplete = {},
-        showAutocomplete = false,
         countryCode = "US",
         onAddressChanged = {},
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -410,29 +392,29 @@ private fun CartContentPreview_us_addressEntry() {
 @Composable
 private fun CartContentPreview_in_addressEntry() {
     MainContent(
-        addressValidationViewState = AddressValidationViewState.AddressEntry(
-            displayAddress = IndiaDisplayAddress(
-                aptSuiteUnit = "Akshardham society 2/3",
-                streetAddress = "Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha",
-                city = "Surat",
-                state = "Gujarat",
-                pinCode = "395006",
-                country = "India",
-                countryCode = "IN",
-            ),
+        viewState = ViewState(
             showMap = false,
-            location = LatLng(40.01924246438453, -105.259858527573),
-            locationLabel = "India"
+            location = LatLng(21.233980841304085, 72.9069776200368),
+            locationLabel = "Akshar Dham Temple",
+            addressCompletionViewState = AddressCompletionViewState.AddressEntry(
+                displayAddress = IndiaDisplayAddress(
+                    aptSuiteUnit = "Akshardham society 2/3",
+                    streetAddress = "Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha",
+                    city = "Surat",
+                    state = "Gujarat",
+                    pinCode = "395006",
+                    country = "India",
+                    countryCode = "IN",
+                ),
+            )
         ),
         autocompleteViewState = AutocompleteViewState(),
         onQueryChanged =  { _, _ -> },
         onAddressSelected = {},
-        modifier = Modifier.fillMaxSize(),
-        onStreetFocused = {},
         onHideAutocomplete = {},
-        showAutocomplete = false,
-        countryCode = "US",
+        countryCode = "IN",
         onAddressChanged = {},
+        modifier = Modifier.fillMaxSize(),
     )
 }
 
@@ -440,29 +422,29 @@ private fun CartContentPreview_in_addressEntry() {
 @Composable
 private fun CartContentPreview_us_addressEntry_with_map() {
     MainContent(
-        addressValidationViewState = AddressValidationViewState.AddressEntry(
-            displayAddress = UsDisplayAddress(
-                streetAddress = "123 Main St",
-                additionalAddressInfo = "Suite #110",
-                city = "Boulder",
-                state = "CO",
-                zipCode = "80301",
-                country = "United States",
-                countryCode = "US",
-            ),
+        viewState = ViewState(
             showMap = true,
             location = LatLng(40.01924246438453, -105.259858527573),
-            locationLabel = "Boulder, CO"
+            locationLabel = "Boulder, CO",
+            addressCompletionViewState = AddressCompletionViewState.AddressEntry(
+                displayAddress = UsDisplayAddress(
+                    streetAddress = "123 Main St",
+                    additionalAddressInfo = "Suite #110",
+                    city = "Boulder",
+                    state = "CO",
+                    zipCode = "80301",
+                    country = "United States",
+                    countryCode = "US",
+                ),
+            )
         ),
         autocompleteViewState = AutocompleteViewState(),
         onQueryChanged =  { _, _ -> },
         onAddressSelected = {},
-        modifier = Modifier.fillMaxSize(),
-        onStreetFocused = {},
         onHideAutocomplete = {},
-        showAutocomplete = false,
         countryCode = "US",
         onAddressChanged = {},
+        modifier = Modifier.fillMaxSize(),
         onMapCloseClick = {}
     )
 }

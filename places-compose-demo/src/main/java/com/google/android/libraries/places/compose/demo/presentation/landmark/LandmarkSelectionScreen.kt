@@ -91,7 +91,9 @@ fun LandmarkSelectionScreen(
                         )
                     }
 
-                    NextLocationButton {
+                    NextLocationButton(
+                        isSelected = false
+                    ) {
                         onNextLocationClicked()
                     }
                 }

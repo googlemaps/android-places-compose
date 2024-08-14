@@ -62,9 +62,11 @@ fun GetLocationPermission(modifier: Modifier = Modifier, content: @Composable ()
             val textToShow = if (!allPermissionsRevoked) {
                 // If not all the permissions are revoked, it's because the user accepted the COARSE
                 // location permission, but not the FINE one.
-                "Yay! Thanks for letting me access your approximate location. " +
-                        "But you know what would be great? If you allow me to know where you " +
-                        "exactly are. Thank you!"
+                "Thank you for granting access to your approximate location. To provide you with " +
+                        "the most accurate and relevant information, please grant permission " +
+                        "to access your precise location. This will enable the app to tailor " +
+                        "responses to your specific needs and circumstances, ensuring a more " +
+                        "relevant and effective experience."
             } else if (locationPermissionsState.shouldShowRationale) {
                 // Both location permissions have been denied
                 "Getting your exact location is important for this app. " +

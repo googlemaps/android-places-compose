@@ -296,7 +296,7 @@ fun PlacesAutocompleteTextField(
     selectedPlace: AutocompletePlace? = null,
     textFieldMaxLines: Int = 2,
     primaryTextMaxLines: Int = 2,
-    secondaryTextMaxLines: Int = 3,
+    secondaryTextMaxLines: Int = 2,
     onBackClicked: (() -> Unit)? = null,
     scrollable: Boolean = true,
     placeHolderText: String = "",

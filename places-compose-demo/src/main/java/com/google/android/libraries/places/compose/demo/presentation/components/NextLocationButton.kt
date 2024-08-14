@@ -13,18 +13,22 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -37,9 +41,25 @@ import com.google.android.libraries.places.compose.demo.R
  * @param onClick Callback function that is invoked when the button is clicked.
  */
 @Composable
-fun NextLocationButton(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        val description = stringResource(R.string.next_mock_location)
+fun NextLocationButton(
+    isSelected: Boolean,
+    contentDescriptionId: Int = R.string.next_mock_location,
+    onClick: () -> Unit,
+) {
+    IconButton(
+        modifier = Modifier
+            .then(
+                if (isSelected) {
+                    Modifier
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
+                } else {
+                    Modifier
+                }
+            ),
+        onClick = onClick
+    ) {
+        val description = stringResource(contentDescriptionId)
 
         Box(
             modifier = Modifier

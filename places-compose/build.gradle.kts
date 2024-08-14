@@ -45,7 +45,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.places)
-    implementation(libs.androidx.ui.test.junit4.android)
+//    implementation(libs.androidx.ui.test.junit4.android)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.ui.test.android)
     androidTestImplementation(libs.androidx.junit)

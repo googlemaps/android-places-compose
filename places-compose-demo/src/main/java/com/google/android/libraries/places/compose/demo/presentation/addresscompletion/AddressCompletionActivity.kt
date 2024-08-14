@@ -35,7 +35,10 @@ class AddressCompletionActivity : ComponentActivity() {
                     AddressCompletionScreen(
                         viewModel = viewModel,
                         autocompleteViewModel = autocompleteViewModel,
-                        onNavigateUp = { finish() }
+                        onNavigateUp = {
+                            viewModel.onEvent(AddressCompletionEvent.OnNavigateUp)
+                            finish()
+                        }
                     )
                 }
             }

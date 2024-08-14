@@ -27,7 +27,6 @@ import com.google.android.libraries.places.compose.demo.data.repositories.ApiKey
 import com.google.android.libraries.places.compose.demo.data.repositories.CountriesRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepositoryImpl
 import com.google.android.libraries.places.compose.demo.data.repositories.MockLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import dagger.Module
@@ -86,7 +85,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideLocationRepository(application: Application): LocationRepository {
-        return LocationRepositoryImpl(
+        return LocationRepository(
             application.applicationContext,
             (application as PlacesComposeDemoApplication).applicationScope
         )

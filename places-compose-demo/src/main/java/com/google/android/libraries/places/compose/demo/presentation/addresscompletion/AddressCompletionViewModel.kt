@@ -13,21 +13,24 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.MockLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
+import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -42,38 +45,64 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-sealed class AddressValidationViewState {
-    data object Loading : AddressValidationViewState()
-    data class Error(val message: String) : AddressValidationViewState()
-    data class AddressEntry(
-        val displayAddress: DisplayAddress,
-        val showMap: Boolean,
-        val location: LatLng,
-        val locationLabel: String?,
-        val nearbyObjects: List<NearbyObject> = emptyList(),
-    ) : AddressValidationViewState()
+enum class ButtonState {
+    NORMAL, SELECTED
 }
+
+data class ButtonStates(
+    val currentLocation: ButtonState = ButtonState.NORMAL,
+    val mockLocation: ButtonState = ButtonState.NORMAL,
+    val map: ButtonState = ButtonState.NORMAL
+)
+
+enum class UiState {
+    AUTOCOMPLETE, ADDRESS_ENTRY
+}
+
+sealed class AddressCompletionViewState() {
+    data class Autocomplete(
+        val searchText: String = "",
+        val predictions: List<AutocompletePrediction> = emptyList(),
+    ) : AddressCompletionViewState()
+
+    data class AddressEntry(
+        val displayAddress: DisplayAddress = UsDisplayAddress(),
+        val nearbyObjects: List<NearbyObject> = emptyList(),
+    ) : AddressCompletionViewState()
+}
+
+data class ViewState(
+    val location: LatLng = LatLng(0.0, 0.0),
+    val locationLabel: String = "",
+    val buttonStates: ButtonStates = ButtonStates(),
+    val showMap: Boolean = false,
+    val addressCompletionViewState: AddressCompletionViewState = AddressCompletionViewState.Autocomplete()
+)
 
 @HiltViewModel
 class AddressCompletionViewModel
 @Inject constructor(
     private val geocoderRepository: GeocoderRepository,
-    private val mockLocationRepository: MockLocationRepository,
-    private val locationRepository: LocationRepository,
     private val placesRepository: PlaceRepository,
+    private val mergedLocationRepository: MergedLocationRepository
 ) : ViewModel() {
     private val _address = MutableStateFlow<Address?>(null)
     val address = _address.asStateFlow()
 
     private val _viewModelEventChannel = MutableSharedFlow<ViewModelEvent>()
     val viewModelEventChannel: SharedFlow<ViewModelEvent> = _viewModelEventChannel.asSharedFlow()
-    private val _location = MutableStateFlow<LatLng?>(null)
-    private val _locationLabel = MutableStateFlow<String?>(null)
+
+    // Warning: do not use the continuous location flow here or there will be many calls to the
+    // geocoder API.
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val location = mergedLocationRepository.location
+
     private val _displayAddress = MutableStateFlow<DisplayAddress?>(null)
     private val _showMap = MutableStateFlow(false)
 
-    private val geocoderResult = _location.filterNotNull().mapNotNull { location ->
-        geocoderRepository.reverseGeocode(location, includeAddressDescriptors = true)
+    private val geocoderResult = location.mapNotNull { location ->
+        // TODO: require a certain amount of change from the last location before geocoding.
+        geocoderRepository.reverseGeocode(location.latLng, includeAddressDescriptors = true)
     }
 
     private val _currentAddress = geocoderResult.mapNotNull { result ->
@@ -97,37 +126,63 @@ class AddressCompletionViewModel
         initialValue = emptyList()
     )
 
-    val viewState = combine(
-        _displayAddress,
-        _showMap,
-        _location,
-        _locationLabel,
-        _nearbyObjects
-    ) { displayAddress, showMap, location, locationLabel, nearbyObjects ->
+    private val _uiState = MutableStateFlow(UiState.AUTOCOMPLETE)
 
-        if (displayAddress == null || location == null) {
-            AddressValidationViewState.Loading
-        } else {
-            AddressValidationViewState.AddressEntry(
-                displayAddress = displayAddress,
-                showMap = showMap,
-                location = location,
-                locationLabel = locationLabel,
-                nearbyObjects = nearbyObjects
-            )
+    private var buttonStates = combine(
+        location,
+        _showMap
+    ) { location, showMap ->
+        ButtonStates(
+            currentLocation = if (location.isMockLocation) ButtonState.NORMAL else ButtonState.SELECTED,
+            mockLocation = if (location.isMockLocation) ButtonState.SELECTED else ButtonState.NORMAL,
+            map = if (showMap) ButtonState.SELECTED else ButtonState.NORMAL
+        )
+    }
+
+    private val _autocompleteViewState = MutableStateFlow(AddressCompletionViewState.Autocomplete())
+
+    private val _addressEntryViewState = combine(
+        _displayAddress,
+        _nearbyObjects
+    ) { displayAddress, nearbyObjects ->
+        AddressCompletionViewState.AddressEntry(
+            displayAddress = displayAddress ?: UsDisplayAddress(),
+            nearbyObjects = nearbyObjects
+        )
+    }
+
+    private val _addressCompletionViewState = combine(
+        _autocompleteViewState,
+        _addressEntryViewState,
+        _uiState
+    ) { autocompleteViewState, addressEntryViewState, uiState ->
+        when (uiState) {
+            UiState.ADDRESS_ENTRY -> addressEntryViewState
+            UiState.AUTOCOMPLETE -> autocompleteViewState
         }
+    }
+
+    val viewState = combine(
+        location,
+        _showMap,
+        buttonStates,
+        _addressCompletionViewState
+    ) { location, showMap, buttonStates, addressEntryViewState ->
+        ViewState(
+            location = location.latLng,
+            locationLabel = location.label ?: "Unlabeled",
+            buttonStates = buttonStates,
+            showMap = showMap,
+            addressCompletionViewState = addressEntryViewState
+        )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = AddressValidationViewState.Loading
+        initialValue = ViewState()
     )
 
     init {
-        viewModelScope.launch {
-            _location.value = mockLocationRepository.selectedMockLocation.value
-            _locationLabel.value = mockLocationRepository.labeledLocation.value.first
-        }
-
+        // TODO: nuke this!!!
         viewModelScope.launch {
             // We have to update the _displayAddress using a collect because it can also come from the UI.
             _currentAddress.filterNotNull().collect { address ->
@@ -137,6 +192,8 @@ class AddressCompletionViewModel
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @SuppressLint("MissingPermission")
     fun onEvent(event: AddressCompletionEvent) {
         when (event) {
             is AddressCompletionEvent.OnAddressSelected -> {
@@ -145,34 +202,22 @@ class AddressCompletionViewModel
                 viewModelScope.launch {
                     val place = placesRepository.getPlaceAddress(event.autocompletePlace.placeId)
 
-                    _location.value = place.latLng
-                    _locationLabel.value = place.name ?: place.address
-
                     place.addressComponents?.asList()?.toAddress()?.toDisplayAddress()?.let {
                         _displayAddress.value = it
                     }
                 }
             }
 
-            AddressCompletionEvent.OnCurrentLocationClick -> {
-                reverseGeocodeCurrentLocation()
-            }
-
             AddressCompletionEvent.OnNextMockLocation -> {
-                val (label, location) = mockLocationRepository.nextMockLocation()
-                _location.value = location
-                _locationLabel.value = label
+                mergedLocationRepository.nextMockLocation()
             }
 
             AddressCompletionEvent.OnToggleMap -> {
                 _showMap.value = !_showMap.value
             }
 
-            AddressCompletionEvent.OnUseLocation -> {
-                viewModelScope.launch {
-                    _location.value = locationRepository.getLastLocation()
-                    _locationLabel.value = "Current Location"
-                }
+            AddressCompletionEvent.OnUseSystemLocation -> {
+                mergedLocationRepository.useSystemLocation()
             }
 
             is AddressCompletionEvent.OnAddressChanged -> {
@@ -180,29 +225,19 @@ class AddressCompletionViewModel
             }
 
             is AddressCompletionEvent.OnMapClicked -> {
-                _location.value = event.latLng
-                // TODO: to fix this we will need to add a UiText class to wrap the string
-                _locationLabel.value = "Dropped Pin"
+                mergedLocationRepository.setMockLocation(event.latLng)
             }
 
             AddressCompletionEvent.OnMapCloseClicked -> {
                 _showMap.value = false
             }
+
+            AddressCompletionEvent.OnNavigateUp -> reset()
         }
     }
 
-    private fun reverseGeocodeCurrentLocation() {
-        viewModelScope.launch {
-            locationRepository.getLastLocation().let { location ->
-                val address = geocoderRepository.reverseGeocode(
-                    location,
-                    includeAddressDescriptors = true
-                ).addresses.firstOrNull()
-                val countryCode = address?.getCountryCode()
-                if (countryCode != null) {
-                    _address.value = address.toAddress(countryCode)
-                }
-            }
-        }
+    private fun reset() {
+        _displayAddress.value = null
+        _showMap.value = false
     }
 }

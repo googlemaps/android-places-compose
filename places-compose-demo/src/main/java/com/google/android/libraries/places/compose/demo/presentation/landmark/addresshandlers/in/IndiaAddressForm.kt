@@ -33,7 +33,6 @@ fun IndiaAddressForm(
     address: IndiaDisplayAddress,
     nearbyObjects: List<NearbyObject>,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    onStreetFocused: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
@@ -44,11 +43,6 @@ fun IndiaAddressForm(
             value = address.aptSuiteUnit,
             label = R.string.india_address_unit_number,
             onValueChange = { onAddressChanged?.invoke(address.copy(aptSuiteUnit = it)) },
-            onFocusChanged = if (onStreetFocused != null) {
-                { if (it) onStreetFocused() }
-            } else {
-                null
-            }
         )
 
         AddressTextField(

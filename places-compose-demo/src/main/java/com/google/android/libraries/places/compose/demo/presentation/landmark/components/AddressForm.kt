@@ -28,7 +28,6 @@ fun AddressDisplay(
     modifier: Modifier = Modifier,
     nearbyObjects: List<NearbyObject> = emptyList(),
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    onStreetFocused: (() -> Unit)? = null,
 ) {
     when (address) {
         is IndiaDisplayAddress -> {
@@ -36,8 +35,7 @@ fun AddressDisplay(
                 modifier = modifier,
                 address = address,
                 nearbyObjects = nearbyObjects,
-                onAddressChanged = onAddressChanged,
-                onStreetFocused = onStreetFocused
+                onAddressChanged = onAddressChanged
             )
         }
         is UsDisplayAddress -> {
@@ -45,8 +43,7 @@ fun AddressDisplay(
                 modifier = modifier,
                 address = address,
                 nearbyObjects = nearbyObjects,
-                onAddressChanged = onAddressChanged,
-                onStreetFocused = onStreetFocused
+                onAddressChanged = onAddressChanged
             )
         }
     }
