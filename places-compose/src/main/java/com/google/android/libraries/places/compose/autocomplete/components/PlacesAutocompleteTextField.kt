@@ -49,6 +49,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -75,7 +76,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.android.libraries.places.compose.R
+import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
+import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.data.meters
+import com.google.android.libraries.places.compose.autocomplete.data.miles
 import com.google.android.libraries.places.compose.autocomplete.data.toDistanceString
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import kotlinx.coroutines.flow.filter
@@ -143,7 +147,8 @@ internal fun AutocompletePlaceRow(
                 color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
             )
             .clickable { onPlaceSelected(autocompletePlace) }
-            .padding(horizontal = 20.dp, vertical = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         AutocompleteIcon(
             caption = autocompletePlace.distance?.toDistanceString()
@@ -426,6 +431,28 @@ fun AutocompletePlaceRowPreview() {
             primaryTextMaxLines = 1,
             secondaryTextMaxLines = 3,
         )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun AutocompletePlaceRowPreviewShortText() {
+    CompositionLocalProvider(LocalUnitsConverter provides getUnitsConverter("US")) {
+        MaterialTheme {
+            AutocompletePlaceRow(
+                AutocompletePlace(
+                    placeId = "test_id",
+                    primaryText = SpannableString("REI"),
+                    secondaryText = SpannableString("28th Street, Boulder, CO, USA"),
+                    distance = 22.5.miles,
+                ),
+                isSelected = false,
+                onPlaceSelected = {},
+                isExpanded = false,
+                primaryTextMaxLines = 1,
+                secondaryTextMaxLines = 1,
+            )
+        }
     }
 }
 
