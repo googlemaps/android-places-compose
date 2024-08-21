@@ -48,10 +48,14 @@ data class AutocompleteViewState(
     val predictions: List<AutocompletePlace> = emptyList(),
     val searchText: String = "",
     val selectedPlace: AutocompletePlace? = null,
-    // TODO: remove this from the view state class
+
+    @Deprecated("Move out of AutocompleteViewState")
     val showMap: Boolean = false,
+
+    @Deprecated("Move out of AutocompleteViewState")
     val location: LatLng = LatLng(0.0, 0.0),
-    // TODO: remove this from the view state class
+
+    @Deprecated("Move out of AutocompleteViewState")
     val locationLabel: String? = null,
 )
 

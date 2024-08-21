@@ -29,10 +29,6 @@ data class AutocompletePlace(
   val placeId: String,
   val primaryText: Spannable,
   val secondaryText: Spannable,
-  val locality: String? = null,
-  val administrativeAreaLevel1: String? = null,
-  val administrativeAreaLevel2: String? = null,
-  val postalCode: String? = null,
   val distance: Meters? = null,
   val latLng: LatLng? = null
 )

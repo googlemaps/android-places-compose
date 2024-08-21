@@ -27,10 +27,6 @@ fun AutocompletePrediction.toPlaceDetails() =
     placeId = placeId,
     primaryText = getPrimaryText(predictionStyleSpan),
     secondaryText = getSecondaryText(predictionStyleSpan),
-    locality = null,
-    administrativeAreaLevel1 = null,
-    administrativeAreaLevel2 = null,
-    postalCode = null,
     distance = distanceMeters?.meters,
   )
 

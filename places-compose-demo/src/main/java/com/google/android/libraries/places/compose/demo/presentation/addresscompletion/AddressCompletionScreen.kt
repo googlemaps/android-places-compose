@@ -16,9 +16,9 @@ package com.google.android.libraries.places.compose.demo.presentation.addresscom
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -41,9 +41,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -53,7 +51,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.CircularBounds
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
@@ -80,7 +77,6 @@ fun AddressCompletionScreen(
     val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
     val viewState by viewModel.viewState.collectAsState()
 
-    var showAutocomplete by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     val countryCode by viewModel.countryCode.collectAsState()
@@ -116,24 +112,21 @@ fun AddressCompletionScreen(
                     ),
                     title = { Text(stringResource(R.string.cart)) },
                     navigationIcon = {
-                        IconButton(onClick = {
-                            if (showAutocomplete) {
-                                showAutocomplete = false
-                            } else {
-                                onNavigateUp()
-                            }
-                        }) {
-                            Icon(Icons.AutoMirrored.Default.ArrowBack, contentDescription = "Back")
+                        IconButton(onClick = { onNavigateUp() }) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                contentDescription = stringResource(R.string.back)
+                            )
                         }
                     },
                     actions = {
-                        // TODO: viewModel is creeping into the UI.
                         SelectableButton(
-                            viewState.buttonStates.currentLocation == ButtonState.SELECTED,
-                            { viewModel.onEvent(AddressCompletionEvent.OnUseSystemLocation) },
-                            R.drawable.baseline_my_location_24,
-                            R.string.fill_address_from_current_location
+                            buttonState = viewState.buttonStates.currentLocation,
+                            onClick = { viewModel.onEvent(AddressCompletionEvent.OnUseSystemLocation) },
+                            iconId = R.drawable.baseline_my_location_24,
+                            contentDescription = R.string.fill_address_from_current_location
                         )
+
                         NextLocationButton(
                             isSelected = viewState.buttonStates.mockLocation == ButtonState.SELECTED
                         ) {
@@ -141,7 +134,7 @@ fun AddressCompletionScreen(
                         }
 
                         SelectableButton(
-                            isSelected = viewState.buttonStates.map == ButtonState.SELECTED,
+                            buttonState = viewState.buttonStates.map,
                             iconId = R.drawable.baseline_map_24,
                             contentDescription = R.string.toggle_map,
                             onClick = { viewModel.onEvent(AddressCompletionEvent.OnToggleMap) }
@@ -152,26 +145,19 @@ fun AddressCompletionScreen(
             snackbarHost = { SnackbarHost(snackbarHostState) },
         ) { paddingValues ->
             MainContent(
+                paddingValues = paddingValues,
                 viewState = viewState,
-                autocompleteViewState = autocompleteViewState,
-                onQueryChanged = { request, actions ->
-                    autocompleteViewModel.onEvent(AutocompleteEvent.OnQueryChanged(request, actions))
-                },
-                onAddressSelected = { autocompletePlace ->
-                    viewModel.onEvent(AddressCompletionEvent.OnAddressSelected(autocompletePlace))
-                },
-                onHideAutocomplete = {
-                    showAutocomplete = false
-                },
+                autocompleteViewModel = autocompleteViewModel,
                 countryCode = countryCode,
+                autocompleteViewState = autocompleteViewState,
                 onAddressChanged = { displayAddress ->
                     viewModel.onEvent(AddressCompletionEvent.OnAddressChanged(displayAddress))
                 },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
                 onMapClick = { latLng ->
                     viewModel.onEvent(AddressCompletionEvent.OnMapClicked(latLng))
+                },
+                onAddressSelected = { autocompletePlace ->
+                    viewModel.onEvent(AddressCompletionEvent.OnAddressSelected(autocompletePlace))
                 },
                 onMapCloseClick = {
                     viewModel.onEvent(AddressCompletionEvent.OnMapCloseClicked)
@@ -182,8 +168,89 @@ fun AddressCompletionScreen(
 }
 
 @Composable
+private fun MainContent(
+    paddingValues: PaddingValues,
+    viewState: ViewState,
+    autocompleteViewModel: AutocompleteViewModel,
+    countryCode: String,
+    autocompleteViewState: AutocompleteViewState,
+    onAddressChanged: (DisplayAddress) -> Unit,
+    onMapClick: (LatLng) -> Unit,
+    onAddressSelected: (AutocompletePlace) -> Unit,
+    onMapCloseClick: () -> Unit,
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ) {
+        when (viewState.addressCompletionViewState) {
+            is AddressCompletionViewState.Autocomplete -> {
+                fun updateQuery(query: String) {
+                    autocompleteViewModel.onEvent(
+                        AutocompleteEvent.OnQueryChanged(query) {
+                            locationBias = CircularBounds.newInstance(
+                                /* center = */ viewState.location,
+                                /* radius = */ 1000.0
+                            )
+                            origin = viewState.location
+                            countries = listOf(countryCode)
+                        }
+                    )
+                }
+
+                PlaceAutocompleteScreen(
+                    autocompleteViewState = autocompleteViewState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    onQueryChanged = { query ->
+                        updateQuery(query)
+                    },
+                    onAddressSelected = { autocompletePlace ->
+                        keyboardController?.hide()
+                        onAddressSelected(autocompletePlace)
+                    }
+                )
+            }
+
+            is AddressCompletionViewState.AddressEntry -> {
+                AddressEntryForm(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    onAddressChanged = onAddressChanged,
+                    viewState = viewState
+                )
+            }
+        }
+
+        if (viewState.showMap) {
+            GoogleMapContainer(
+                modifier = Modifier
+                    .padding(vertical = 16.dp)
+                    .fillMaxWidth()
+                    .weight(1f),
+                header = {
+                    Text(
+                        text = viewState.locationLabel,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                },
+                markerLatLng = viewState.location,
+                markerTitle = viewState.locationLabel,
+                onMapClick = onMapClick,
+                onMapCloseClick = onMapCloseClick,
+            )
+        }
+    }
+}
+
+@Composable
 private fun SelectableButton(
-    isSelected: Boolean,
+    buttonState: ButtonState,
     onClick: () -> Unit,
     iconId: Int,
     contentDescription: Int
@@ -191,12 +258,11 @@ private fun SelectableButton(
     IconButton(
         modifier = Modifier
             .then(
-                if (isSelected) {
-                    Modifier
+                when (buttonState) {
+                    ButtonState.NORMAL -> Modifier
+                    ButtonState.SELECTED -> Modifier
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f))
-                } else {
-                    Modifier
                 }
             ),
         onClick = onClick
@@ -209,92 +275,36 @@ private fun SelectableButton(
 }
 
 @Composable
-private fun MainContent(
-    viewState: ViewState,
-    autocompleteViewState: AutocompleteViewState,
-    onQueryChanged: (String, FindAutocompletePredictionsRequest.Builder.() -> Unit) -> Unit,
-    onAddressSelected: (AutocompletePlace) -> Unit,
-    onHideAutocomplete: () -> Unit,
-    countryCode: String,
-    onAddressChanged: (DisplayAddress) -> Unit,
-    modifier: Modifier = Modifier,
-    onMapClick: (LatLng) -> Unit = {},
-    onMapCloseClick: () -> Unit = {}
-) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    when (viewState.addressCompletionViewState) {
-        is AddressCompletionViewState.Autocomplete -> {
-            fun updateQuery(query: String) {
-                onQueryChanged(query) {
-                    locationBias = CircularBounds.newInstance(
-                        /* center = */ viewState.location,
-                        /* radius = */ 1000.0
-                    )
-                    origin = viewState.location
-                    countries = listOf(countryCode)
-                }
-            }
-
-            PlaceAutocompleteScreen(
-                modifier = modifier,
-                autocompleteViewState = autocompleteViewState,
-                onQueryChanged = { query ->
-                    updateQuery(query)
-                },
-                onAddressSelected = { autocompletePlace ->
-                    onAddressSelected(autocompletePlace)
-                    onHideAutocomplete()
-                    keyboardController?.hide()
-                },
-                onHideAutocomplete = onHideAutocomplete
-            )
-        }
-
-        is AddressCompletionViewState.AddressEntry -> {
-            AddressEntryForm(
-                viewState = viewState,
-                addressEntryViewState = viewState.addressCompletionViewState,
-                modifier = modifier,
-                onAddressChanged = onAddressChanged,
-                onMapClick = onMapClick,
-                onMapCloseClick = onMapCloseClick
-            )
-        }
-    }
-}
-
-@Composable
 fun PlaceAutocompleteScreen(
     autocompleteViewState: AutocompleteViewState,
     modifier: Modifier,
     onQueryChanged: (String) -> Unit,
-    onAddressSelected: (AutocompletePlace) -> Unit,
-    onHideAutocomplete: () -> Unit,
+    onAddressSelected: (AutocompletePlace) -> Unit
 ) {
-    PlacesAutocompleteTextField(
-        modifier = modifier,
-        searchText = autocompleteViewState.searchText,
-        predictions = autocompleteViewState.predictions,
-        onQueryChanged = onQueryChanged,
-        onSelected = onAddressSelected,
-        selectedPlace = autocompleteViewState.selectedPlace,
-        textFieldMaxLines = 4,
-        onBackClicked = onHideAutocomplete,
-        scrollable = false,
-        placeHolderText = stringResource(R.string.search_call_to_action)
-    )
+    Column(
+        modifier = modifier.fillMaxSize()
+    ) {
+        PlacesAutocompleteTextField(
+            searchText = autocompleteViewState.searchText,
+            predictions = autocompleteViewState.predictions,
+            onQueryChanged = onQueryChanged,
+            onSelected = onAddressSelected,
+            selectedPlace = autocompleteViewState.selectedPlace,
+            textFieldMaxLines = 4,
+            scrollable = true,
+            placeHolderText = stringResource(R.string.search_call_to_action)
+        )
+    }
 }
 
 @Composable
 private fun AddressEntryForm(
-    addressEntryViewState: AddressCompletionViewState.AddressEntry,
     modifier: Modifier = Modifier,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    onMapClick: (LatLng) -> Unit = {},
-    onMapCloseClick: () -> Unit = {},
     viewState: ViewState,
 ) {
+    val addressEntryViewState = viewState.addressCompletionViewState as AddressCompletionViewState.AddressEntry
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -317,51 +327,25 @@ private fun AddressEntryForm(
                 onAddressChanged = onAddressChanged
             )
         }
-        if (viewState.showMap) {
-            LaunchedEffect(viewState.locationLabel) {
-                val headerString = viewState.locationLabel
-                println(headerString)
-            }
-
-            GoogleMapContainer(
-                modifier = Modifier
-                    .padding(vertical = 16.dp)
-                    .fillMaxWidth()
-                    .height(350.dp),
-                header = {
-                    Text(
-                        text = viewState.locationLabel,
-                        style = MaterialTheme.typography.labelMedium,
-                    )
-                },
-                markerLatLng = viewState.location,
-                markerTitle = viewState.locationLabel,
-                onMapClick = onMapClick,
-                onMapCloseClick = onMapCloseClick
-            )
-        }
     }
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light Mode")
 @Composable
 private fun CartContentPreview_autocomplete() {
-    MainContent(
-        viewState = ViewState(),
+    PlaceAutocompleteScreen(
         autocompleteViewState = AutocompleteViewState(),
-        onQueryChanged =  { _, _ -> },
-        onAddressSelected = {},
-        onHideAutocomplete = {},
-        countryCode = "US",
-        onAddressChanged = {},
         modifier = Modifier.fillMaxSize(),
+        onQueryChanged = { },
+        onAddressSelected = { }
     )
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun CartContentPreview_us_addressEntry() {
-    MainContent(
+    AddressEntryForm(
+        onAddressChanged = {},
         viewState = ViewState(
             showMap = false,
             location = LatLng(40.01924246438453, -105.259858527573),
@@ -378,20 +362,14 @@ private fun CartContentPreview_us_addressEntry() {
                 ),
             )
         ),
-        autocompleteViewState = AutocompleteViewState(),
-        onQueryChanged =  { _, _ -> },
-        onAddressSelected = {},
-        onHideAutocomplete = {},
-        countryCode = "US",
-        onAddressChanged = {},
-        modifier = Modifier.fillMaxSize(),
     )
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun CartContentPreview_in_addressEntry() {
-    MainContent(
+    AddressEntryForm(
+        onAddressChanged = {},
         viewState = ViewState(
             showMap = false,
             location = LatLng(21.233980841304085, 72.9069776200368),
@@ -408,20 +386,15 @@ private fun CartContentPreview_in_addressEntry() {
                 ),
             )
         ),
-        autocompleteViewState = AutocompleteViewState(),
-        onQueryChanged =  { _, _ -> },
-        onAddressSelected = {},
-        onHideAutocomplete = {},
-        countryCode = "IN",
-        onAddressChanged = {},
-        modifier = Modifier.fillMaxSize(),
     )
 }
 
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 private fun CartContentPreview_us_addressEntry_with_map() {
-    MainContent(
+    AddressEntryForm(
+        modifier = Modifier.fillMaxSize(),
+        onAddressChanged = {},
         viewState = ViewState(
             showMap = true,
             location = LatLng(40.01924246438453, -105.259858527573),
@@ -437,14 +410,6 @@ private fun CartContentPreview_us_addressEntry_with_map() {
                     countryCode = "US",
                 ),
             )
-        ),
-        autocompleteViewState = AutocompleteViewState(),
-        onQueryChanged =  { _, _ -> },
-        onAddressSelected = {},
-        onHideAutocomplete = {},
-        countryCode = "US",
-        onAddressChanged = {},
-        modifier = Modifier.fillMaxSize(),
-        onMapCloseClick = {}
+        )
     )
 }

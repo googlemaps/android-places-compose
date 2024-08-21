@@ -14,6 +14,7 @@
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -21,6 +22,7 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import com.google.android.libraries.places.compose.demo.data.repositories.CompositeLocation
 import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
@@ -39,6 +41,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -95,10 +98,17 @@ class AddressCompletionViewModel
     // Warning: do not use the continuous location flow here or there will be many calls to the
     // geocoder API.
     @OptIn(ExperimentalCoroutinesApi::class)
-    val location = mergedLocationRepository.location
+    val location = mergedLocationRepository.location.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        initialValue = CompositeLocation()
+    )
 
     private val _displayAddress = MutableStateFlow<DisplayAddress?>(null)
+    private val displayAddress = _displayAddress.asStateFlow()
+
     private val _showMap = MutableStateFlow(false)
+    private val showMap = _showMap.asStateFlow()
 
     private val geocoderResult = location.mapNotNull { location ->
         // TODO: require a certain amount of change from the last location before geocoding.
@@ -130,7 +140,7 @@ class AddressCompletionViewModel
 
     private var buttonStates = combine(
         location,
-        _showMap
+        showMap
     ) { location, showMap ->
         ButtonStates(
             currentLocation = if (location.isMockLocation) ButtonState.NORMAL else ButtonState.SELECTED,
@@ -142,7 +152,7 @@ class AddressCompletionViewModel
     private val _autocompleteViewState = MutableStateFlow(AddressCompletionViewState.Autocomplete())
 
     private val _addressEntryViewState = combine(
-        _displayAddress,
+        displayAddress,
         _nearbyObjects
     ) { displayAddress, nearbyObjects ->
         AddressCompletionViewState.AddressEntry(
@@ -164,7 +174,7 @@ class AddressCompletionViewModel
 
     val viewState = combine(
         location,
-        _showMap,
+        showMap,
         buttonStates,
         _addressCompletionViewState
     ) { location, showMap, buttonStates, addressEntryViewState ->
@@ -197,14 +207,14 @@ class AddressCompletionViewModel
     fun onEvent(event: AddressCompletionEvent) {
         when (event) {
             is AddressCompletionEvent.OnAddressSelected -> {
-                event.autocompletePlace.placeId
-
                 viewModelScope.launch {
                     val place = placesRepository.getPlaceAddress(event.autocompletePlace.placeId)
 
                     place.addressComponents?.asList()?.toAddress()?.toDisplayAddress()?.let {
                         _displayAddress.value = it
                     }
+
+                    _uiState.value = UiState.ADDRESS_ENTRY
                 }
             }
 

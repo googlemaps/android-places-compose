@@ -23,7 +23,7 @@ constructor(
     private val locationRepository: LocationRepository,
     private val mockLocationRepository: MockLocationRepository,
 ) {
-  private val _useMockLocation = MutableStateFlow(false)
+  private val _useMockLocation = MutableStateFlow(true)
 
   @SuppressLint("MissingPermission")
   @ExperimentalCoroutinesApi

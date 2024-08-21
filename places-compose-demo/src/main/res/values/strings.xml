@@ -74,4 +74,5 @@
     <string name="india_address_area_sector_locality">Area/sector/locality</string>
     <string name="fill_address_from_current_location">Fill in the address from the current location</string>
     <string name="toggle_map">Toggle map</string>
+    <string name="back">Back</string>
 </resources>
