@@ -55,7 +55,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AutocompleteDemoScreen(viewModel: AutocompleteViewModel, onNavigateBack: () -> Unit) {
-    val viewState by viewModel.autocompleteViewState.collectAsState()
+    val viewState by viewModel.viewState.collectAsState()
     val myLocation = viewState.location
     val biasRadius = 500.0.meters
     val countryCode by viewModel.countryCode.collectAsState(
@@ -75,7 +75,7 @@ fun AutocompleteDemoScreen(viewModel: AutocompleteViewModel, onNavigateBack: () 
                         IconButton(onClick = onNavigateBack) {
                             Icon(
                                 Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = "Back"
+                                contentDescription = stringResource(R.string.back)
                             )
                         }
                     },
@@ -142,33 +142,36 @@ fun AutocompleteDemoScreen(viewModel: AutocompleteViewModel, onNavigateBack: () 
 fun AutocompleteDemo(
     onQueryChanged: (String) -> Unit,
     onPlaceSelected: (AutocompletePlace) -> Unit,
-    viewState: AutocompleteViewState,
+    viewState: ViewState,
     modifier: Modifier = Modifier,
     onMapCloseClick: () -> Unit = {}
 ) {
         Column(modifier.fillMaxSize()) {
+            val autocompleteViewState = viewState.autocompleteViewState
+            val selectedPlace = autocompleteViewState.selectedPlace
+
             PlacesAutocompleteTextField(
                 modifier = Modifier.weight(1f),
-                searchText = viewState.searchText,
-                predictions = viewState.predictions,
+                searchText = autocompleteViewState.searchText,
+                predictions = autocompleteViewState.predictions,
                 onQueryChanged = onQueryChanged,
                 onSelected = { autocompletePlace ->
                     onPlaceSelected(autocompletePlace)
                 },
-                selectedPlace = viewState.selectedPlace,
+                selectedPlace = selectedPlace,
                 textFieldMaxLines = 4,
                 scrollable = true,
                 placeHolderText = stringResource(R.string.search_call_to_action)
             )
 
-            val mapMarkerLocation = viewState.selectedPlace?.latLng ?: viewState.location
+            val mapMarkerLocation = selectedPlace?.latLng ?: viewState.location
 
             val cameraPositionState = rememberCameraPositionState {
                 position = CameraPosition.fromLatLngZoom(mapMarkerLocation, 15f)
             }
 
             if (viewState.showMap) {
-                if (viewState.selectedPlace != null) {
+                if (selectedPlace != null) {
                     GoogleMapContainer(
                         modifier = Modifier
                             .weight(1f)
@@ -178,26 +181,26 @@ fun AutocompleteDemo(
                         header = {
                             Column {
                                 Text(
-                                    text = viewState.selectedPlace.primaryText.toString(),
+                                    text = selectedPlace.primaryText.toString(),
                                     style = MaterialTheme.typography.labelMedium,
                                     maxLines = 1,
                                     overflow = Ellipsis
                                 )
                                 Text(
-                                    text = viewState.selectedPlace.secondaryText.toString(),
+                                    text = selectedPlace.secondaryText.toString(),
                                     style = MaterialTheme.typography.labelSmall,
                                     maxLines = 1,
                                     overflow = Ellipsis
                                 )
                             }
                         },
-                        markerLatLng = viewState.selectedPlace.latLng,
-                        markerTitle = viewState.selectedPlace.primaryText.toString(),
-                        markerSnippet = viewState.selectedPlace.secondaryText.toString(),
+                        markerLatLng = selectedPlace.latLng,
+                        markerTitle = selectedPlace.primaryText.toString(),
+                        markerSnippet = selectedPlace.secondaryText.toString(),
                         onMapCloseClick = onMapCloseClick
                     )
                 } else {
-                    val label = viewState.locationLabel ?: "Location bias"
+                    val label = viewState.locationLabel
 
                     GoogleMapContainer(
                         modifier = Modifier

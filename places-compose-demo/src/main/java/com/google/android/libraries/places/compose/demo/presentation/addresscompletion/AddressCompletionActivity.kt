@@ -19,6 +19,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteViewModel
+import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 
@@ -29,12 +30,14 @@ class AddressCompletionActivity : ComponentActivity() {
         setContent {
             val viewModel: AddressCompletionViewModel by viewModels()
             val autocompleteViewModel: AutocompleteViewModel by viewModels()
+            val commonViewModel: CommonViewModel by viewModels()
 
             AndroidPlacesComposeDemoTheme {
                 GetLocationPermission {
                     AddressCompletionScreen(
-                        viewModel = viewModel,
+                        addressCompletionViewModel = viewModel,
                         autocompleteViewModel = autocompleteViewModel,
+                        commonViewModel = commonViewModel,
                         onNavigateUp = {
                             viewModel.onEvent(AddressCompletionEvent.OnNavigateUp)
                             finish()

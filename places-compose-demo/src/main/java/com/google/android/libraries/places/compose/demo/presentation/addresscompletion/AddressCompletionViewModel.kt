@@ -14,10 +14,8 @@
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.Address
@@ -28,6 +26,8 @@ import com.google.android.libraries.places.compose.demo.data.repositories.Geocod
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
+import com.google.android.libraries.places.compose.demo.presentation.common.ButtonState
+import com.google.android.libraries.places.compose.demo.presentation.common.ButtonStates
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
@@ -41,22 +41,11 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
-
-enum class ButtonState {
-    NORMAL, SELECTED
-}
-
-data class ButtonStates(
-    val currentLocation: ButtonState = ButtonState.NORMAL,
-    val mockLocation: ButtonState = ButtonState.NORMAL,
-    val map: ButtonState = ButtonState.NORMAL
-)
 
 enum class UiState {
     AUTOCOMPLETE, ADDRESS_ENTRY
@@ -64,6 +53,7 @@ enum class UiState {
 
 sealed class AddressCompletionViewState() {
     data class Autocomplete(
+        // TODO: replace with AutocompleteViewState
         val searchText: String = "",
         val predictions: List<AutocompletePrediction> = emptyList(),
     ) : AddressCompletionViewState()
@@ -73,14 +63,6 @@ sealed class AddressCompletionViewState() {
         val nearbyObjects: List<NearbyObject> = emptyList(),
     ) : AddressCompletionViewState()
 }
-
-data class ViewState(
-    val location: LatLng = LatLng(0.0, 0.0),
-    val locationLabel: String = "",
-    val buttonStates: ButtonStates = ButtonStates(),
-    val showMap: Boolean = false,
-    val addressCompletionViewState: AddressCompletionViewState = AddressCompletionViewState.Autocomplete()
-)
 
 @HiltViewModel
 class AddressCompletionViewModel
@@ -161,7 +143,7 @@ class AddressCompletionViewModel
         )
     }
 
-    private val _addressCompletionViewState = combine(
+    val addressCompletionViewState = combine(
         _autocompleteViewState,
         _addressEntryViewState,
         _uiState
@@ -170,25 +152,10 @@ class AddressCompletionViewModel
             UiState.ADDRESS_ENTRY -> addressEntryViewState
             UiState.AUTOCOMPLETE -> autocompleteViewState
         }
-    }
-
-    val viewState = combine(
-        location,
-        showMap,
-        buttonStates,
-        _addressCompletionViewState
-    ) { location, showMap, buttonStates, addressEntryViewState ->
-        ViewState(
-            location = location.latLng,
-            locationLabel = location.label ?: "Unlabeled",
-            buttonStates = buttonStates,
-            showMap = showMap,
-            addressCompletionViewState = addressEntryViewState
-        )
     }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = ViewState()
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        AddressCompletionViewState.Autocomplete()
     )
 
     init {

@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.autocomplete
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
@@ -166,11 +167,30 @@ constructor(
         initialValue = AutocompleteViewState()
     )
 
+    val viewState = combine(
+        autocompleteViewState,
+        _locationLabel,
+        _location,
+        _showMap
+    ) { autocompleteViewState, locationLabel, location, showMap ->
+        ViewState(
+            location = location,
+            locationLabel = locationLabel ?: "Unlabeled location",
+            showMap = showMap,
+            autocompleteViewState = autocompleteViewState
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        initialValue = ViewState()
+    )
+
     /**
      * Handles Autocomplete events.
      *
      * @param event The Autocomplete event.
      */
+    @SuppressLint("MissingPermission")
     fun onEvent(event: AutocompleteEvent) {
         when (event) {
             is AutocompleteEvent.OnPlaceSelected -> {

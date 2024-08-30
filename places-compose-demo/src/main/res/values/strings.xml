@@ -55,6 +55,9 @@
     <string name="getting_current_location">Getting current location</string>
     <string name="loading">Loading…</string>
     <string name="close_the_map">Close the map</string>
+    <string name="toggle_map">Toggle map</string>
+    <string name="back">Back</string>
+    <string name="unlabeled_location">Unlabeled location</string>
 
     <!-- US Address field labels -->
     <string name="us_address_address">Address</string>
@@ -73,6 +76,4 @@
     <string name="india_address_landmark">Landmark</string>
     <string name="india_address_area_sector_locality">Area/sector/locality</string>
     <string name="fill_address_from_current_location">Fill in the address from the current location</string>
-    <string name="toggle_map">Toggle map</string>
-    <string name="back">Back</string>
 </resources>
