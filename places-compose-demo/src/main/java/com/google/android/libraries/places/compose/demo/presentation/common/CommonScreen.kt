@@ -1,8 +1,8 @@
 package com.google.android.libraries.places.compose.demo.presentation.common
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,78 +28,79 @@ import com.google.android.libraries.places.compose.autocomplete.data.getUnitsCon
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.components.NextLocationButton
 import com.google.android.libraries.places.compose.demo.presentation.components.SelectableButton
+import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
+import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommonScreen(
-    viewModel: CommonViewModel,
+    commonViewModel: CommonViewModel,
     onNavigateUp: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
-    val viewState by viewModel.commonViewState.collectAsState()
-    val country =
-        viewState.countryCode ?: LocalContext.current.resources.configuration.locales.get(0).country
+    val commonViewState by commonViewModel.commonViewState.collectAsState()
+    val country = commonViewState.countryCode
+        ?: LocalContext.current.resources.configuration.locales.get(0).country
 
     // Determine which units converter to use based on the country.
     val unitsConverter = remember(country) {
         getUnitsConverter(country)
     }
 
-    val snackbarHostState = remember { SnackbarHostState() }
-
     fun onEvent(event: CommonEvent) {
-        viewModel.onEvent(event)
+        commonViewModel.onEvent(event)
     }
 
-    CompositionLocalProvider(LocalUnitsConverter provides unitsConverter) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
-                        actionIconContentColor = MaterialTheme.colorScheme.primary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    title = { Text(stringResource(R.string.cart)) },
-                    navigationIcon = {
-                        IconButton(onClick = { onNavigateUp() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
-                            )
-                        }
+    AndroidPlacesComposeDemoTheme {
+        GetLocationPermission {
+            CompositionLocalProvider(LocalUnitsConverter provides unitsConverter) {
+                Scaffold(
+                    modifier = Modifier.fillMaxSize().systemBarsPadding(),
+                    topBar = {
+                        TopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                                actionIconContentColor = MaterialTheme.colorScheme.primary,
+                                navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            title = { Text(stringResource(R.string.cart)) },
+                            navigationIcon = {
+                                IconButton(onClick = { onNavigateUp() }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                        contentDescription = stringResource(R.string.back)
+                                    )
+                                }
+                            },
+                            actions = {
+                                SelectableButton(
+                                    buttonState = commonViewState.buttonStates.currentLocation,
+                                    onClick = { onEvent(CommonEvent.OnUseSystemLocation) },
+                                    iconId = R.drawable.baseline_my_location_24,
+                                    contentDescription = R.string.fill_address_from_current_location
+                                )
+
+                                NextLocationButton(
+                                    isSelected = commonViewState.buttonStates.mockLocation == ButtonState.SELECTED
+                                ) {
+                                    onEvent(CommonEvent.OnNextMockLocation)
+                                }
+
+                                SelectableButton(
+                                    buttonState = commonViewState.buttonStates.map,
+                                    iconId = R.drawable.baseline_map_24,
+                                    contentDescription = R.string.toggle_map,
+                                    onClick = { onEvent(CommonEvent.OnToggleMap) }
+                                )
+                            }
+                        )
                     },
-                    actions = {
-                        SelectableButton(
-                            buttonState = viewState.buttonStates.currentLocation,
-                            onClick = { onEvent(CommonEvent.OnUseSystemLocation) },
-                            iconId = R.drawable.baseline_my_location_24,
-                            contentDescription = R.string.fill_address_from_current_location
-                        )
-
-                        NextLocationButton(
-                            isSelected = viewState.buttonStates.mockLocation == ButtonState.SELECTED
-                        ) {
-                            onEvent(CommonEvent.OnNextMockLocation)
-                        }
-
-                        SelectableButton(
-                            buttonState = viewState.buttonStates.map,
-                            iconId = R.drawable.baseline_map_24,
-                            contentDescription = R.string.toggle_map,
-                            onClick = { onEvent(CommonEvent.OnToggleMap) }
-                        )
-                    }
-                )
-            },
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                Text("Common Screen")
+                    snackbarHost = { SnackbarHost(snackbarHostState) },
+                ) { paddingValues ->
+                    content(paddingValues)
+                }
             }
         }
     }

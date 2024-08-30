@@ -16,9 +16,19 @@ package com.google.android.libraries.places.compose.demo.presentation.autocomple
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
-import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.libraries.places.compose.autocomplete.data.meters
+import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
+import com.google.android.libraries.places.compose.demo.presentation.common.CommonScreen
+import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -36,14 +46,52 @@ class AutocompleteActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableEdgeToEdge()
+
+        val autocompleteViewModel: AutocompleteViewModel by viewModels()
+        val commonViewModel: CommonViewModel by viewModels()
+
         setContent {
-            AndroidPlacesComposeDemoTheme {
-                GetLocationPermission {
-                    val viewModel: AutocompleteViewModel by viewModels()
-                    AutocompleteDemoScreen(viewModel) {
-                        finish()
-                    }
-                }
+            val snackbarHostState = remember { SnackbarHostState() }
+
+            CommonScreen(
+                commonViewModel = commonViewModel,
+                onNavigateUp = { finish() },
+                snackbarHostState = snackbarHostState
+            ) { paddingValues ->
+
+                val commonViewState by commonViewModel.commonViewState.collectAsState()
+                val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
+
+                AutocompleteDemo(
+                    onQueryChanged = { query ->
+                        autocompleteViewModel.onEvent(
+                            AutocompleteEvent.OnQueryChanged(query) {
+                                autocompleteViewModel.onEvent(
+                                    AutocompleteEvent.OnQueryChanged(query) {
+                                        locationBias = CircularBounds.newInstance(
+                                            /* center = */ commonViewState.location,
+                                            /* radius = */ 1000.meters.value
+                                        )
+                                        origin = commonViewState.location
+                                        countries = listOf(commonViewState.countryCode)
+                                    }
+                                )
+                            }
+                        )
+                    },
+                    onPlaceSelected = {
+                        autocompleteViewModel.onEvent(AutocompleteEvent.OnPlaceSelected(it))
+                    },
+                    modifier = Modifier.padding(paddingValues),
+                    autocompleteViewState = autocompleteViewState,
+                    onMapCloseClick = {
+                        commonViewModel.onEvent(CommonEvent.OnMapCloseClicked)
+                    },
+                    location = commonViewState.location,
+                    showMap = commonViewState.showMap,
+                    locationLabel = commonViewState.locationLabel
+                )
             }
         }
     }

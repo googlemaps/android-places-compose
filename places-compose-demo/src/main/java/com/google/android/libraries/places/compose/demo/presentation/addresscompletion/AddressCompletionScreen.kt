@@ -16,171 +16,34 @@ package com.google.android.libraries.places.compose.demo.presentation.addresscom
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
-import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
-import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import com.google.android.libraries.places.compose.demo.R
-import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
-import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteEvent
-import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteViewModel
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteViewState
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewState
-import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
-import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
 import com.google.android.libraries.places.compose.demo.presentation.components.GoogleMapContainer
-import com.google.android.libraries.places.compose.demo.presentation.components.NextLocationButton
-import com.google.android.libraries.places.compose.demo.presentation.components.SelectableButton
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.`in`.IndiaDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.components.AddressDisplay
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddressCompletionScreen(
-    addressCompletionViewModel: AddressCompletionViewModel,
-    autocompleteViewModel: AutocompleteViewModel,
-    commonViewModel: CommonViewModel,
-    onNavigateUp: () -> Unit = {},
-) {
-    val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val applicationViewState by commonViewModel.commonViewState.collectAsState()
-    val addressCompletionViewState by addressCompletionViewModel.addressCompletionViewState.collectAsState()
-
-    // Respond to view model events, such as showing a snackbar.
-    LaunchedEffect(Unit) {
-        addressCompletionViewModel.viewModelEventChannel.collect { event ->
-            when (event) {
-                is ViewModelEvent.UserMessage -> {
-                    snackbarHostState.showSnackbar(
-                        message = event.message,
-                        duration = SnackbarDuration.Short
-                    )
-                }
-            }
-        }
-    }
-
-    // Determine which units converter to use based on the country.
-    val unitsConverter = remember(applicationViewState.countryCode) {
-        getUnitsConverter(applicationViewState.countryCode)
-    }
-
-    CompositionLocalProvider(LocalUnitsConverter provides unitsConverter) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
-                        actionIconContentColor = MaterialTheme.colorScheme.primary,
-                        navigationIconContentColor = MaterialTheme.colorScheme.primary,
-                    ),
-                    title = { Text(stringResource(R.string.cart)) },
-                    navigationIcon = {
-                        IconButton(onClick = { onNavigateUp() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                contentDescription = stringResource(R.string.back)
-                            )
-                        }
-                    },
-                    actions = {
-                        SelectableButton(
-                            buttonState = applicationViewState.buttonStates.currentLocation,
-                            onClick = { commonViewModel.onEvent(CommonEvent.OnUseSystemLocation) },
-                            iconId = R.drawable.baseline_my_location_24,
-                            contentDescription = R.string.fill_address_from_current_location
-                        )
-
-                        NextLocationButton(
-                            buttonState = applicationViewState.buttonStates.mockLocation
-                        ) {
-                            commonViewModel.onEvent(CommonEvent.OnNextMockLocation)
-                        }
-
-                        SelectableButton(
-                            buttonState = applicationViewState.buttonStates.map,
-                            iconId = R.drawable.baseline_map_24,
-                            contentDescription = R.string.toggle_map,
-                            onClick = { commonViewModel.onEvent(CommonEvent.OnToggleMap) }
-                        )
-                    }
-                )
-            },
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-        ) { paddingValues ->
-            MainContent(
-                paddingValues = paddingValues,
-                addressCompletionViewState = addressCompletionViewState,
-                autocompleteViewState = autocompleteViewState,
-                onAddressChanged = { displayAddress ->
-                    addressCompletionViewModel.onEvent(AddressCompletionEvent.OnAddressChanged(displayAddress))
-                },
-                onMapClick = { latLng ->
-                    addressCompletionViewModel.onEvent(AddressCompletionEvent.OnMapClicked(latLng))
-                },
-                onAddressSelected = { autocompletePlace ->
-                    addressCompletionViewModel.onEvent(AddressCompletionEvent.OnAddressSelected(autocompletePlace))
-                },
-                onMapCloseClick = {
-                    commonViewModel.onEvent(CommonEvent.OnMapCloseClicked)
-                },
-                commonViewState = applicationViewState,
-                onQueryChanged = { query ->
-                    autocompleteViewModel.onEvent(
-                        AutocompleteEvent.OnQueryChanged(query) {
-                            locationBias = CircularBounds.newInstance(
-                                /* center = */ applicationViewState.location,
-                                /* radius = */ 1000.0
-                            )
-                            origin = applicationViewState.location
-                            countries = listOf(applicationViewState.countryCode)
-                        }
-                    )
-                }
-            )
-        }
-    }
-}
-
-@Composable
-private fun MainContent(
-    paddingValues: PaddingValues,
+fun AddressCompletionMainContent(
+    modifier: Modifier,
     addressCompletionViewState: AddressCompletionViewState,
     autocompleteViewState: AutocompleteViewState,
     onAddressChanged: (DisplayAddress) -> Unit,
@@ -193,9 +56,7 @@ private fun MainContent(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier = modifier
     ) {
         when (addressCompletionViewState) {
             is AddressCompletionViewState.Autocomplete -> {
