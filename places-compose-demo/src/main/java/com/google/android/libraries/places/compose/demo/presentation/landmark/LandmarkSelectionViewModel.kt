@@ -37,8 +37,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
@@ -62,30 +64,32 @@ class LandmarkSelectionViewModel
     private var selectedNearbyObject by mutableStateOf<NearbyObject?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val location = mergedLocationRepository.location.mapLatest {
-        it.latLng
-    }.onEach {
-        Log.d("LandmarkSelectionViewModel", "Location: $it")
+    val location = mergedLocationRepository.location.map { it.latLng }.onEach {
+        Log.e("LandmarkSelectionViewModel", "Location changed: $it")
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        started = SharingStarted.WhileSubscribed(5.seconds),
         initialValue = LatLng(0.0, 0.0)
     )
 
     private val geocoderResult = location.filterNotNull().mapNotNull { location ->
+        Log.e("LandmarkSelectionViewModel", "Geocoding location: $location")
         geocoderRepository.reverseGeocode(location, includeAddressDescriptors = true)
     }
 
     private val nearbyObjects = geocoderResult.mapNotNull { result ->
+        Log.e("LandmarkSelectionViewModel", "Nearby objects: ${result.addressDescriptor}")
         result.addressDescriptor?.toNearbyObjects()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        started = SharingStarted.WhileSubscribed(5.seconds),
         initialValue = emptyList()
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
     val nearbyObjectsWithLatLngs = nearbyObjects.mapLatest { nearbyObjects ->
+        Log.e("LandmarkSelectionViewModel", "Getting latlngs for nearby objects: $nearbyObjects")
+
         val places = nearbyObjects.map { nearbyObject ->
             viewModelScope.async { placesRepository.getPlaceLatLng(nearbyObject.placeId) }
         }
@@ -95,7 +99,7 @@ class LandmarkSelectionViewModel
         }
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        started = SharingStarted.WhileSubscribed(5.seconds),
         initialValue = emptyList()
     )
 
@@ -106,7 +110,7 @@ class LandmarkSelectionViewModel
         } ?: UsDisplayAddress()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        started = SharingStarted.WhileSubscribed(5.seconds),
         initialValue = null
     )
 

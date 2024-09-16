@@ -39,7 +39,9 @@ fun UsAddressForm(
     modifier: Modifier,
     address: UsDisplayAddress,
     nearbyObjects: List<NearbyObject>,
+    onNearbyLandmarkSelected: (NearbyObject) -> Unit = {},
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
+    selectedObject: NearbyObject? = null,
 ) {
     Column(
         modifier = modifier,
@@ -88,7 +90,11 @@ fun UsAddressForm(
         }
 
         if (nearbyObjects.isNotEmpty()) {
-            NearbyObjectsSelector(nearbyObjects)
+            NearbyObjectsSelector(
+                nearbyObjects = nearbyObjects,
+                onNearbyLandmarkSelected = onNearbyLandmarkSelected,
+                selectedObject = selectedObject
+            )
         }
 
         AddressTextField(

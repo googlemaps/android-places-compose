@@ -23,6 +23,8 @@
     <string name="search_call_to_action">Search here</string>
 
     <string name="landmark">Landmark</string>
+    <string name="nearby_landmarks">Nearby landmarks</string>
+    <string name="nearby_areas">Nearby areas</string>
     <string name="user_location">User location</string>
     <string name="address_validation_button">Address completion</string>
     <string name="distance">Distance</string>

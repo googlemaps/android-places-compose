@@ -32,7 +32,9 @@ fun IndiaAddressForm(
     modifier: Modifier,
     address: IndiaDisplayAddress,
     nearbyObjects: List<NearbyObject>,
+    onNearbyLandmarkSelected: (NearbyObject) -> Unit,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
+    selectedObject: NearbyObject? = null,
 ) {
     Column(
         modifier = modifier,
@@ -53,7 +55,11 @@ fun IndiaAddressForm(
         )
 
         if (nearbyObjects.isNotEmpty()) {
-            NearbyObjectsSelector(nearbyObjects)
+            NearbyObjectsSelector(
+                nearbyObjects = nearbyObjects,
+                onNearbyLandmarkSelected = onNearbyLandmarkSelected,
+                selectedObject = selectedObject
+            )
         }
 
         AddressTextField(

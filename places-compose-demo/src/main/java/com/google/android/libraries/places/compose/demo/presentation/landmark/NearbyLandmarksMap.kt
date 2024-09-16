@@ -54,8 +54,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.PinConfig
 
 @Composable
@@ -65,13 +67,25 @@ fun NearbyLandmarksMap(
     modifier: Modifier = Modifier,
     onMapClick: (LatLng) -> Unit = {},
     nearbyObjectsWithLocations: List<Pair<NearbyObject, Place>>,
+    selectedLandmark: NearbyObject?,
+    onLandmarkSelected: (NearbyObject) -> Unit,
 ) {
     val mapId = stringResource(id = R.string.map_id)
 
     var showAsMarkers by remember { mutableStateOf(true) }
 
     LaunchedEffect(cameraPositionState.position.zoom) {
-        showAsMarkers = cameraPositionState.position.zoom < 16f
+        showAsMarkers = cameraPositionState.position.zoom < 17f
+    }
+
+    LaunchedEffect(selectedLandmark) {
+        selectedLandmark?.let { selected ->
+            nearbyObjectsWithLocations.find { it.first == selected }?.let { (_, place) ->
+                cameraPositionState.animate(
+                    update = CameraUpdateFactory.newLatLng(place.latLng!!)
+                )
+            }
+        }
     }
 
     Card(
@@ -88,8 +102,15 @@ fun NearbyLandmarksMap(
             },
         ) {
             val droppedPinPinConfig = with(PinConfig.builder()) {
+                setBackgroundColor(MaterialTheme.colorScheme.tertiaryContainer.toArgb())
+                setBorderColor(MaterialTheme.colorScheme.onTertiaryContainer.toArgb())
+                build()
+            }
+
+            val selectedPinPinConfig = with(PinConfig.builder()) {
                 setBackgroundColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-                setBorderColor(MaterialTheme.colorScheme.primary.toArgb())
+                setBorderColor(MaterialTheme.colorScheme.onSecondaryContainer.toArgb())
+                setGlyph(PinConfig.Glyph(MaterialTheme.colorScheme.onSecondaryContainer.toArgb()))
                 build()
             }
 
@@ -101,23 +122,56 @@ fun NearbyLandmarksMap(
             )
 
             if (showAsMarkers) {
+                nearbyObjectsWithLocations
+                    .filter { (nearbyObject, _) -> nearbyObject is NearbyObject.NearbyLandmark }
+                    .forEach { (nearbyObject, place) ->
+                        val (pinConfig, zIndex) = if (nearbyObject == selectedLandmark) {
+                            selectedPinPinConfig to 5f
+                        } else {
+                            droppedPinPinConfig to 1f
+                        }
 
-                nearbyObjectsWithLocations.forEach { (nearbyObject, place) ->
-                    AdvancedMarker(
-                        state = MarkerState(position = place.latLng!!),
-                        title = nearbyObject.name,
-                        snippet = nearbyObject.spatialRelationship(),
-                        zIndex = 1f,
-                        pinConfig = droppedPinPinConfig
-                    )
-                }
+                        AdvancedMarker(
+                            state = MarkerState(position = place.latLng!!),
+                            title = nearbyObject.name,
+                            snippet = nearbyObject.spatialRelationship(),
+                            zIndex = zIndex,
+                            pinConfig = pinConfig,
+                            onClick = {
+                                onLandmarkSelected(nearbyObject)
+                                true
+                            }
+                        )
+                    }
             } else {
                 nearbyObjectsWithLocations.forEach { (nearbyObject, place) ->
-                    MarkerComposable(
-                        state = MarkerState(position = place.latLng!!),
-                        zIndex = 1f,
-                    ) {
-                        LandmarkMarker(nearbyObject.name)
+                    if (nearbyObject == selectedLandmark) {
+                        MarkerComposable(
+                            state = MarkerState(position = place.latLng!!),
+                            zIndex = 5f,
+                            onClick = {
+                                onLandmarkSelected(nearbyObject)
+                                true
+                            }
+                        ) {
+                            LandmarkMarker(
+                                nearbyObject.name,
+                                textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer
+                            )
+                        }
+                    } else {
+                        MarkerComposable(
+                            state = MarkerState(position = place.latLng!!),
+                            zIndex = 1f,
+                            onClick = {
+                                onLandmarkSelected(nearbyObject)
+                                true
+                            }
+                        ) {
+                            LandmarkMarker(nearbyObject.name)
+                        }
                     }
                 }
             }
@@ -127,10 +181,15 @@ fun NearbyLandmarksMap(
 
 // TODO: better outline for the landmark marker
 @Composable
-fun LandmarkMarker(label: String) {
+fun LandmarkMarker(
+    label: String,
+    textColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    borderColor: Color = MaterialTheme.colorScheme.primary,
+    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer
+) {
     val dipSize = 16.dp
     val dipHeight = 12.dp
-    val cornerRadius = 12.dp // Adjust corner radius as needed
+    val cornerRadius = 14.dp // Adjust corner radius as needed
     val density = LocalDensity.current
 
     val borderShape = GenericShape { size, _ ->
@@ -188,11 +247,11 @@ fun LandmarkMarker(label: String) {
             .padding(bottom = 12.dp)
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primary,
+                color = borderColor,
                 shape = borderShape
             )
             .background(
-                color = MaterialTheme.colorScheme.secondaryContainer,
+                color = backgroundColor,
                 shape = borderShape
             )
             .padding(top = 2.dp, bottom = 2.dp, end = 6.dp, start = 2.dp), // Add padding around the text
@@ -203,7 +262,7 @@ fun LandmarkMarker(label: String) {
                 .size(24.dp)
                 .background(
                     shape = CircleShape,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = borderColor,
                 ),
             contentAlignment = Alignment.Center
         ) {
@@ -211,13 +270,13 @@ fun LandmarkMarker(label: String) {
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.outline_pin_drop_24),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.secondaryContainer
+                tint = backgroundColor
             )
         }
         Text(
             modifier = Modifier.padding(start = 4.dp),
             text = label,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            color = textColor
         )
     }
 }
@@ -227,5 +286,18 @@ fun LandmarkMarker(label: String) {
 fun LandmarkMarkerPreview() {
     AndroidPlacesComposeDemoTheme {
         LandmarkMarker(label = "Landmark")
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LandmarkMarkerSelectedPreview() {
+    AndroidPlacesComposeDemoTheme {
+        LandmarkMarker(
+            label = "Landmark",
+            textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
+            backgroundColor = MaterialTheme.colorScheme.secondaryContainer
+        )
     }
 }

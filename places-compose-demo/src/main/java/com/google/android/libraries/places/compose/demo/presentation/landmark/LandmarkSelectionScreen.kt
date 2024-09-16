@@ -24,6 +24,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -57,6 +61,10 @@ fun LandmarkSelectionContent(
         cameraPositionState.position = CameraPosition.fromLatLngZoom(userLocation, 15f)
     }
 
+    var selectedLandmark by remember(nearbyObjectsWithLocations) {
+        mutableStateOf(nearbyObjectsWithLocations.firstOrNull()?.first)
+    }
+
     Column(
         modifier = modifier
     ) {
@@ -69,6 +77,10 @@ fun LandmarkSelectionContent(
                     .height(350.dp),
                 onMapClick = onMapClicked,
                 nearbyObjectsWithLocations = nearbyObjectsWithLocations,
+                selectedLandmark = selectedLandmark,
+                onLandmarkSelected = {
+                    selectedLandmark = it
+                }
             )
         }
         Column(
@@ -83,6 +95,10 @@ fun LandmarkSelectionContent(
                     address = address,
                     modifier = Modifier.fillMaxWidth(),
                     nearbyObjects = nearbyObjectsWithLocations.map { it.first },
+                    selectedLandmark = selectedLandmark,
+                    onNearbyLandmarkSelected = {
+                        selectedLandmark = it
+                    }
                 )
             } else {
                 Box(

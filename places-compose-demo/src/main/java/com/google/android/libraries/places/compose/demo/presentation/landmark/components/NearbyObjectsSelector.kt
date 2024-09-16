@@ -13,16 +13,14 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.landmark.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,13 +29,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
 import com.google.android.libraries.places.compose.demo.R
 
 @Composable
-fun NearbyObjectsSelector(nearbyObjects: List<NearbyObject>) {
+fun NearbyObjectsSelector(
+    nearbyObjects: List<NearbyObject>,
+    onNearbyLandmarkSelected: (NearbyObject) -> Unit,
+    selectedObject: NearbyObject?
+) {
     var showLandmarks by rememberSaveable { mutableStateOf(true) }
     var showAreas by rememberSaveable { mutableStateOf(false) }
     var showDialog by rememberSaveable { mutableStateOf(false) } // State to control dialog visibility
@@ -54,31 +55,29 @@ fun NearbyObjectsSelector(nearbyObjects: List<NearbyObject>) {
         )
     }
 
-    val activeLandmarks = nearbyObjects.filter {
-        when (it) {
-            is NearbyObject.NearbyLandmark -> showLandmarks
-            is NearbyObject.NearbyArea -> showAreas
-            else -> false
-        }
+    val landmarks by rememberSaveable(nearbyObjects) { mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyLandmark>()) }
+    val areas by rememberSaveable(nearbyObjects) { mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyArea>()) }
+
+    if (landmarks.isNotEmpty()) {
+        NearbyObjectsMenu(
+            modifier = Modifier,
+            titleId = R.string.nearby_landmarks,
+            nearbyObjects = landmarks,
+            onNearbyObjectSelected = {
+                Log.d("NearbyObjectsSelector", "Nearby landmark selected: ${it.name}")
+                onNearbyLandmarkSelected(it)
+            },
+            selectedObject = selectedObject,
+        )
     }
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-    ) {
+    if (areas.isNotEmpty()) {
         NearbyObjectsMenu(
-            modifier = Modifier.weight(1f),
-            nearbyObjects = activeLandmarks
+            titleId = R.string.nearby_areas,
+            nearbyObjects = areas,
+            modifier = Modifier,
+            selectedObject = selectedObject
         )
-
-        IconButton(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            onClick = { showDialog = true }
-        ) { // Button to trigger the dialog
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_filter_list_24),
-                contentDescription = "Filter"
-            )
-        }
     }
 }
 

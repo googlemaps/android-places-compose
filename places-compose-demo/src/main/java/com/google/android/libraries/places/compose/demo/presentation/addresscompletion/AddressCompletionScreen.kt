@@ -154,7 +154,7 @@ private fun AddressEntryForm(
                 address = addressEntry.displayAddress,
                 modifier = Modifier.fillMaxWidth(),
                 nearbyObjects = addressEntry.nearbyObjects,
-                onAddressChanged = onAddressChanged
+                onAddressChanged = onAddressChanged,
             )
         }
     }

@@ -5,13 +5,18 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.shareIn
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 data class CompositeLocation(
     val latLng: LatLng = LatLng(0.0, 0.0),
@@ -24,6 +29,7 @@ class MergedLocationRepository
 constructor(
     private val locationRepository: LocationRepository,
     private val mockLocationRepository: MockLocationRepository,
+    scope: CoroutineScope
 ) {
   private val _useMockLocation = MutableStateFlow(true)
 
@@ -71,7 +77,11 @@ constructor(
         }
       }
     }
-  }
+  }.shareIn(
+    scope = scope,
+    started = SharingStarted.WhileSubscribed(5.seconds),
+    replay = 1,
+  )
 
   /**
    * If we are already sending the mock location, advance to the next mock location, otherwise

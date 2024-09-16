@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.landmark.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,11 +46,16 @@ import com.google.android.libraries.places.compose.demo.R
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun NearbyObjectsMenu(
+    @StringRes titleId: Int,
     nearbyObjects: List<NearbyObject>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedObject: NearbyObject?,
+    onNearbyObjectSelected: (NearbyObject) -> Unit = {},
 ) {
+    require(nearbyObjects.isNotEmpty()) { "Nearby objects list cannot be empty" }
+
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption by remember(nearbyObjects) { mutableStateOf(nearbyObjects[0]) }
+    var selectedOption = selectedObject ?: nearbyObjects.first()
 
     ExposedDropdownMenuBox(
         modifier = modifier,
@@ -59,8 +65,8 @@ fun NearbyObjectsMenu(
         OutlinedTextField(
             readOnly = true,
             value = selectedOption.spatialRelationship(),
-            onValueChange = {},
-            label = { Text(stringResource(R.string.landmark)) },
+            onValueChange = { },
+            label = { Text(stringResource(titleId)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
@@ -106,6 +112,7 @@ fun NearbyObjectsMenu(
                     onClick = {
                         selectedOption = option
                         expanded = false
+                        onNearbyObjectSelected(selectedOption)
                     }
                 )
                 if (index < nearbyObjects.size - 1) {

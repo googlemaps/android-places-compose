@@ -27,6 +27,7 @@ import com.google.android.libraries.places.compose.demo.data.repositories.ApiKey
 import com.google.android.libraries.places.compose.demo.data.repositories.CountriesRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
+import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.MockLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import dagger.Module
@@ -127,6 +128,21 @@ object AppModule {
     fun provideMockLocationRepository(application: Application): MockLocationRepository {
         return MockLocationRepository(
             (application as PlacesComposeDemoApplication).applicationScope
+        )
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    @Provides
+    @Singleton
+    fun provideApplication(
+        application: Application,
+        locationRepository: LocationRepository,
+        mockLocationRepository: MockLocationRepository
+    ): MergedLocationRepository {
+        return MergedLocationRepository(
+            scope = (application as PlacesComposeDemoApplication).applicationScope,
+            locationRepository = locationRepository,
+            mockLocationRepository = mockLocationRepository,
         )
     }
 }
