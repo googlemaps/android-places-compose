@@ -1,5 +1,6 @@
 package com.google.android.libraries.places.compose.demo.presentation.common
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -17,12 +18,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 import com.google.android.libraries.places.compose.demo.R
@@ -34,12 +35,13 @@ import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesCo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommonScreen(
+    @StringRes titleId: Int,
     commonViewModel: CommonViewModel,
     onNavigateUp: () -> Unit,
     snackbarHostState: SnackbarHostState,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    val commonViewState by commonViewModel.commonViewState.collectAsState()
+    val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
     val country = commonViewState.countryCode
         ?: LocalContext.current.resources.configuration.locales.get(0).country
 
@@ -65,7 +67,7 @@ fun CommonScreen(
                                 actionIconContentColor = MaterialTheme.colorScheme.primary,
                                 navigationIconContentColor = MaterialTheme.colorScheme.primary,
                             ),
-                            title = { Text(stringResource(R.string.cart)) },
+                            title = { Text(stringResource(titleId)) },
                             navigationIcon = {
                                 IconButton(onClick = { onNavigateUp() }) {
                                     Icon(

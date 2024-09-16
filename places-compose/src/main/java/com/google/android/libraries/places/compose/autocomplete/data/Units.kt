@@ -92,8 +92,6 @@ data class ValueWithUnitsTemplate(val value: Double, @StringRes val unitsTemplat
 
 /**
  * Abstract base class for all units converters.
- *
- * @param T The type of the units that this converter will convert to.
  */
 abstract class UnitsConverter {
   abstract fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate

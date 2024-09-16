@@ -33,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.PlaceTypes
@@ -86,14 +87,14 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
         setContent {
             AndroidPlacesComposeDemoTheme {
                 GetLocationPermission {
-                    val location by locationFlow.collectAsState()
+                    val location by locationFlow.collectAsStateWithLifecycle()
 
                     // We just want to get the last location once.
                     LaunchedEffect(Unit) {
                         locationFlow.value = locationRepository.getLastLocation()
                     }
 
-                    val searchText by searchTextFlow.collectAsState()
+                    val searchText by searchTextFlow.collectAsStateWithLifecycle()
 
                     val country by remember {
                         locationFlow.mapNotNull { location ->

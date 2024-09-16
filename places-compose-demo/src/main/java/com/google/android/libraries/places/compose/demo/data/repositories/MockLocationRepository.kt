@@ -1,7 +1,5 @@
 package com.google.android.libraries.places.compose.demo.data.repositories
 
-import android.location.Location
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,23 +7,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transform
 
 data class LabeledLocation(
   val latLng: LatLng,
   val label: String,
 )
 
-class MockLocationRepository(private val scope: CoroutineScope) {
+class MockLocationRepository(scope: CoroutineScope) {
   private val _mockLocationNumber = MutableStateFlow(0)
   private val mockLocationNumber: StateFlow<Int> = _mockLocationNumber.asStateFlow()
 

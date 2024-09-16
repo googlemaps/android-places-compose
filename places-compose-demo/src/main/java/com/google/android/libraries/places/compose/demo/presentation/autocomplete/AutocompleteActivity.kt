@@ -20,12 +20,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.libraries.places.api.model.CircularBounds
 import com.google.android.libraries.places.compose.autocomplete.data.meters
+import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonScreen
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
@@ -55,15 +56,21 @@ class AutocompleteActivity : ComponentActivity() {
             val snackbarHostState = remember { SnackbarHostState() }
 
             CommonScreen(
+                titleId = R.string.autocomplete_button,
                 commonViewModel = commonViewModel,
                 onNavigateUp = { finish() },
                 snackbarHostState = snackbarHostState
             ) { paddingValues ->
 
-                val commonViewState by commonViewModel.commonViewState.collectAsState()
-                val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
+                val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
+                val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsStateWithLifecycle()
 
                 AutocompleteDemo(
+                    modifier = Modifier.padding(paddingValues),
+                    autocompleteViewState = autocompleteViewState,
+                    location = commonViewState.location,
+                    showMap = commonViewState.showMap,
+                    locationLabel = commonViewState.locationLabel,
                     onQueryChanged = { query ->
                         autocompleteViewModel.onEvent(
                             AutocompleteEvent.OnQueryChanged(query) {
@@ -80,17 +87,18 @@ class AutocompleteActivity : ComponentActivity() {
                             }
                         )
                     },
-                    onPlaceSelected = {
-                        autocompleteViewModel.onEvent(AutocompleteEvent.OnPlaceSelected(it))
+                    onPlaceSelected = { place ->
+                        val oldPlace = autocompleteViewState.selectedPlace
+                        val showMap = oldPlace == null || oldPlace.placeId != place.placeId
+                        commonViewModel.onEvent(CommonEvent.SetMapVisible(showMap))
+                        autocompleteViewModel.onEvent(AutocompleteEvent.OnPlaceSelected(place))
                     },
-                    modifier = Modifier.padding(paddingValues),
-                    autocompleteViewState = autocompleteViewState,
                     onMapCloseClick = {
-                        commonViewModel.onEvent(CommonEvent.OnMapCloseClicked)
+                        commonViewModel.onEvent(CommonEvent.SetMapVisible(false))
                     },
-                    location = commonViewState.location,
-                    showMap = commonViewState.showMap,
-                    locationLabel = commonViewState.locationLabel
+                    onMapClick = { latLng ->
+                        autocompleteViewModel.onEvent(AutocompleteEvent.OnMapClicked(latLng))
+                    },
                 )
             }
         }

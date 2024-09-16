@@ -16,10 +16,6 @@ package com.google.android.libraries.places.compose.demo.data.repositories
 import com.google.android.libraries.places.compose.demo.data.models.Country
 
 class CountriesRepository {
-    fun getCountries(): Map<String, Country> {
-        return countries
-    }
-
     companion object {
         private fun getFlagEmoji(countryCode: String): String {
             val firstLetter = Character.codePointAt(countryCode, 0) - 0x41 + 0x1F1E6

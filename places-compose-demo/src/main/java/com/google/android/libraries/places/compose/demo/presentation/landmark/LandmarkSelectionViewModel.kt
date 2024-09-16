@@ -14,16 +14,17 @@
 package com.google.android.libraries.places.compose.demo.presentation.landmark
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
-import com.google.android.libraries.places.compose.demo.data.repositories.MockLocationRepository
+import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
@@ -34,41 +35,44 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 /**
  * ViewModel for the landmark selection screen.
  *
- * @param locationRepository The repository for accessing location data.
  * @param geocoderRepository The repository for accessing address descriptor data.
  */
 @SuppressLint("MissingPermission")
 @HiltViewModel
 class LandmarkSelectionViewModel
 @Inject constructor(
-    private val locationRepository: LocationRepository,
-    private val mockLocationRepository: MockLocationRepository,
+    private val mergedLocationRepository: MergedLocationRepository,
     private val geocoderRepository: GeocoderRepository,
     private val placesRepository: PlaceRepository
 ) : ViewModel() {
     private var selectedNearbyObject by mutableStateOf<NearbyObject?>(null)
 
-    private val _location = MutableStateFlow(mockLocationRepository.selectedMockLocation.value)
-    val location = _location.asStateFlow()
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val location = mergedLocationRepository.location.mapLatest {
+        it.latLng
+    }.onEach {
+        Log.d("LandmarkSelectionViewModel", "Location: $it")
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
+        initialValue = LatLng(0.0, 0.0)
+    )
 
-    private val geocoderResult = _location.filterNotNull().mapNotNull { location ->
+    private val geocoderResult = location.filterNotNull().mapNotNull { location ->
         geocoderRepository.reverseGeocode(location, includeAddressDescriptors = true)
     }
 
@@ -109,43 +113,21 @@ class LandmarkSelectionViewModel
     private val _viewModelEventChannel = MutableSharedFlow<ViewModelEvent>()
     val viewModelEventChannel: SharedFlow<ViewModelEvent> = _viewModelEventChannel.asSharedFlow()
 
-    val countryCode = location.map { loc ->
-        geocoderRepository.reverseGeocode(
-            loc,
-            includeAddressDescriptors = false
-        ).addresses.firstOrNull()?.getCountryCode()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = null
-    )
-
     /**
      * Handles events from the UI.
      */
     fun onEvent(event: LandmarkSelectionEvent) {
         when (event) {
             is LandmarkSelectionEvent.OnUserLocationChanged -> {
-                mockLocationRepository.setMockLocation(event.location)
+                mergedLocationRepository.setMockLocation(event.location)
             }
 
             is LandmarkSelectionEvent.OnNearbyObjectSelected ->  {
                 selectedNearbyObject = event.nearbyObject
             }
 
-            LandmarkSelectionEvent.OnNextMockLocation -> {
-                val (_, location) = mockLocationRepository.nextMockLocation()
-                _location.value = location
-            }
-
             LandmarkSelectionEvent.OnCloseAddressDisplayClicked -> {
                 selectedNearbyObject = null
-            }
-
-            LandmarkSelectionEvent.OnUseDeviceLocation -> {
-                viewModelScope.launch {
-                    _location.value = locationRepository.getLastLocation()
-                }
             }
         }
     }

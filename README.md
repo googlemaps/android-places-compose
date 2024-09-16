@@ -62,7 +62,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
 
         setContent {
             val searchTextFlow = MutableStateFlow("")
-            val searchText by searchTextFlow.collectAsState()
+            val searchText by searchTextFlow.collectAsStateWithLifecycle()
             var predictions by remember { mutableStateOf(emptyList<AutocompletePrediction>()) }
 
             LaunchedEffect(Unit) {

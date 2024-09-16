@@ -34,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compose.demo.R
 import com.google.maps.android.compose.AdvancedMarker
@@ -62,6 +63,8 @@ fun GoogleMapContainer(
     onMapClick: (LatLng) -> Unit = {},
     onMapCloseClick: (() -> Unit)? = null,
 ) {
+    val mapId = stringResource(id = R.string.map_id)
+
     OutlinedCard(modifier = modifier) {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
             Row(modifier = Modifier.fillMaxWidth(),
@@ -99,6 +102,9 @@ fun GoogleMapContainer(
                 GoogleMap(
                     cameraPositionState = cameraPositionState,
                     onMapClick = onMapClick,
+                    googleMapOptionsFactory = {
+                        GoogleMapOptions().mapId(mapId)
+                    }
                 ) {
                     AdvancedMarker(
                         state = markerState,

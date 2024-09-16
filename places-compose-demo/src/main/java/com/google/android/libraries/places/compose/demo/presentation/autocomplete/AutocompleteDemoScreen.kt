@@ -35,14 +35,15 @@ import com.google.maps.android.compose.rememberCameraPositionState
 
 @Composable
 fun AutocompleteDemo(
-    onQueryChanged: (String) -> Unit,
-    onPlaceSelected: (AutocompletePlace) -> Unit,
     autocompleteViewState: AutocompleteViewState,
-    modifier: Modifier = Modifier,
-    onMapCloseClick: () -> Unit = {},
     location: LatLng,
     showMap: Boolean,
     locationLabel: String?,
+    onQueryChanged: (String) -> Unit,
+    onPlaceSelected: (AutocompletePlace) -> Unit,
+    onMapCloseClick: () -> Unit,
+    onMapClick: (LatLng) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
         Column(modifier.fillMaxSize()) {
             val selectedPlace = autocompleteViewState.selectedPlace
@@ -94,7 +95,8 @@ fun AutocompleteDemo(
                         markerLatLng = selectedPlace.latLng,
                         markerTitle = selectedPlace.primaryText.toString(),
                         markerSnippet = selectedPlace.secondaryText.toString(),
-                        onMapCloseClick = onMapCloseClick
+                        onMapCloseClick = onMapCloseClick,
+                        onMapClick = onMapClick
                     )
                 } else {
                     val label = locationLabel ?: stringResource(R.string.unlabeled_location)
@@ -113,7 +115,8 @@ fun AutocompleteDemo(
                         },
                         markerLatLng = location,
                         markerTitle = label,
-                        onMapCloseClick = onMapCloseClick
+                        onMapCloseClick = onMapCloseClick,
+                        onMapClick = onMapClick
                     )
                 }
             }

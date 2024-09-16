@@ -4,6 +4,5 @@ sealed class CommonEvent {
     data object OnNextMockLocation: CommonEvent()
     data object OnToggleMap: CommonEvent()
     data object OnUseSystemLocation: CommonEvent()
-    data object OnMapCloseClicked: CommonEvent()
-    data object OnNavigateUp: CommonEvent()
+    data class SetMapVisible(val visible: Boolean): CommonEvent()
 }

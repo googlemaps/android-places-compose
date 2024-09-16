@@ -1,9 +1,9 @@
 [versions]
 accompanistPermissions = "0.34.0"
-activityCompose = "1.9.1"
+activityCompose = "1.9.2"
 agp = "8.6.0"
 appcompat = "1.7.0"
-composeBom = "2024.06.00"
+composeBom = "2024.09.01"
 coreKtx = "1.13.1"
 espressoCore = "3.6.1"
 gson = "2.10.1"
@@ -14,20 +14,19 @@ kotlin = "2.0.0"
 kotlinReflect = "2.0.0"
 kotlinxCoroutinesPlayServices = "1.8.1"
 ksp = "2.0.0-1.0.21"
-lifecycleRuntimeKtx = "2.8.4"
-lifecycleViewmodelCompose = "2.8.4"
+lifecycleRuntimeKtx = "2.8.5"
+lifecycleViewmodelCompose = "2.8.5"
 mapsCompose = "6.1.0"
 mapsUtilsKtx = "5.1.1"
-materialVersion = "1.13.0-alpha04"
-navigationCompose = "2.8.0-beta06"
+materialVersion = "1.13.0-alpha05"
+navigationCompose = "2.8.0"
 places = "3.5.0"
 placesKtx = "3.2.0"
 robolectric = "4.12.2"
 secretsGradlePlugin = "2.0.1"
 truth = "1.4.2"
-uiToolingVersion = "1.6.8"
-uiTestAndroid = "1.7.0-beta06"
-uiTestJunit4Android = "1.6.8"
+uiToolingVersion = "1.7.1"
+uiTestAndroid = "1.7.1"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -67,7 +66,6 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiToolingVersion" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiToolingVersion" }
-androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

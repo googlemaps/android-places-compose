@@ -23,7 +23,5 @@ sealed class LandmarkSelectionEvent {
     data class OnUserLocationChanged(val location: LatLng) : LandmarkSelectionEvent()
     data class OnNearbyObjectSelected(val nearbyObject: NearbyObject) : LandmarkSelectionEvent()
 
-    data object OnNextMockLocation: LandmarkSelectionEvent()
     data object OnCloseAddressDisplayClicked: LandmarkSelectionEvent()
-    data object OnUseDeviceLocation: LandmarkSelectionEvent()
 }

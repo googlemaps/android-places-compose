@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.autocomplete
 
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 
@@ -26,8 +27,5 @@ sealed class AutocompleteEvent {
         val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {}
     ) : AutocompleteEvent()
 
-    data object OnNextMockLocation: AutocompleteEvent()
-    data object OnToggleMap: AutocompleteEvent()
-    data class OnSetMapVisible(val visible: Boolean): AutocompleteEvent()
-    data object OnUseDeviceLocation: AutocompleteEvent()
+    data class OnMapClicked(val latLng: LatLng) : AutocompleteEvent()
 }

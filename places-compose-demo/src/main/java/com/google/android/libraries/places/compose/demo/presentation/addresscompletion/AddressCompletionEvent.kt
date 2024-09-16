@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
 import com.google.android.gms.maps.model.LatLng
@@ -24,10 +25,5 @@ sealed class AddressCompletionEvent {
     data class OnAddressSelected(val autocompletePlace: AutocompletePlace) : AddressCompletionEvent()
     data class OnAddressChanged(val displayAddress: DisplayAddress) : AddressCompletionEvent()
     data class OnMapClicked(val latLng: LatLng) : AddressCompletionEvent()
-
-    data object OnNextMockLocation: AddressCompletionEvent()
-    data object OnToggleMap: AddressCompletionEvent()
-    data object OnUseSystemLocation: AddressCompletionEvent()
-    data object OnMapCloseClicked: AddressCompletionEvent()
     data object OnNavigateUp: AddressCompletionEvent()
 }

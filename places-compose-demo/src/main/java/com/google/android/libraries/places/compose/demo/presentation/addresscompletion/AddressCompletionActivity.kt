@@ -23,11 +23,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.libraries.places.api.model.CircularBounds
+import com.google.android.libraries.places.compose.autocomplete.data.meters
+import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteEvent
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,13 +52,14 @@ class AddressCompletionActivity : ComponentActivity() {
             val snackbarHostState = remember { SnackbarHostState() }
 
             CommonScreen(
+                titleId = R.string.cart,
                 commonViewModel = commonViewModel,
                 onNavigateUp = { finish() },
                 snackbarHostState = snackbarHostState
             ) { paddingValues ->
-                val addressCompletionViewState by addressCompletionViewModel.addressCompletionViewState.collectAsState()
-                val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsState()
-                val commonViewState by commonViewModel.commonViewState.collectAsState()
+                val addressCompletionViewState by addressCompletionViewModel.addressCompletionViewState.collectAsStateWithLifecycle()
+                val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsStateWithLifecycle()
+                val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
 
                 LaunchedEffect(Unit) {
                     addressCompletionViewModel.viewModelEventChannel.collect { event ->
@@ -87,7 +90,7 @@ class AddressCompletionActivity : ComponentActivity() {
                         addressCompletionViewModel.onEvent(AddressCompletionEvent.OnAddressSelected(autocompletePlace))
                     },
                     onMapCloseClick = {
-                        commonViewModel.onEvent(CommonEvent.OnMapCloseClicked)
+                        commonViewModel.onEvent(CommonEvent.SetMapVisible(false))
                     },
                     commonViewState = commonViewState,
                     onQueryChanged = { query ->
@@ -95,7 +98,7 @@ class AddressCompletionActivity : ComponentActivity() {
                             AutocompleteEvent.OnQueryChanged(query) {
                                 locationBias = CircularBounds.newInstance(
                                     /* center = */ commonViewState.location,
-                                    /* radius = */ 1000.0
+                                    /* radius = */ 1000.meters.value
                                 )
                                 origin = commonViewState.location
                                 countries = listOf(commonViewState.countryCode)

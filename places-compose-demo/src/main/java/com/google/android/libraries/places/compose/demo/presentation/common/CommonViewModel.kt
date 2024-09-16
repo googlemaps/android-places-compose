@@ -63,18 +63,15 @@ class CommonViewModel
             geocoderRepository.reverseGeocode(location.latLng, includeAddressDescriptors = true)
         }
 
-    private val _address = MutableStateFlow<Address?>(null)
-    val address = _address.asStateFlow()
-
     private val _showMap = MutableStateFlow(false)
     private val showMap = _showMap.asStateFlow()
 
-    private val _currentAddress = geocoderResult.mapNotNull { result ->
+    private val currentAddress = geocoderResult.mapNotNull { result ->
         result.addresses.firstOrNull()
     }
 
     // Determine the country code based on the location not the address.
-    private val countryCode = _currentAddress.filterNotNull().mapNotNull { address ->
+    private val countryCode = currentAddress.filterNotNull().mapNotNull { address ->
         address.getCountryCode()
     }.stateIn(
         scope = viewModelScope,
@@ -125,11 +122,8 @@ class CommonViewModel
             is CommonEvent.OnUseSystemLocation -> {
                 mergedLocationRepository.useSystemLocation()
             }
-            is CommonEvent.OnMapCloseClicked -> {
-                _showMap.value = false
-            }
-            CommonEvent.OnNavigateUp -> {
-                // no-op
+            is CommonEvent.SetMapVisible -> {
+                _showMap.value = event.visible
             }
         }
     }
