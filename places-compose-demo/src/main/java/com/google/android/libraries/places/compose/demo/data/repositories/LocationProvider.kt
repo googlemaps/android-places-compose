@@ -129,7 +129,7 @@ class LocationRepository(context: Context, private val scope: CoroutineScope) {
 
   @OptIn(ExperimentalCoroutinesApi::class)
   @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
-  suspend fun getLastLocation(): LatLng {
+  suspend fun getLastLocation(): LatLng? {
     val cancellationTokenSource = CancellationTokenSource()
 
     val result = fusedLocationClient.getCurrentLocation(
@@ -142,6 +142,6 @@ class LocationRepository(context: Context, private val scope: CoroutineScope) {
       cancellationTokenSource.token,
     ).await(cancellationTokenSource)
 
-    return result.let { LatLng(it.latitude, it.longitude) }
+    return result?.let { LatLng(it.latitude, it.longitude) }
   }
 }
