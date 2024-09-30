@@ -49,13 +49,13 @@ fun NearbyObjectsMenu(
     @StringRes titleId: Int,
     nearbyObjects: List<NearbyObject>,
     modifier: Modifier = Modifier,
-    selectedObject: NearbyObject?,
+    selectedPlaceId: String?,
     onNearbyObjectSelected: (NearbyObject) -> Unit = {},
 ) {
     require(nearbyObjects.isNotEmpty()) { "Nearby objects list cannot be empty" }
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedOption = selectedObject ?: nearbyObjects.first()
+    var selectedOption = nearbyObjects.find { it.placeId == selectedPlaceId } ?: nearbyObjects.first()
 
     ExposedDropdownMenuBox(
         modifier = modifier,

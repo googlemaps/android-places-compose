@@ -80,6 +80,7 @@ class LandmarkSelectionActivity : ComponentActivity() {
 
                 val userMarker = rememberMarkerState(position = location)
                 val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
+                val landmarkMarkers by landmarkSelectionViewModel.landmarkMarkers.collectAsStateWithLifecycle()
 
                 LandmarkSelectionContent(
                     modifier = Modifier
@@ -93,6 +94,7 @@ class LandmarkSelectionActivity : ComponentActivity() {
                     nearbyObjectsWithLocations = nearbyObjectsWithLocations,
                     address = displayAddress,
                     showMap = commonViewState.showMap,
+                    landmarkMarkers = landmarkMarkers
                 )
             }
         }

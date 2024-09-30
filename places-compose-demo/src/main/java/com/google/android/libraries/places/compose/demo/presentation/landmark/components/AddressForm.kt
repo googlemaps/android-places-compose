@@ -27,9 +27,9 @@ fun AddressDisplay(
     address: DisplayAddress?,
     modifier: Modifier = Modifier,
     nearbyObjects: List<NearbyObject> = emptyList(),
-    onNearbyLandmarkSelected: (NearbyObject) -> Unit = {},
+    onNearbyLandmarkSelected: (String?) -> Unit = {},
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    selectedLandmark: NearbyObject? = null,
+    selectedPlaceId: String? = null,
 ) {
     when (address) {
         is IndiaDisplayAddress -> {
@@ -39,7 +39,7 @@ fun AddressDisplay(
                 nearbyObjects = nearbyObjects,
                 onAddressChanged = onAddressChanged,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedObject = selectedLandmark,
+                selectedPlaceId = selectedPlaceId,
             )
         }
         is UsDisplayAddress -> {
@@ -49,7 +49,7 @@ fun AddressDisplay(
                 nearbyObjects = nearbyObjects,
                 onAddressChanged = onAddressChanged,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedObject = selectedLandmark,
+                selectedPlaceId = selectedPlaceId,
             )
         }
     }

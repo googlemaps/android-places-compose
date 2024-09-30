@@ -30,6 +30,7 @@ import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
+import com.google.maps.android.compose.MarkerState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -47,6 +48,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+
+data class LandmarkMarker(
+    val landmark: NearbyObject.NearbyLandmark,
+    val marker: MarkerState,
+    val latLng: LatLng,
+)
 
 /**
  * ViewModel for the landmark selection screen.
@@ -116,6 +123,26 @@ class LandmarkSelectionViewModel
 
     private val _viewModelEventChannel = MutableSharedFlow<ViewModelEvent>()
     val viewModelEventChannel: SharedFlow<ViewModelEvent> = _viewModelEventChannel.asSharedFlow()
+
+    val landmarkMarkers = nearbyObjectsWithLatLngs.map { nearbyObjectsWithLatLngs ->
+        nearbyObjectsWithLatLngs.filter{
+            it.first is NearbyObject.NearbyLandmark
+        }.mapNotNull { (nearbyObject, place) ->
+            Log.e("LandmarkSelectionViewModel", "Getting marker for nearby object: $nearbyObject")
+            Log.e("LandmarkSelectionViewModel", "Getting place: ${place.name} ${place.latLng} ${place.id}")
+            place.latLng?.let { latLng ->
+                LandmarkMarker(
+                    landmark = nearbyObject as NearbyObject.NearbyLandmark,
+                    latLng = latLng,
+                    marker = MarkerState(position = latLng)
+                )
+            }
+         }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5.seconds),
+        initialValue = emptyList()
+    )
 
     /**
      * Handles events from the UI.

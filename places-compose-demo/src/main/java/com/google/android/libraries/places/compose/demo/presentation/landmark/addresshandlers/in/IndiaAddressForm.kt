@@ -32,9 +32,9 @@ fun IndiaAddressForm(
     modifier: Modifier,
     address: IndiaDisplayAddress,
     nearbyObjects: List<NearbyObject>,
-    onNearbyLandmarkSelected: (NearbyObject) -> Unit,
+    onNearbyLandmarkSelected: (String?) -> Unit = {},
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    selectedObject: NearbyObject? = null,
+    selectedPlaceId: String? = null,
 ) {
     Column(
         modifier = modifier,
@@ -58,7 +58,7 @@ fun IndiaAddressForm(
             NearbyObjectsSelector(
                 nearbyObjects = nearbyObjects,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedObject = selectedObject
+                selectedPlaceId = selectedPlaceId
             )
         }
 

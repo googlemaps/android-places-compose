@@ -36,8 +36,8 @@ import com.google.android.libraries.places.compose.demo.R
 @Composable
 fun NearbyObjectsSelector(
     nearbyObjects: List<NearbyObject>,
-    onNearbyLandmarkSelected: (NearbyObject) -> Unit,
-    selectedObject: NearbyObject?
+    onNearbyLandmarkSelected: (String?) -> Unit,
+    selectedPlaceId: String?
 ) {
     var showLandmarks by rememberSaveable { mutableStateOf(true) }
     var showAreas by rememberSaveable { mutableStateOf(false) }
@@ -65,9 +65,9 @@ fun NearbyObjectsSelector(
             nearbyObjects = landmarks,
             onNearbyObjectSelected = {
                 Log.d("NearbyObjectsSelector", "Nearby landmark selected: ${it.name}")
-                onNearbyLandmarkSelected(it)
+                onNearbyLandmarkSelected(it.placeId)
             },
-            selectedObject = selectedObject,
+            selectedPlaceId = selectedPlaceId,
         )
     }
 
@@ -76,7 +76,7 @@ fun NearbyObjectsSelector(
             titleId = R.string.nearby_areas,
             nearbyObjects = areas,
             modifier = Modifier,
-            selectedObject = selectedObject
+            selectedPlaceId = selectedPlaceId
         )
     }
 }

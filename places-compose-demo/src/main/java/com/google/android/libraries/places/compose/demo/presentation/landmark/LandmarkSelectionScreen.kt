@@ -46,10 +46,11 @@ import com.google.maps.android.compose.rememberCameraPositionState
 fun LandmarkSelectionContent(
     userLocation: LatLng,
     userMarker: MarkerState,
-    onMapClicked: (LatLng) -> Unit,
     nearbyObjectsWithLocations: List<Pair<NearbyObject, Place>>,
+    landmarkMarkers: List<LandmarkMarker>,
     address: DisplayAddress?,
     showMap: Boolean,
+    onMapClicked: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val cameraPositionState = rememberCameraPositionState {
@@ -61,8 +62,8 @@ fun LandmarkSelectionContent(
         cameraPositionState.position = CameraPosition.fromLatLngZoom(userLocation, 15f)
     }
 
-    var selectedLandmark by remember(nearbyObjectsWithLocations) {
-        mutableStateOf(nearbyObjectsWithLocations.firstOrNull()?.first)
+    var selectedPlaceId by remember(landmarkMarkers) {
+        mutableStateOf(landmarkMarkers.firstOrNull()?.landmark?.placeId)
     }
 
     Column(
@@ -76,11 +77,11 @@ fun LandmarkSelectionContent(
                     .fillMaxWidth()
                     .height(350.dp),
                 onMapClick = onMapClicked,
-                nearbyObjectsWithLocations = nearbyObjectsWithLocations,
-                selectedLandmark = selectedLandmark,
+                selectedPlaceId = selectedPlaceId,
                 onLandmarkSelected = {
-                    selectedLandmark = it
-                }
+                    selectedPlaceId = it
+                },
+                landmarkMarkers = landmarkMarkers
             )
         }
         Column(
@@ -95,9 +96,9 @@ fun LandmarkSelectionContent(
                     address = address,
                     modifier = Modifier.fillMaxWidth(),
                     nearbyObjects = nearbyObjectsWithLocations.map { it.first },
-                    selectedLandmark = selectedLandmark,
+                    selectedPlaceId = selectedPlaceId,
                     onNearbyLandmarkSelected = {
-                        selectedLandmark = it
+                        selectedPlaceId = it
                     }
                 )
             } else {

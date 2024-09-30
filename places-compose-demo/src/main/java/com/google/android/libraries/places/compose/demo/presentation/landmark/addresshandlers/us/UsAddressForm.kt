@@ -39,9 +39,9 @@ fun UsAddressForm(
     modifier: Modifier,
     address: UsDisplayAddress,
     nearbyObjects: List<NearbyObject>,
-    onNearbyLandmarkSelected: (NearbyObject) -> Unit = {},
+    onNearbyLandmarkSelected: (String?) -> Unit = {},
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
-    selectedObject: NearbyObject? = null,
+    selectedPlaceId: String? = null,
 ) {
     Column(
         modifier = modifier,
@@ -52,21 +52,27 @@ fun UsAddressForm(
             modifier = Modifier.fillMaxWidth(),
             value = address.streetAddress,
             label = R.string.us_address_address,
-            onValueChange = { onAddressChanged?.invoke(address.copy(streetAddress = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(streetAddress = it)) }
+            }
         )
 
         AddressTextField(
             modifier = Modifier.fillMaxWidth(),
             value = address.additionalAddressInfo,
             label = R.string.us_address_suite_unit_floor,
-            onValueChange = { onAddressChanged?.invoke(address.copy(additionalAddressInfo = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(additionalAddressInfo = it)) }
+            },
         )
 
         AddressTextField(
             modifier = Modifier.fillMaxWidth(),
             value = address.city,
             label = R.string.us_address_city,
-            onValueChange = { onAddressChanged?.invoke(address.copy(city = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(city = it)) }
+            },
         )
 
         Row(
@@ -77,15 +83,17 @@ fun UsAddressForm(
                 modifier = Modifier.weight(1f),
                 value = address.state,
                 label = R.string.us_address_state,
-                onValueChange = {
-                    onAddressChanged?.invoke(address.copy(state = it))
+                onValueChange = onAddressChanged?.let {
+                    { onAddressChanged.invoke(address.copy(state = it)) }
                 },
             )
             AddressTextField(
                 modifier = Modifier.weight(1f),
                 value = address.zipCode,
                 label = R.string.us_address_zip,
-                onValueChange = { onAddressChanged?.invoke(address.copy(zipCode = it)) },
+                onValueChange = onAddressChanged?.let {
+                    { onAddressChanged.invoke(address.copy(zipCode = it)) }
+                },
             )
         }
 
@@ -93,7 +101,7 @@ fun UsAddressForm(
             NearbyObjectsSelector(
                 nearbyObjects = nearbyObjects,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedObject = selectedObject
+                selectedPlaceId = selectedPlaceId
             )
         }
 
@@ -101,8 +109,8 @@ fun UsAddressForm(
             modifier = Modifier.fillMaxWidth(),
             value = address.country,
             label = R.string.us_address_country,
-            onValueChange = {
-                onAddressChanged?.invoke(address.copy(country = it))
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(country = it)) }
             },
             leadingIcon = CountriesRepository.countries[address.countryCode]?.flag?.let {
                 { Text(it) }

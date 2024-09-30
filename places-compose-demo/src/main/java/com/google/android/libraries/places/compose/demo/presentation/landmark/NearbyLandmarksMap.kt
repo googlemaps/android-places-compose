@@ -13,6 +13,7 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.landmark
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -38,8 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 import com.google.maps.android.compose.AdvancedMarker
@@ -59,6 +58,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.painterResource
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.PinConfig
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun NearbyLandmarksMap(
@@ -66,9 +68,9 @@ fun NearbyLandmarksMap(
     userMarker: MarkerState,
     modifier: Modifier = Modifier,
     onMapClick: (LatLng) -> Unit = {},
-    nearbyObjectsWithLocations: List<Pair<NearbyObject, Place>>,
-    selectedLandmark: NearbyObject?,
-    onLandmarkSelected: (NearbyObject) -> Unit,
+    selectedPlaceId: String?,
+    onLandmarkSelected: (String?) -> Unit,
+    landmarkMarkers: List<LandmarkMarker>,
 ) {
     val mapId = stringResource(id = R.string.map_id)
 
@@ -78,14 +80,17 @@ fun NearbyLandmarksMap(
         showAsMarkers = cameraPositionState.position.zoom < 17f
     }
 
-    LaunchedEffect(selectedLandmark) {
-        selectedLandmark?.let { selected ->
-            nearbyObjectsWithLocations.find { it.first == selected }?.let { (_, place) ->
-                cameraPositionState.animate(
-                    update = CameraUpdateFactory.newLatLng(place.latLng!!)
-                )
-            }
-        }
+    val droppedPinPinConfig = with(PinConfig.builder()) {
+        setBackgroundColor(MaterialTheme.colorScheme.tertiaryContainer.toArgb())
+        setBorderColor(MaterialTheme.colorScheme.onTertiaryContainer.toArgb())
+        build()
+    }
+
+    val selectedPinPinConfig = with(PinConfig.builder()) {
+        setBackgroundColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
+        setBorderColor(MaterialTheme.colorScheme.onSecondaryContainer.toArgb())
+        setGlyph(PinConfig.Glyph(MaterialTheme.colorScheme.onSecondaryContainer.toArgb()))
+        build()
     }
 
     Card(
@@ -101,77 +106,103 @@ fun NearbyLandmarksMap(
                 GoogleMapOptions().mapId(mapId)
             },
         ) {
-            val droppedPinPinConfig = with(PinConfig.builder()) {
-                setBackgroundColor(MaterialTheme.colorScheme.tertiaryContainer.toArgb())
-                setBorderColor(MaterialTheme.colorScheme.onTertiaryContainer.toArgb())
-                build()
-            }
-
-            val selectedPinPinConfig = with(PinConfig.builder()) {
-                setBackgroundColor(MaterialTheme.colorScheme.secondaryContainer.toArgb())
-                setBorderColor(MaterialTheme.colorScheme.onSecondaryContainer.toArgb())
-                setGlyph(PinConfig.Glyph(MaterialTheme.colorScheme.onSecondaryContainer.toArgb()))
-                build()
-            }
-
             AdvancedMarker(
                 state = userMarker,
-                title = stringResource(R.string.user_location),
-                snippet = "",
                 zIndex = 2f
             )
 
             if (showAsMarkers) {
-                nearbyObjectsWithLocations
-                    .filter { (nearbyObject, _) -> nearbyObject is NearbyObject.NearbyLandmark }
-                    .forEach { (nearbyObject, place) ->
-                        val (pinConfig, zIndex) = if (nearbyObject == selectedLandmark) {
-                            selectedPinPinConfig to 5f
-                        } else {
-                            droppedPinPinConfig to 1f
-                        }
+                landmarkMarkers.forEach { landmarkMarker ->
+//                    val (pinConfig, zIndex) = if (landmarkMarker.landmark.placeId == selectedPlaceId) {
+//                        selectedPinPinConfig to 5f
+//                    } else {
+//                        droppedPinPinConfig to 1f
+//                    }
+                    val (pinConfig, zIndex) = droppedPinPinConfig to 1f
 
-                        AdvancedMarker(
-                            state = MarkerState(position = place.latLng!!),
-                            title = nearbyObject.name,
-                            snippet = nearbyObject.spatialRelationship(),
-                            zIndex = zIndex,
-                            pinConfig = pinConfig,
-                            onClick = {
-                                onLandmarkSelected(nearbyObject)
-                                true
-                            }
-                        )
-                    }
-            } else {
-                nearbyObjectsWithLocations.forEach { (nearbyObject, place) ->
-                    if (nearbyObject == selectedLandmark) {
-                        MarkerComposable(
-                            state = MarkerState(position = place.latLng!!),
-                            zIndex = 5f,
-                            onClick = {
-                                onLandmarkSelected(nearbyObject)
-                                true
-                            }
-                        ) {
-                            LandmarkMarker(
-                                nearbyObject.name,
-                                textColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer
-                            )
+                    AdvancedMarker(
+                        state = landmarkMarker.marker,
+                        title = landmarkMarker.landmark.name,
+                        snippet = landmarkMarker.landmark.spatialRelationship(),
+                        zIndex = zIndex,
+                        pinConfig = pinConfig,
+                        onClick = {
+                            Log.e("NearbyLandmarksMap", "onClick: ${landmarkMarker.landmark.placeId}")
+                            onLandmarkSelected(landmarkMarker.landmark.placeId)
+                            true
                         }
-                    } else {
+                    )
+
+//                    if (landmarkMarker.landmark.placeId == selectedPlaceId) {
+//                        landmarkMarker.marker.showInfoWindow()
+//                    } else {
+//                        landmarkMarker.marker.hideInfoWindow()
+//                    }
+                }
+            } else {
+                landmarkMarkers.forEach { landmarkMarker ->
+                    val nearbyObject = landmarkMarker.landmark
+                    val placeId = landmarkMarker.landmark.placeId
+
+//                    if (placeId == selectedPlaceId) {
+//                        MarkerComposable(
+//                            state = landmarkMarker.marker,
+//                            zIndex = 5f,
+//                            onClick = {
+//                                onLandmarkSelected(placeId)
+//                                false
+//                            }
+//                        ) {
+//                            LandmarkMarker(
+//                                nearbyObject.name,
+//                                textColor = MaterialTheme.colorScheme.onSecondaryContainer,
+//                                borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
+//                                backgroundColor = MaterialTheme.colorScheme.secondaryContainer
+//                            )
+//                        }
+//                    } else {
+                    Log.e(
+                        "NearbyLandmarksMap",
+                        "Adding marker for ${nearbyObject.name} ${System.identityHashCode(landmarkMarker.marker)}"
+                    )
                         MarkerComposable(
-                            state = MarkerState(position = place.latLng!!),
+                            state = landmarkMarker.marker,
                             zIndex = 1f,
                             onClick = {
-                                onLandmarkSelected(nearbyObject)
-                                true
+                                onLandmarkSelected(placeId)
+                                false
                             }
                         ) {
                             LandmarkMarker(nearbyObject.name)
                         }
+//                    }
+                }
+            }
+        }
+
+        LaunchedEffect(selectedPlaceId, landmarkMarkers) {
+            delay(100.milliseconds)
+            launch {
+                landmarkMarkers.forEach { landmarkMarker ->
+                    if (landmarkMarker.landmark.placeId == selectedPlaceId) {
+                        Log.e(
+                            "NearbyLandmarksMap",
+                            "Showing info window for ${landmarkMarker.landmark.name} ${landmarkMarker.marker}"
+                        )
+                        cameraPositionState.animate(
+                            update = CameraUpdateFactory.newLatLng(landmarkMarker.marker.position)
+                        )
+                        Log.e(
+                            "NearbyLandmarksMap",
+                            "Showing info window for ${System.identityHashCode(landmarkMarker.marker)}"
+                        )
+                        landmarkMarker.marker.showInfoWindow()
+                    } else {
+                        Log.e(
+                            "NearbyLandmarksMap",
+                            "Hiding info window for ${landmarkMarker.landmark.name}"
+                        )
+                        landmarkMarker.marker.hideInfoWindow()
                     }
                 }
             }
@@ -195,27 +226,6 @@ fun LandmarkMarker(
     val borderShape = GenericShape { size, _ ->
         with(density) {
             reset()
-//            // Start in the top center
-//            moveTo(size.width / 2f, 0f)
-//
-//            // relative line to the right to where the arc will start
-//            lineTo(size.width - cornerRadius.toPx(), 0f)
-//
-//            arcTo(
-//                rect = Rect(
-//                    top = 0f,
-//                    left = size.width - cornerRadius.toPx() / 2,
-//                    bottom = cornerRadius.toPx(),
-//                    right = size.width
-//                ),
-//                startAngleDegrees = 0f,
-//                sweepAngleDegrees = 90f,
-//                forceMoveTo = false
-//            )
-//
-//            lineTo(size.width, size.height)
-//            lineTo(0f, size.height)
-//            lineTo(0f, 0f)
 
             addRoundRect(
                 roundRect = androidx.compose.ui.geometry.RoundRect(
