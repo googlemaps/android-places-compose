@@ -52,7 +52,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Places.initialize(this, BuildConfig.PLACES_API_KEY)
+        Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.PLACES_API_KEY)
         val placesClient = Places.createClient(this)
 
         val bias: LocationBias = RectangularBounds.newInstance(
