@@ -64,7 +64,6 @@ fun NearbyObjectsSelector(
             titleId = R.string.nearby_landmarks,
             nearbyObjects = landmarks,
             onNearbyObjectSelected = {
-                Log.d("NearbyObjectsSelector", "Nearby landmark selected: ${it.name}")
                 onNearbyLandmarkSelected(it.placeId)
             },
             selectedPlaceId = selectedPlaceId,

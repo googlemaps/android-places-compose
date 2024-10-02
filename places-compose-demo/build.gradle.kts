@@ -81,20 +81,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    ////////////////////////////////////////
-
-    // probably not needed...
-    // implementation(libs.androidx.material3.android)
-
-    // probably needed...
-    //    implementation(libs.kotlinx.coroutines.play.services)
-
-
-    //    implementation(project(":maps-compose-widgets"))
-    //    implementation(libs.androidx.foundation)
-
     implementation(libs.places)
-    implementation(libs.places.ktx)
 
     implementation(libs.kotlin.reflect)
     implementation(libs.androidx.navigation.compose)

@@ -13,4 +13,7 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.data.models
 
+/**
+ * Holds a county with its name, country code, and flag in unicode.
+ */
 data class Country(val name: String, val flag: String, val code: String)

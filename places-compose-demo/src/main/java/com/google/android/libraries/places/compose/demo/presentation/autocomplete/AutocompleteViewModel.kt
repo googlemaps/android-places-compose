@@ -99,7 +99,7 @@ constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedPlaceWithLocation = selectedPlace.mapLatest { selectedPlace ->
         selectedPlace?.let { place ->
-            placesRepository.getPlaceLatLng(place.placeId).second.latLng?.let { latLng ->
+            placesRepository.getPlaceLatLng(place.placeId).second.location?.let { latLng ->
                 place.copy(latLng = latLng)
             }
         }

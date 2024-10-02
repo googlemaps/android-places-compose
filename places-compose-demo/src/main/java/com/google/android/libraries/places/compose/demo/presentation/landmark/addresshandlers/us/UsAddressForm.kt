@@ -49,27 +49,27 @@ fun UsAddressForm(
     ) {
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.streetAddress,
             label = R.string.us_address_address,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = onAddressChanged?.let {
                 { onAddressChanged.invoke(address.copy(streetAddress = it)) }
             }
         )
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.additionalAddressInfo,
             label = R.string.us_address_suite_unit_floor,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = onAddressChanged?.let {
                 { onAddressChanged.invoke(address.copy(additionalAddressInfo = it)) }
             },
         )
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.city,
             label = R.string.us_address_city,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = onAddressChanged?.let {
                 { onAddressChanged.invoke(address.copy(city = it)) }
             },
@@ -80,17 +80,17 @@ fun UsAddressForm(
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             AddressTextField(
-                modifier = Modifier.weight(1f),
                 value = address.state,
                 label = R.string.us_address_state,
+                modifier = Modifier.weight(1f),
                 onValueChange = onAddressChanged?.let {
                     { onAddressChanged.invoke(address.copy(state = it)) }
                 },
             )
             AddressTextField(
-                modifier = Modifier.weight(1f),
                 value = address.zipCode,
                 label = R.string.us_address_zip,
+                modifier = Modifier.weight(1f),
                 onValueChange = onAddressChanged?.let {
                     { onAddressChanged.invoke(address.copy(zipCode = it)) }
                 },
@@ -106,14 +106,14 @@ fun UsAddressForm(
         }
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.country,
             label = R.string.us_address_country,
-            onValueChange = onAddressChanged?.let {
-                { onAddressChanged.invoke(address.copy(country = it)) }
-            },
+            modifier = Modifier.fillMaxWidth(),
             leadingIcon = CountriesRepository.countries[address.countryCode]?.flag?.let {
                 { Text(it) }
+            },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(country = it)) }
             }
         )
     }

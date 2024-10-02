@@ -41,16 +41,16 @@ fun IndiaAddressForm(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.aptSuiteUnit,
             label = R.string.india_address_unit_number,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = { onAddressChanged?.invoke(address.copy(aptSuiteUnit = it)) },
         )
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.streetAddress,
             label = R.string.india_address_street_address,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = { onAddressChanged?.invoke(address.copy(streetAddress = it)) },
         )
 
@@ -63,9 +63,9 @@ fun IndiaAddressForm(
         }
 
         AddressTextField(
-            modifier = Modifier.fillMaxWidth(),
             value = address.city,
             label = R.string.india_address_city,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = { onAddressChanged?.invoke(address.copy(city = it)) },
         )
 
@@ -75,17 +75,17 @@ fun IndiaAddressForm(
         ) {
 
             AddressTextField(
-                modifier = Modifier.weight(1f),
                 value = address.state,
                 label = R.string.india_address_state,
+                modifier = Modifier.weight(1f),
                 onValueChange = { onAddressChanged?.invoke(address.copy(state = it)) },
             )
 
            AddressTextField(
-                modifier = Modifier.weight(1f),
-                value = address.pinCode,
-                label = R.string.india_address_pincode,
-                onValueChange = { onAddressChanged?.invoke(address.copy(pinCode = it)) },
+               value = address.pinCode,
+               label = R.string.india_address_pincode,
+               modifier = Modifier.weight(1f),
+               onValueChange = { onAddressChanged?.invoke(address.copy(pinCode = it)) },
            )
         }
 

@@ -38,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.PlaceTypes
 import com.google.android.libraries.places.api.model.RectangularBounds
+import com.google.android.libraries.places.api.net.kotlin.awaitFindAutocompletePredictions
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.data.Meters
@@ -51,7 +52,6 @@ import com.google.android.libraries.places.compose.demo.data.repositories.Geocod
 import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
-import com.google.android.libraries.places.ktx.api.net.awaitFindAutocompletePredictions
 import com.google.maps.android.ktx.utils.withSphericalOffset
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi

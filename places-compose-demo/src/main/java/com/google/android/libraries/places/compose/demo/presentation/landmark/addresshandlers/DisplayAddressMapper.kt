@@ -13,7 +13,6 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers
 
-import android.util.Log
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.`in`.toIndiaDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.toUsDisplayAddress
@@ -24,7 +23,6 @@ fun Address.toDisplayAddress(): DisplayAddress {
         "US" -> this.toUsDisplayAddress()
         "IN" -> this.toIndiaDisplayAddress()
         else -> {
-            Log.e("Address", "Unsupported country code: $countryCode")
             // Fallback to US address format
             this.toUsDisplayAddress()
         }

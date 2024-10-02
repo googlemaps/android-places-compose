@@ -1,29 +1,22 @@
 package com.google.android.libraries.places.compose.demo.data.repositories
 
 import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.stateIn
 
 data class LabeledLocation(
   val latLng: LatLng,
   val label: String,
 )
 
-class MockLocationRepository(scope: CoroutineScope) {
+class MockLocationRepository {
   private val _mockLocationNumber = MutableStateFlow(0)
   private val mockLocationNumber: StateFlow<Int> = _mockLocationNumber.asStateFlow()
-
-  // TODO: remove this
-  private val mockLocationFlow = MutableStateFlow("" to LatLng(0.0, 0.0))
 
   @OptIn(ExperimentalCoroutinesApi::class)
   private val mockLocation = mockLocationNumber.mapLatest {
@@ -35,37 +28,18 @@ class MockLocationRepository(scope: CoroutineScope) {
 
   private val userClickedLocation = MutableStateFlow<LabeledLocation?>(null)
 
-  // KEEP THIS ONE!
   val location = merge(mockLocation, userClickedLocation).mapNotNull { location ->
     location
   }
 
   fun setMockLocation(location: LatLng) {
     userClickedLocation.value = LabeledLocation(location, "User selected")
-    mockLocationFlow.value = "User selected" to location
   }
 
   fun nextMockLocation(): Pair<String, LatLng> {
     _mockLocationNumber.value = (_mockLocationNumber.value + 1) % locations.size
     return locations[_mockLocationNumber.value]
   }
-
-  val labeledLocation: StateFlow<Pair<String, LatLng>> = mockLocationNumber.map { index ->
-    locations[index]
-  }.stateIn(
-    scope = scope,
-    started = SharingStarted.Eagerly,
-    initialValue = locations[0]
-  )
-
-  @OptIn(ExperimentalCoroutinesApi::class)
-  val selectedMockLocation = labeledLocation.mapLatest { location ->
-    location.second
-  }.stateIn(
-    scope = scope,
-    started = SharingStarted.Eagerly,
-    initialValue = locations[0].second
-  )
 
   companion object {
     val mockLocations = listOf(
