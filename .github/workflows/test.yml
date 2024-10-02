@@ -51,7 +51,7 @@ jobs:
       uses: madrapps/jacoco-report@v1.6.1
       with:
         paths: |
-          ${{ github.workspace }}/app/build/reports/coverage/androidTest/debug/connected/report.xml
+          ${{ github.workspace }}/places-compose/build/jacoco/jacoco.xml
         token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
         min-coverage-overall: 26
         min-coverage-changed-files: 60
