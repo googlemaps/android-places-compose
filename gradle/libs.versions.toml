@@ -3,7 +3,7 @@ accompanistPermissions = "0.34.0"
 activityCompose = "1.9.2"
 agp = "8.6.1"
 appcompat = "1.7.0"
-composeBom = "2024.09.01"
+composeBom = "2024.09.02"
 coreKtx = "1.13.1"
 dokka = "1.9.20"
 espressoCore = "3.6.1"
@@ -16,23 +16,23 @@ kotlin = "2.0.0"
 kotlinReflect = "2.0.0"
 kotlinxCoroutinesPlayServices = "1.8.1"
 ksp = "2.0.0-1.0.21"
-lifecycleRuntimeKtx = "2.8.5"
-lifecycleViewmodelCompose = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
+lifecycleViewmodelCompose = "2.8.6"
 mapsCompose = "6.1.0"
 mapsUtilsKtx = "5.1.1"
-materialVersion = "1.13.0-alpha05"
-navigationCompose = "2.8.0"
+materialVersion = "1.13.0-alpha06"
+navigationCompose = "2.8.1"
 org-jacoco-core = "0.8.11"
-places = "3.5.0"
-placesKtx = "3.2.0"
+places = "4.0.0"
 robolectric = "4.12.2"
 secretsGradlePlugin = "2.0.1"
 truth = "1.4.2"
-uiToolingVersion = "1.7.1"
-uiTestAndroid = "1.7.1"
+uiTestAndroid = "1.7.2"
+uiToolingVersion = "1.7.2"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
@@ -46,16 +46,20 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 dagger = { group = "com.google.dagger", name = "dagger", version.ref = "hiltVersion" }
+dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 google-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltVersion" }
+jacoco-android-plugin = { module = "com.mxalbert.gradle:jacoco-android", version.ref = "jacoco-plugin", version.require = "0.2.1" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlinReflect" }
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
@@ -63,17 +67,11 @@ maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", ve
 maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "mapsCompose" }
 maps-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtilsKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "org-jacoco-core" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
-places-ktx = { group = "com.google.maps.android", name = "places-ktx", version.ref = "placesKtx" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiToolingVersion" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiToolingVersion" }
-jacoco-android-plugin = { module = "com.mxalbert.gradle:jacoco-android", version.ref = "jacoco-plugin", version.require = "0.2.1" }
-org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "org-jacoco-core" }
-kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

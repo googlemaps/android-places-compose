@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -115,7 +116,7 @@ class LocationRepository(context: Context, private val scope: CoroutineScope) {
 
     return _locationUpdates.stateIn(
       scope = scope,
-      SharingStarted.WhileSubscribed(5000),
+      SharingStarted.WhileSubscribed(5.seconds),
       initialValue = Location("MockLocation")
     )
   }

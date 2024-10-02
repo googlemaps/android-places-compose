@@ -16,10 +16,9 @@ package com.google.android.libraries.places.compose.demo.data.repositories
 import androidx.compose.runtime.mutableStateMapOf
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.ktx.api.net.awaitFetchPlace
+import com.google.android.libraries.places.api.net.kotlin.awaitFetchPlace
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Repository for managing places data.
@@ -31,40 +30,46 @@ class PlaceRepository(
 ) {
     private val placesIdsWithLocations = mutableStateMapOf<String, Place>()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPlaceLatLng(placeId: String): Pair<String, Place> {
-        return placeId to placesIdsWithLocations.getOrElse(placeId) {
-            withContext(Dispatchers.IO) {
-                val place = placesClient.awaitFetchPlace(placeId, listOf(Place.Field.LAT_LNG)).place
-                withContext(Dispatchers.Main) {
-                    placesIdsWithLocations[placeId] = place
+        return withContext(Dispatchers.Main) {
+            placeId to placesIdsWithLocations.getOrElse(placeId) {
+                withContext(Dispatchers.IO) {
+                    placesClient.awaitFetchPlace(
+                        placeId = placeId,
+                        placeFields = listOf(Place.Field.LOCATION)
+                    ).place.also { place ->
+                        withContext(Dispatchers.Main) {
+                            placesIdsWithLocations[placeId] = place
+                        }
+                    }
                 }
-                place
             }
         }
     }
 
     private val placesIdsWithAddresses = mutableStateMapOf<String, Place>()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getPlaceAddress(placeId: String): Place {
         val placeFields = listOf(
             Place.Field.ID,
             Place.Field.ADDRESS_COMPONENTS,
-            Place.Field.ADDRESS,
-            Place.Field.LAT_LNG
+            Place.Field.FORMATTED_ADDRESS,
+            Place.Field.LOCATION,
         )
 
-        if (placesIdsWithAddresses.containsKey(placeId)) {
-            return placesIdsWithAddresses.getValue(placeId)
-        }
-
-        return withContext(Dispatchers.IO) {
-            val place = placesClient.awaitFetchPlace(placeId, placeFields).place
-            withContext(Dispatchers.Main) {
-                placesIdsWithAddresses[placeId] = place
+        return withContext(Dispatchers.Main) {
+            placesIdsWithAddresses.getOrElse(placeId) {
+                withContext(Dispatchers.IO) {
+                    placesClient.awaitFetchPlace(
+                        placeId = placeId,
+                        placeFields = placeFields
+                    ).place.also { place ->
+                        withContext(Dispatchers.Main) {
+                            placesIdsWithAddresses[placeId] = place
+                        }
+                    }
+                }
             }
-            place
         }
     }
 }

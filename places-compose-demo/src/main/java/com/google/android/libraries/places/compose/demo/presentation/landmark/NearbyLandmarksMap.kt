@@ -24,28 +24,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.GenericShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import com.google.android.gms.maps.GoogleMapOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.compose.demo.R
-import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
-import com.google.maps.android.compose.AdvancedMarker
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MarkerComposable
-import com.google.maps.android.compose.MarkerState
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -53,11 +35,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMapOptions
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PinConfig
+import com.google.android.libraries.places.compose.demo.R
+import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
+import com.google.maps.android.compose.AdvancedMarker
+import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MarkerComposable
+import com.google.maps.android.compose.MarkerState
 
 @Composable
 fun NearbyLandmarksMap(
@@ -95,21 +95,19 @@ fun NearbyLandmarksMap(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        // TODO: remove the key
-        key(landmarkMarkers) {
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-                onMapClick = onMapClick,
-                googleMapOptionsFactory = {
-                    GoogleMapOptions().mapId(mapId)
-                },
-            ) {
-                AdvancedMarker(
-                    state = userMarker,
-                    zIndex = 2f
-                )
-
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            onMapClick = onMapClick,
+            googleMapOptionsFactory = {
+                GoogleMapOptions().mapId(mapId)
+            },
+        ) {
+            AdvancedMarker(
+                state = userMarker,
+                zIndex = 2f
+            )
+            key(landmarkMarkers) {
                 if (showAsMarkers) {
                     landmarkMarkers.forEach { landmarkMarker ->
                         val (pinConfig, zIndex) = if (landmarkMarker.landmark.placeId == selectedPlaceId) {

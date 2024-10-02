@@ -22,7 +22,6 @@ import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.libraries.places.compose.autocomplete.repositories.AutocompleteRepository
 import com.google.android.libraries.places.compose.demo.PlacesComposeDemoApplication
-import com.google.android.libraries.places.compose.demo.data.repositories.AddressValidationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.ApiKeyProvider
 import com.google.android.libraries.places.compose.demo.data.repositories.CountriesRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
@@ -106,29 +105,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAddressValidationRepository(
-        apiKeyProvider: ApiKeyProvider,
-        requestQueue: RequestQueue
-    ): AddressValidationRepository {
-        return AddressValidationRepository(
-            apiKeyProvider = apiKeyProvider,
-            requestQueue = requestQueue
-        )
-    }
-
-    @Provides
-    @Singleton
     fun provideCountriesRepository(): CountriesRepository {
         return CountriesRepository()
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     @Provides
     @Singleton
     fun provideMockLocationRepository(application: Application): MockLocationRepository {
-        return MockLocationRepository(
-            (application as PlacesComposeDemoApplication).applicationScope
-        )
+        return MockLocationRepository()
     }
 
     @OptIn(DelicateCoroutinesApi::class)

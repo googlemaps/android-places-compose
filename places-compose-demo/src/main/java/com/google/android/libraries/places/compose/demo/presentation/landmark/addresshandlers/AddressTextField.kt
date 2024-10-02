@@ -26,8 +26,7 @@ fun AddressTextField(
     value: String,
     @StringRes label: Int,
     modifier: Modifier = Modifier,
-    readonly: Boolean = false,
-    leadingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable() (() -> Unit)? = null,
     onValueChange: ((String) -> Unit)? = null,
     onFocusChanged: ((Boolean) -> Unit)? = null,
 ) {
