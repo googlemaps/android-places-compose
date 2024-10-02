@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    id("android.places.compose.PublishingConventionPlugin")
 }
 
 android {
@@ -45,7 +46,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.places)
-//    implementation(libs.androidx.ui.test.junit4.android)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.ui.test.android)
     androidTestImplementation(libs.androidx.junit)
