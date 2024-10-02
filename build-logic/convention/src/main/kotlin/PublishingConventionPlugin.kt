@@ -60,12 +60,12 @@ class PublishingConventionPlugin : Plugin<Project> {
                     }
                     pom {
                         name.set(project.name)
-                        description.set("Jetpack Compose components for the Maps SDK for Android")
-                        url.set("https://github.com/googlemaps/android-maps-compose")
+                        description.set("Jetpack Compose components for the Places SDK for Android")
+                        url.set("https://github.com/googlemaps/android-places-compose")
                         scm {
-                            connection.set("scm:git@github.com:googlemaps/android-maps-compose.git")
-                            developerConnection.set("scm:git@github.com:googlemaps/android-maps-compose.git")
-                            url.set("https://github.com/googlemaps/android-maps-compose")
+                            connection.set("scm:git@github.com:googlemaps/android-places-compose.git")
+                            developerConnection.set("scm:git@github.com:googlemaps/android-places-compose.git")
+                            url.set("https://github.com/googlemaps/android-places-compose")
                         }
                         licenses {
                             license {
