@@ -1,5 +1,6 @@
 ![Maven Central Version](https://img.shields.io/maven-central/v/com.google.maps.android/places-compose)
-![Static Badge](https://img.shields.io/badge/release-alpha-orange)
+![Static Badge](https://img.shields.io/badge/release-alpha-orange) ![GitHub License](https://img.shields.io/github/license/googlemaps/android-places-compose)
+
 
 # Android Places Compose Library (Alpha)
 
