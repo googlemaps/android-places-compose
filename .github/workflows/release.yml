@@ -37,6 +37,7 @@ jobs:
         echo $GPG_KEY_ARMOR > ./release.asc
         md5sum "./release.asc"
         head -c 50 ./release.asc
+        tail -c 50 ./release.asc
         gpg --quiet --output $GITHUB_WORKSPACE/release.gpg --dearmor ./release.asc
         md5sum "$GITHUB_WORKSPACE/release.gpg"
         echo "Build and publish"
