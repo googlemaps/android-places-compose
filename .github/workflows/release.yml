@@ -15,7 +15,7 @@
 name: Release
 on:
   push:
-    branches: [ main ]
+    branches: [ 'fix_release' ]
   workflow_dispatch:
 
 jobs:
@@ -35,6 +35,7 @@ jobs:
     - name: Create .gpg key
       run: |
         echo $GPG_KEY_ARMOR > ./release.asc
+        md5sum "$GITHUB_WORKSPACE/release.gpg"
         gpg --quiet --output $GITHUB_WORKSPACE/release.gpg --dearmor ./release.asc
 
         echo "Build and publish"
