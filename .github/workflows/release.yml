@@ -34,7 +34,7 @@ jobs:
         distribution: 'adopt'
     - name: Create .gpg key
       run: |
-        echo $GPG_KEY_ARMOR > ./release.asc
+        echo $GPG_KEY_ARMOR | base64 --decode > ./release.asc
         md5sum "./release.asc"
         head -c 50 ./release.asc
         tail -c 50 ./release.asc
