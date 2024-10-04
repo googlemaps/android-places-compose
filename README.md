@@ -1,11 +1,14 @@
-# Android Places Compose Library
+![Maven Central Version](https://img.shields.io/maven-central/v/com.google.maps.android/places-compose)
+![Static Badge](https://img.shields.io/badge/release-alpha-orange)
+
+# Android Places Compose Library (Alpha)
 
 ## Description
 
 This is a Jetpack Compose library for the Google Maps Platform Places SDK for Android. It provides a
-reusable Places Autocomplete Compose widget.  
+reusable Place Autocomplete composable based on the [new Places API](https://mapsplatform.google.com/resources/blog/the-next-generation-of-autocomplete-is-now-generally-available/).  
 
-Additionally, there is a sample app showing how to use the widget as well as demonstrating 
+Additionally, there is a [sample app](https://github.com/googlemaps/android-places-compose/tree/main/places-compose-demo) showing how to use the widget as well as demonstrating 
 [Address Descriptors](https://developers.google.com/maps/documentation/geocoding/address-descriptors/requests-address-descriptors)
 and address entry.
 
@@ -13,12 +16,13 @@ and address entry.
 
 * Android API 24 (or newer) (Android 7.0 Nougat)  
 * Android Studio (Koala or newer recommended)
+* A Google Maps Platform [API key](https://developers.google.com/maps/documentation/places/android-sdk/get-api-key) from a project with the [**Places API (New)** enabled](https://developers.google.com/maps/documentation/places/android-sdk/cloud-setup#enabling-apis).
 
 ## Installation
 
-Maven artifacts are coming soon...
+Add the dependency below to your **module-level** Gradle build file:
 
-Add the dependency below to your module's `build.gradle.kts` file:
+### Kotlin (`build.gradle.kts`)
 
 ```kotlin
 dependencies {
@@ -26,13 +30,21 @@ dependencies {
 }
 ```
 
+### Groovy (`build.gradle`)
+
+```groovy
+dependencies {
+    implementation 'com.google.maps.android:places-compose:0.1.0'
+}
+```
+
 ## Sample App
 
-This repository includes a full-featured demo app that demonstrates how to use the library. To run the demo app, follow these steps:
+This repository includes a full-featured [demo app](https://github.com/googlemaps/android-places-compose/tree/main/places-compose-demo) that demonstrates how to use the library. To run the demo app, follow these steps:
 
 1. Clone the repository
 2. [Get a Places API key][api-key]
-3. Copy `local.defaults.properties` to `secrets.properties` and replace `DEFAULT_API_KEY` with your API key(s). (Note: this file should *NOT* be
+3. Copy `local.defaults.properties` to a new file in the same folder `secrets.properties` and replace `DEFAULT_API_KEY` with your API key(s). (Note: this file should *NOT* be
    under version control to protect your API key)
 4. Build and run
 
