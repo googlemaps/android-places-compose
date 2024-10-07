@@ -51,15 +51,11 @@ fun List<AddressComponent>.toAddress(): Address {
 
 class AddressComponentMultiMap(components: Collection<AddressComponent>) {
     // Initialize a map to store address components grouped by their types
-    private val componentsByType = run {
-        val map = mutableMapOf<String, MutableList<AddressComponent>>()
-        components.forEach { addressComponent ->
-            addressComponent.types.forEach {
-                map.getOrPut(it) { mutableListOf() }.add(addressComponent)
-            }
+    private val componentsByType: Map<String, List<AddressComponent>> = components
+        .flatMap { addressComponent -> 
+            addressComponent.types.map { type -> type to addressComponent } 
         }
-        map
-    }
+        .groupBy({ it.first }, { it.second })
 
     operator fun get(type: AddressComponentType) =
         componentsByType[type.name.lowercase()]
