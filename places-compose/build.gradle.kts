@@ -6,6 +6,10 @@ plugins {
 }
 
 android {
+    lint {
+        sarifOutput = file("$buildDir/reports/lint-results.sarif")
+    }
+
     namespace = "com.google.android.libraries.places.compose"
     compileSdk = 34
 
