@@ -35,7 +35,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.google.maps.android:places-compose:0.2.0'
+    implementation 'com.google.maps.android:places-compose:0.1.1'
 }
 ```
 
