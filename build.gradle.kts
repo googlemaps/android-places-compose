@@ -16,6 +16,6 @@ plugins {
 
 allprojects {
     group = "com.google.maps.android"
-    version = "0.1.1"
+    version = "0.1.2"
     val projectArtifactId by extra { project.name }
 }
