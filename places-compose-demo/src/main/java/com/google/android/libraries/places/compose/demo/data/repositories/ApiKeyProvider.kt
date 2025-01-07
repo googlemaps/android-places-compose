@@ -15,6 +15,7 @@ package com.google.android.libraries.places.compose.demo.data.repositories
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.widget.Toast
 import com.google.android.libraries.places.compose.demo.BuildConfig
 
 /**
@@ -46,5 +47,16 @@ class ApiKeyProvider(private val context: Context) {
             error("MapsApiKey missing from AndroidManifest.")
         }
         return mapsApiKey
+    }
+
+    init {
+        if (placesApiKey == "DEFAULT_API_KEY" || (getMapsApiKeyFromManifest() == "DEFAULT_API_KEY")) {
+            Toast.makeText(
+                context,
+                "One or more API keys have not been set.  Please see the README.md file.",
+                Toast.LENGTH_LONG
+            ).show()
+            error("One or more API keys have not been set.  Please see the README.md file.")
+        }
     }
 }

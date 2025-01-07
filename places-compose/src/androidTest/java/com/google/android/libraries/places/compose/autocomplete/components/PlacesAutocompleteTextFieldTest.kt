@@ -121,8 +121,22 @@ class PlacesAutocompleteTextFieldTest {
             var isExpanded by remember { mutableStateOf(false) }
             AutocompletePlaceRow(
                 autocompletePlace = testPlace.copy(
-                    primaryText = SpannableString("Very long primary text that should be truncated"),
-                    secondaryText = SpannableString("Very long secondary text that should be truncated")
+                    primaryText = SpannableString(
+                        "Very long primary text that should be truncated" +
+                                "There is no strife, no prejudice, no national conflict in outer " +
+                                "space as yet. Its hazards are hostile to us all. Its conquest " +
+                                "deserves the best of all mankind, and its opportunity for " +
+                                "peaceful cooperation many never come again. " +
+                                "But why, some say, the moon? Why choose this as our goal? " +
+                                "And they may well ask why climb the highest mountain?"
+                    ),
+                    secondaryText = SpannableString(
+                        "Very long secondary text that should be truncated" +
+                                "It is for these reasons that I regard the decision last year to" +
+                                "shift our efforts in space from low to high gear as among the most " +
+                                "important decisions that will be made during my incumbency in the " +
+                                "office of the Presidency."
+                    )
                 ),
                 isSelected = false,
                 onPlaceSelected = {},

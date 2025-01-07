@@ -11,11 +11,10 @@ android {
     }
 
     namespace = "com.google.android.libraries.places.compose"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
-
+        minSdk = 24
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
@@ -29,18 +28,20 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = "21"
     }
 
     buildFeatures {
         buildConfig = true
         compose = true
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 }
 
@@ -54,6 +55,7 @@ dependencies {
     testImplementation(libs.androidx.ui.test.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.ui.test.android)
 
     implementation(libs.gson)
     implementation(libs.kotlinx.coroutines.play.services)
@@ -76,4 +78,7 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.robolectric)
+
+    androidTestImplementation(libs.ui.test.junit4)
+//    debugImplementation(libs.ui.test.manifest)
 }

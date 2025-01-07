@@ -40,17 +40,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.libraries.places.compose.demo.data.repositories.ApiKeyProvider
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteActivity
 import com.google.android.libraries.places.compose.demo.presentation.landmark.LandmarkSelectionActivity
 import com.google.android.libraries.places.compose.demo.presentation.addresscompletion.AddressCompletionActivity
 import com.google.android.libraries.places.compose.demo.presentation.minimal.PlacesAutocompleteMinimalActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var apiKeyProvider: ApiKeyProvider
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             AndroidPlacesComposeDemoTheme {
                 Surface(
