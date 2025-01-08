@@ -80,5 +80,4 @@ dependencies {
     testImplementation(libs.robolectric)
 
     androidTestImplementation(libs.ui.test.junit4)
-//    debugImplementation(libs.ui.test.manifest)
 }
