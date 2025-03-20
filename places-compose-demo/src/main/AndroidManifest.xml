@@ -16,7 +16,7 @@
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:name=".PlacesComposeDemoApplication"
         android:allowBackup="true"
@@ -47,24 +47,24 @@
         
         <activity
             android:name=".presentation.autocomplete.AutocompleteActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".presentation.landmark.LandmarkSelectionActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AndroidPlacesCompose"
             />
 
         <activity
             android:name=".presentation.addresscompletion.AddressCompletionActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AndroidPlacesCompose"
             />
 
         <activity
             android:name=".presentation.minimal.PlacesAutocompleteMinimalActivity"
             android:label="Minimal autocomplete"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AndroidPlacesCompose"
             />
 
