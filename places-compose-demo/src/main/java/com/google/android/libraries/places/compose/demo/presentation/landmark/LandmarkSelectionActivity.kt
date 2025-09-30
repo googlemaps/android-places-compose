@@ -33,6 +33,7 @@ import com.google.android.libraries.places.compose.demo.presentation.common.Comm
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonScreen
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
 import com.google.maps.android.compose.rememberMarkerState
+import com.google.maps.android.compose.rememberUpdatedMarkerState
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -78,7 +79,7 @@ class LandmarkSelectionActivity : ComponentActivity() {
                 val nearbyObjectsWithLocations by landmarkSelectionViewModel.nearbyObjectsWithLatLngs.collectAsStateWithLifecycle()
                 val displayAddress by landmarkSelectionViewModel.displayAddress.collectAsStateWithLifecycle()
 
-                val userMarker = rememberMarkerState(position = location)
+                val userMarker = rememberUpdatedMarkerState(position = location)
                 val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
                 val landmarkMarkers by landmarkSelectionViewModel.landmarkMarkers.collectAsStateWithLifecycle()
 
