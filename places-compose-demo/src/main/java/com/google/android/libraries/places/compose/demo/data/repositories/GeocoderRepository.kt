@@ -30,9 +30,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import androidx.core.net.toUri
 
 inline fun buildUrl(baseUrl: String, block: Uri.Builder.() -> Unit): String {
-    val builder = Uri.parse(baseUrl).buildUpon()
+    val builder = baseUrl.toUri().buildUpon()
     block(builder)
     return builder.build().toString()
 }

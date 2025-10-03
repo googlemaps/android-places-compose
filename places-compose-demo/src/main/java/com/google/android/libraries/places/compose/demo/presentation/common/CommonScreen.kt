@@ -31,6 +31,7 @@ import com.google.android.libraries.places.compose.demo.presentation.components.
 import com.google.android.libraries.places.compose.demo.presentation.components.SelectableButton
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
+import androidx.compose.ui.platform.LocalConfiguration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,7 +44,7 @@ fun CommonScreen(
 ) {
     val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
     val country = commonViewState.countryCode
-        ?: LocalContext.current.resources.configuration.locales.get(0).country
+        ?: LocalConfiguration.current.locales.get(0).country
 
     // Determine which units converter to use based on the country.
     val unitsConverter = remember(country) {

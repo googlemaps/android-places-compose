@@ -41,7 +41,7 @@ import com.google.maps.android.compose.AdvancedMarker
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.google.maps.android.compose.rememberMarkerState
+import com.google.maps.android.compose.rememberUpdatedMarkerState
 
 /**
  * A composable function that displays a Google Map with a marker at the location if provided.
@@ -87,7 +87,7 @@ fun GoogleMapContainer(
 
 
             if (markerLatLng != null) {
-                val markerState = rememberMarkerState(position = markerLatLng)
+                val markerState = rememberUpdatedMarkerState(position = markerLatLng)
 
                 LaunchedEffect(markerLatLng) {
                     markerState.position = markerLatLng

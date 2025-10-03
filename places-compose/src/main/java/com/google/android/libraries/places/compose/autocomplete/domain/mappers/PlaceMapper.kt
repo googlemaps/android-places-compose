@@ -26,3 +26,6 @@ private fun com.google.android.libraries.places.api.model.AddressComponent.toAdd
 
 fun List<com.google.android.libraries.places.api.model.AddressComponent>.toAddress(): Address =
     map { it.toAddressComponent() }.toAddressComponentMultiMap().toAddress()
+
+
+

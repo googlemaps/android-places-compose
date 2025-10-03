@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin.android)
@@ -7,11 +9,11 @@ plugins {
 
 android {
     lint {
-        sarifOutput = file("$buildDir/reports/lint-results.sarif")
+        sarifOutput = file("${layout.buildDirectory}/reports/lint-results.sarif")
     }
 
     namespace = "com.google.android.libraries.places.compose"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 24
@@ -35,8 +37,10 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 
     buildFeatures {
@@ -67,6 +71,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material.icons.core)
     debugImplementation(libs.androidx.compose.ui.ui.tooling)
 
     testImplementation(libs.google.truth)
