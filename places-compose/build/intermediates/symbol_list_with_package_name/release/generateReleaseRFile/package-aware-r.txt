@@ -1,0 +1,24 @@
+com.google.android.libraries.places.compose
+drawable google_on_non_white
+drawable google_on_white
+string back
+string clear
+string collapse_entry
+string distance
+string expand_entry
+string google
+string in_feet
+string in_kilometers
+string in_meters
+string in_miles
+string search_for_places
+string show_less
+string show_more
+string spatial_relationship_across_the_road
+string spatial_relationship_around_the_corner
+string spatial_relationship_behind
+string spatial_relationship_beside
+string spatial_relationship_down_the_road
+string spatial_relationship_near
+string spatial_relationship_outskirts_of
+string spatial_relationship_within
