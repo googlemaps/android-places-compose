@@ -9,7 +9,7 @@ plugins {
 
 android {
     lint {
-        sarifOutput = file("$buildDir/reports/lint-results.sarif")
+        sarifOutput = file("${layout.buildDirectory}/reports/lint-results.sarif")
     }
 
     namespace = "com.google.android.libraries.places.compose.demo"
@@ -50,8 +50,10 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     buildFeatures {
