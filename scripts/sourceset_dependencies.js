@@ -1,1 +1,1 @@
-sourceset_dependencies='{":places-compose:dokkaHtml/debug":[],":places-compose:dokkaHtml/main":[],":places-compose:dokkaHtml/release":[]}'
+sourceset_dependencies='{":places-compose/debug":[],":places-compose/main":[],":places-compose/release":[]}'

@@ -1,0 +1,34 @@
+{
+  "moduleName": "Android Places Compose",
+  "moduleVersion": "0.2.0",
+  "outputDir": "/home/runner/work/android-places-compose/android-places-compose/build/dokka/html",
+  "cacheRoot": null,
+  "offlineMode": false,
+  "sourceSets": [
+  ],
+  "pluginsClasspath": [
+    "/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains.dokka/templating-plugin/2.1.0/c3c13a48444b9c22e5286e88581ce0334e25352d/templating-plugin-2.1.0.jar",
+    "/home/runner/.gradle/caches/modules-2/files-2.1/org.jetbrains.dokka/dokka-base/2.1.0/3379db5f1799a2ae6c98603214367743d4d6863f/dokka-base-2.1.0.jar"
+  ],
+  "pluginsConfiguration": [
+    {
+      "fqPluginName": "org.jetbrains.dokka.base.DokkaBase",
+      "serializationFormat": "JSON",
+      "values": "{\"customAssets\":[],\"customStyleSheets\":[],\"separateInheritedMembers\":false,\"mergeImplicitExpectActualDeclarations\":false}"
+    },
+    {
+      "fqPluginName": "org.jetbrains.dokka.versioning.VersioningPlugin",
+      "serializationFormat": "JSON",
+      "values": "{\"olderVersions\":[],\"renderVersionsNavigationOnAllPages\":true}"
+    }
+  ],
+  "modules": [
+  ],
+  "failOnWarning": false,
+  "delayTemplateSubstitution": false,
+  "suppressObviousFunctions": true,
+  "includes": [
+  ],
+  "suppressInheritedMembers": false,
+  "finalizeCoroutines": false
+}
