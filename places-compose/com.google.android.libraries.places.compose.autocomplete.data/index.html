@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
     <title>com.google.android.libraries.places.compose.autocomplete.data</title>
     <link href="../../images/logo-icon.svg" rel="icon" type="image/svg">
-    <script>var pathToRoot = "../../";</script>
-    <script>document.documentElement.classList.replace("no-js","js");</script>
+        <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
     <script>const storage = localStorage.getItem("dokka-dark-mode")
-    if (storage == null) {
+      if (storage == null) {
         const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
         if (osDarkSchemePreferred === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    } else {
+      } else {
         const savedDarkMode = JSON.parse(storage)
-        if(savedDarkMode === true) {
-            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
         }
-    }
+      }
     </script>
 <script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async="async"></script>
@@ -25,20 +25,18 @@
 <link href="../../styles/main.css" rel="Stylesheet">
 <link href="../../styles/prism.css" rel="Stylesheet">
 <link href="../../styles/logo-styles.css" rel="Stylesheet">
-<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
 <link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
-<script type="text/javascript" src="../../scripts/clipboard.js" async="async"></script>
+<script type="text/javascript" src="../../scripts/safe-local-storage_blocking.js"></script>
 <script type="text/javascript" src="../../scripts/navigation-loader.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/platform-content-handler.js" async="async"></script>
 <script type="text/javascript" src="../../scripts/main.js" defer="defer"></script>
 <script type="text/javascript" src="../../scripts/prism.js" async="async"></script>
 <script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer="defer"></script>
-<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer="defer"></script>
 </head>
 <body>
-    <div class="root">
-    <nav class="navigation theme-dark" id="navigation-wrapper">
-            <a class="library-name--link" href="../../index.html">
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../index.html" tabindex="1">
                     places-compose
             </a>
         <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
@@ -48,9 +46,9 @@
         <div class="library-version" id="library-version">
 0.2.0        </div>
         <div class="navigation-controls">
-        <div class="filter-section filter-section_loading" id="filter-section">
-                <button class="platform-tag platform-selector jvm-like" data-active=""
-                        data-filter=":places-compose:dokkaHtml/release">androidJvm</button>
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":places-compose/main">androidJvm</button>
             <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
                 <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
                         data-role="dropdown-toggle"
@@ -59,16 +57,16 @@
                         aria-expanded="false"
                         aria-label="Toggle source sets"
                 ></button>
-                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
-                    <div class="dropdown--header"><span>Platform filter</span>
-                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
                             <i class="ui-kit-icon ui-kit-icon_cross"></i>
                         </button>
                     </div>
                         <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox--input" id=":places-compose:dokkaHtml/release"
-                                       data-filter=":places-compose:dokkaHtml/release"/>
+                                <input type="checkbox" class="checkbox--input" id=":places-compose/main"
+                                       data-filter=":places-compose/main"/>
                                 <span class="checkbox--icon"></span>
                                 androidJvm
                             </label>
@@ -76,7 +74,7 @@
                 </ul>
                 <div class="dropdown--overlay"></div>
             </div>
-        </div>
+        </ul>
             <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
                     type="button">Switch theme
             </button>
@@ -84,27 +82,29 @@
                 API
             </div>
         </div>
-    </nav>
-        <div id="container">
-            <div class="sidebar" id="leftColumn">
-                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
-                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
-                        data-role="dropdown-listbox">
-                        <div class="dropdown--header">
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
                             <span>
                                     places-compose
                             </span>
-                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
-                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
-                            </button>
-                        </div>
-                        <div class="sidebar--inner" id="sideMenu"></div>
-                    </ul>
-                    <div class="dropdown--overlay"></div>
-                </div>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
             </div>
-            <div id="main">
-<div class="main-content" data-page-type="package" id="content" pageIds="places-compose::com.google.android.libraries.places.compose.autocomplete.data////PointingToDeclaration//-1833078781">
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="package" id="content" pageIds="places-compose::com.google.android.libraries.places.compose.autocomplete.data////PointingToDeclaration//-1109777224">
   <div class="breadcrumbs"><a href="../../index.html">places-compose</a><span class="delimiter">/</span><span class="current">com.google.android.libraries.places.compose.autocomplete.data</span></div>
   <div class="cover ">
     <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
@@ -113,78 +113,78 @@
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button><button class="section-tab" data-togglable="PROPERTY,EXTENSION_PROPERTY">Properties</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
-        <h2 class="">Types</h2>
-        <div class="table"><a data-name="391873572%2FClasslikes%2F-1833078781" anchor-label="ImperialUnitsConverter" id="391873572%2FClasslikes%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="391873572%2FClasslikes%2F-1109777224" anchor-label="ImperialUnitsConverter" id="391873572%2FClasslikes%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-imperial-units-converter/index.html"><span>Imperial</span><wbr></wbr><span>Units</span><wbr></wbr><span><span>Converter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="391873572%2FClasslikes%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="391873572%2FClasslikes%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-imperial-units-converter/index.html">ImperialUnitsConverter</a> : <a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Class to render measurements in imperial units.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-imperial-units-converter/index.html">ImperialUnitsConverter</a> : <a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Class to render measurements in imperial units.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-621669402%2FClasslikes%2F-1833078781" anchor-label="Meters" id="-621669402%2FClasslikes%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-621669402%2FClasslikes%2F-1109777224" anchor-label="Meters" id="-621669402%2FClasslikes%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-meters/index.html"><span><span>Meters</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-621669402%2FClasslikes%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-621669402%2FClasslikes%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable.html"><span class="token annotation builtin">Immutable</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-meters/index.html">Meters</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-meters/index.html">Meters</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A value class to wrap a value representing a measurement in meters.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Immutable.html"><span class="token annotation builtin">Immutable</span></a></div><div class="block"><span class="token annotation builtin">@</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.jvm/-jvm-inline/index.html"><span class="token annotation builtin">JvmInline</span></a></div></div><span class="token keyword">value </span><span class="token keyword">class </span><a href="-meters/index.html">Meters</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></span></span><span class="token punctuation">)</span> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-comparable/index.html">Comparable</a><span class="token operator">&lt;</span><a href="-meters/index.html">Meters</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A value class to wrap a value representing a measurement in meters.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-207393073%2FClasslikes%2F-1833078781" anchor-label="MetricUnitsConverter" id="-207393073%2FClasslikes%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-207393073%2FClasslikes%2F-1109777224" anchor-label="MetricUnitsConverter" id="-207393073%2FClasslikes%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-metric-units-converter/index.html"><span>Metric</span><wbr></wbr><span>Units</span><wbr></wbr><span><span>Converter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-207393073%2FClasslikes%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-207393073%2FClasslikes%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">object </span><a href="-metric-units-converter/index.html">MetricUnitsConverter</a> : <a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Class to render measurements in metric units.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-metric-units-converter/index.html">MetricUnitsConverter</a> : <a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Class to render measurements in metric units.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-883380769%2FClasslikes%2F-1833078781" anchor-label="UnitsConverter" id="-883380769%2FClasslikes%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-883380769%2FClasslikes%2F-1109777224" anchor-label="UnitsConverter" id="-883380769%2FClasslikes%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-units-converter/index.html"><span>Units</span><wbr></wbr><span><span>Converter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-883380769%2FClasslikes%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-883380769%2FClasslikes%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Abstract base class for all units converters.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">abstract </span><span class="token keyword">class </span><a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Abstract base class for all units converters.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1748256894%2FClasslikes%2F-1833078781" anchor-label="ValueWithUnitsTemplate" id="1748256894%2FClasslikes%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="1748256894%2FClasslikes%2F-1109777224" anchor-label="ValueWithUnitsTemplate" id="1748256894%2FClasslikes%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-value-with-units-template/index.html"><span>Value</span><wbr></wbr><span>With</span><wbr></wbr><span>Units</span><wbr></wbr><span><span>Template</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1748256894%2FClasslikes%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1748256894%2FClasslikes%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-value-with-units-template/index.html">ValueWithUnitsTemplate</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html"><span class="token annotation builtin">StringRes</span></a> </span><span class="token keyword">val </span>unitsTemplate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">A data class representing a value with a string resource ID for its units template.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-value-with-units-template/index.html">ValueWithUnitsTemplate</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>value<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token punctuation">, </span></span><span class="parameter "><span><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/annotation/StringRes.html"><span class="token annotation builtin">StringRes</span></a> </span><span class="token keyword">val </span>unitsTemplate<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">A data class representing a value with a string resource ID for its units template.</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -192,228 +192,228 @@
         </div>
       </div>
       <div data-togglable="PROPERTY">
-        <h2 class="">Properties</h2>
-        <div class="table"><a data-name="-2064007311%2FProperties%2F-1833078781" anchor-label="feet" id="-2064007311%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-2064007311%2FProperties%2F-1109777224" anchor-label="feet" id="-2064007311%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="feet.html"><span><span>feet</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2064007311%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2064007311%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="feet.html">feet</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of feet</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="feet.html">feet</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of feet</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="628297561%2FProperties%2F-1833078781" anchor-label="FEET_PER_METER" id="628297561%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="628297561%2FProperties%2F-1109777224" anchor-label="FEET_PER_METER" id="628297561%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-f-e-e-t_-p-e-r_-m-e-t-e-r.html"><span>FEET_</span><wbr></wbr><span>PER_</span><wbr></wbr><span>METER</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="628297561%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="628297561%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-f-e-e-t_-p-e-r_-m-e-t-e-r.html">FEET_PER_METER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-f-e-e-t_-p-e-r_-m-e-t-e-r.html">FEET_PER_METER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1227537981%2FProperties%2F-1833078781" anchor-label="FEET_PER_MILE" id="-1227537981%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-1227537981%2FProperties%2F-1109777224" anchor-label="FEET_PER_MILE" id="-1227537981%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-f-e-e-t_-p-e-r_-m-i-l-e.html"><span>FEET_</span><wbr></wbr><span>PER_</span><wbr></wbr><span>MILE</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1227537981%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1227537981%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-f-e-e-t_-p-e-r_-m-i-l-e.html">FEET_PER_MILE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-f-e-e-t_-p-e-r_-m-i-l-e.html">FEET_PER_MILE</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="635702181%2FProperties%2F-1833078781" anchor-label="km" id="635702181%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="635702181%2FProperties%2F-1109777224" anchor-label="km" id="635702181%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="km.html"><span><span>km</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635702181%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="635702181%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="km.html">km</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of kilometers</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="km.html">km</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of kilometers</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-1116045265%2FProperties%2F-1833078781" anchor-label="LocalUnitsConverter" id="-1116045265%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-1116045265%2FProperties%2F-1109777224" anchor-label="LocalUnitsConverter" id="-1116045265%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-local-units-converter.html"><span>Local</span><wbr></wbr><span>Units</span><wbr></wbr><span><span>Converter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1116045265%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1116045265%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">val </span><a href="-local-units-converter.html">LocalUnitsConverter</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/ProvidableCompositionLocal.html">ProvidableCompositionLocal</a><span class="token operator">&lt;</span><a href="-units-converter/index.html">UnitsConverter</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">A composition local that provides a <a href="-units-converter/index.html">UnitsConverter</a> instance.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="-local-units-converter.html">LocalUnitsConverter</a><span class="token operator">: </span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/ProvidableCompositionLocal.html">ProvidableCompositionLocal</a><span class="token operator">&lt;</span><a href="-units-converter/index.html">UnitsConverter</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">A composition local that provides a <a href="-units-converter/index.html">UnitsConverter</a> instance.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-915843436%2FProperties%2F-1833078781" anchor-label="m" id="-915843436%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-915843436%2FProperties%2F-1109777224" anchor-label="m" id="-915843436%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="m.html"><span><span>m</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-915843436%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-915843436%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="m.html">m</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="m.html">m</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a></p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="687066957%2FProperties%2F-1833078781" anchor-label="meters" id="687066957%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="687066957%2FProperties%2F-1109777224" anchor-label="meters" id="687066957%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="meters.html"><span><span>meters</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="687066957%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="687066957%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="meters.html">meters</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a></p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="meters.html">meters</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a></p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1102223718%2FProperties%2F-1833078781" anchor-label="METERS_PER_FOOT" id="1102223718%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="1102223718%2FProperties%2F-1109777224" anchor-label="METERS_PER_FOOT" id="1102223718%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-m-e-t-e-r-s_-p-e-r_-f-o-o-t.html"><span>METERS_</span><wbr></wbr><span>PER_</span><wbr></wbr><span>FOOT</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1102223718%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1102223718%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-e-t-e-r-s_-p-e-r_-f-o-o-t.html">METERS_PER_FOOT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">3.28084</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-e-t-e-r-s_-p-e-r_-f-o-o-t.html">METERS_PER_FOOT</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">3.28084</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="820598814%2FProperties%2F-1833078781" anchor-label="METERS_PER_KILOMETER" id="820598814%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="820598814%2FProperties%2F-1109777224" anchor-label="METERS_PER_KILOMETER" id="820598814%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-m-e-t-e-r-s_-p-e-r_-k-i-l-o-m-e-t-e-r.html"><span>METERS_</span><wbr></wbr><span>PER_</span><wbr></wbr><span>KILOMETER</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="820598814%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="820598814%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-e-t-e-r-s_-p-e-r_-k-i-l-o-m-e-t-e-r.html">METERS_PER_KILOMETER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-e-t-e-r-s_-p-e-r_-k-i-l-o-m-e-t-e-r.html">METERS_PER_KILOMETER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1621186405%2FProperties%2F-1833078781" anchor-label="miles" id="1621186405%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="1621186405%2FProperties%2F-1109777224" anchor-label="miles" id="1621186405%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="miles.html"><span><span>miles</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1621186405%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1621186405%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="miles.html">miles</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of miles</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a><span class="token punctuation">.</span><a href="miles.html">miles</a><span class="token operator">: </span><a href="-meters/index.html">Meters</a></div><div class="brief "><p class="paragraph">Create a Meters class from a <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-number/index.html">Number</a> of miles</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="-596541435%2FProperties%2F-1833078781" anchor-label="MILES_PER_METER" id="-596541435%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="-596541435%2FProperties%2F-1109777224" anchor-label="MILES_PER_METER" id="-596541435%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-m-i-l-e-s_-p-e-r_-m-e-t-e-r.html"><span>MILES_</span><wbr></wbr><span>PER_</span><wbr></wbr><span>METER</span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-596541435%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-596541435%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-l-e-s_-p-e-r_-m-e-t-e-r.html">MILES_PER_METER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">6.21371E-4</span></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">const </span><span class="token keyword">val </span><a href="-m-i-l-e-s_-p-e-r_-m-e-t-e-r.html">MILES_PER_METER</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a><span class="token operator"> = </span><span class="token constant">6.21371E-4</span></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1756383664%2FProperties%2F-1833078781" anchor-label="toFeet" id="1756383664%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="1756383664%2FProperties%2F-1109777224" anchor-label="toFeet" id="1756383664%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-feet.html"><span>to</span><wbr></wbr><span><span>Feet</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1756383664%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1756383664%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-feet.html">toFeet</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent feet from a meters value class</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-feet.html">toFeet</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent feet from a meters value class</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="366733971%2FProperties%2F-1833078781" anchor-label="toKilometers" id="366733971%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="366733971%2FProperties%2F-1109777224" anchor-label="toKilometers" id="366733971%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-kilometers.html"><span>to</span><wbr></wbr><span><span>Kilometers</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="366733971%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="366733971%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-kilometers.html">toKilometers</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent kilometers from a meters value class</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-kilometers.html">toKilometers</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent kilometers from a meters value class</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2104071444%2FProperties%2F-1833078781" anchor-label="toMeters" id="2104071444%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="2104071444%2FProperties%2F-1109777224" anchor-label="toMeters" id="2104071444%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-meters.html"><span>to</span><wbr></wbr><span><span>Meters</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2104071444%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2104071444%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-meters.html">toMeters</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the value of a meters class as a Double</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-meters.html">toMeters</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the value of a meters class as a Double</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="391452498%2FProperties%2F-1833078781" anchor-label="toMiles" id="391452498%2FProperties%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="391452498%2FProperties%2F-1109777224" anchor-label="toMiles" id="391452498%2FProperties%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_PROPERTY" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-miles.html"><span>to</span><wbr></wbr><span><span>Miles</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="391452498%2FProperties%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="391452498%2FProperties%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-miles.html">toMiles</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent kilometers from a meters value class</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">val </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-miles.html">toMiles</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-double/index.html">Double</a></div><div class="brief "><p class="paragraph">Gets the number of equivalent kilometers from a meters value class</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -421,33 +421,33 @@
         </div>
       </div>
       <div data-togglable="FUNCTION">
-        <h2 class="">Functions</h2>
-        <div class="table"><a data-name="687899811%2FFunctions%2F-1833078781" anchor-label="getUnitsConverter" id="687899811%2FFunctions%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="687899811%2FFunctions%2F-1109777224" anchor-label="getUnitsConverter" id="687899811%2FFunctions%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="get-units-converter.html"><span>get</span><wbr></wbr><span>Units</span><wbr></wbr><span><span>Converter</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="687899811%2FFunctions%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="687899811%2FFunctions%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-units-converter.html"><span class="token function">getUnitsConverter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">countryCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Returns the appropriate <a href="-units-converter/index.html">UnitsConverter</a> based on the given country code.</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="get-units-converter.html"><span class="token function">getUnitsConverter</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">countryCode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="-units-converter/index.html">UnitsConverter</a></div><div class="brief "><p class="paragraph">Returns the appropriate <a href="-units-converter/index.html">UnitsConverter</a> based on the given country code.</p></div></div></div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1123169592%2FFunctions%2F-1833078781" anchor-label="toDistanceString" id="1123169592%2FFunctions%2F-1833078781" data-filterable-set=":places-compose:dokkaHtml/release"></a>
-          <div class="table-row" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":places-compose:dokkaHtml/release" data-filterable-set=":places-compose:dokkaHtml/release">
+<a data-name="1123169592%2FFunctions%2F-1109777224" anchor-label="toDistanceString" id="1123169592%2FFunctions%2F-1109777224" data-filterable-set=":places-compose/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":places-compose/main" data-filterable-set=":places-compose/main">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="to-distance-string.html"><span>to</span><wbr></wbr><span>Distance</span><wbr></wbr><span><span>String</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123169592%2FFunctions%2F-1833078781"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1123169592%2FFunctions%2F-1109777224"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
-                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose:dokkaHtml/release"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-distance-string.html"><span class="token function">toDistanceString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Creates a string to show the distance formatted with units</p></div></div></div>
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":places-compose/main"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Composable.html"><span class="token annotation builtin">Composable</span></a></div></div><span class="token keyword">fun </span><a href="-meters/index.html">Meters</a><span class="token punctuation">.</span><a href="to-distance-string.html"><span class="token function">toDistanceString</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">Creates a string to show the distance formatted with units</p></div></div></div>
                 </div>
               </div>
             </div>
@@ -458,17 +458,21 @@
   </div>
 </div>
     <div class="footer">
-        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
-        <span>© 2025 Copyright</span>
-        <span class="pull-right">
-            <span>Generated by </span>
-            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
-                <span>dokka</span>
-            </a>
-        </span>
-    </div>
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2025 Copyright</div>
+                </div>
             </div>
         </div>
     </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
