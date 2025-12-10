@@ -49,3 +49,7 @@ google-services.json
 
 # Never check the api keys into version control
 /secrets.properties
+
+# This covers new IDEs, like Antigravity
+.vscode/
+**/bin/
