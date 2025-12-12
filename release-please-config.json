@@ -1,0 +1,12 @@
+{
+    "packages": {
+        ".": {
+            "release-type": "simple",
+            "package-name": "android-places-compose",
+            "extra-files": [
+                "build.gradle.kts",
+                "README.md"
+            ]
+        }
+    }
+}
