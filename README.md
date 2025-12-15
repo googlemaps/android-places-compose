@@ -27,7 +27,7 @@ Add the dependency below to your **module-level** Gradle build file:
 
 ```kotlin
 dependencies {
-    implementation("com.google.maps.android:places-compose:0.2.0") // {x-release-please-version}
+    implementation("com.google.maps.android:places-compose:0.2.1") // {x-release-please-version}
 }
 
 ```
@@ -36,7 +36,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation 'com.google.maps.android:places-compose:0.2.0' // {x-release-please-version}
+    implementation 'com.google.maps.android:places-compose:0.2.1' // {x-release-please-version}
 }
 
 ```
