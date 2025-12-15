@@ -11,6 +11,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+@file:Suppress("unused")
 package com.google.android.libraries.places.compose.autocomplete.data
 
 import android.content.res.Resources
@@ -26,7 +27,7 @@ const val METERS_PER_FOOT = 3.28084
 const val METERS_PER_KILOMETER = 1_000
 const val FEET_PER_METER = 1 / METERS_PER_FOOT
 const val FEET_PER_MILE = 5_280
-const val MILES_PER_METER = 0.000621371
+const val MILES_PER_METER = 0.0006213712
 
 /** A value class to wrap a value representing a measurement in meters. */
 @Immutable
