@@ -1,7 +1,7 @@
 [versions]
 accompanistPermissions = "0.37.3"
 activityCompose = "1.12.1"
-agp = "8.13.1"
+agp = "9.1.0"
 appcompat = "1.7.1"
 composeBom = "2025.12.00"
 coreKtx = "1.17.0"
@@ -9,7 +9,6 @@ dokka = "2.1.0"
 espressoCore = "3.7.0"
 gson = "2.13.2"
 hiltVersion = "2.57.2"
-jacoco-plugin = "0.2.1"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 kotlin = "2.2.21"
@@ -60,7 +59,6 @@ google-truth = { group = "com.google.truth", name = "truth", version.ref = "trut
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltVersion" }
-jacoco-android-plugin = { module = "com.mxalbert.gradle:jacoco-android", version.ref = "jacoco-plugin", version.require = "0.2.1" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlinReflect" }
