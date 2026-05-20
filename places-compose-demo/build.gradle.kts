@@ -9,7 +9,7 @@ plugins {
 
 android {
     lint {
-        sarifOutput = file("${layout.buildDirectory}/reports/lint-results.sarif")
+        sarifOutput = layout.buildDirectory.file("reports/lint-results.sarif").get().asFile
     }
 
     namespace = "com.google.android.libraries.places.compose.demo"
