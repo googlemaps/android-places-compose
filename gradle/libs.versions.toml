@@ -28,7 +28,7 @@ robolectric = "4.16.1"
 secretsGradlePlugin = "2.0.1"
 truth = "1.4.5"
 uiTestAndroid = "1.11.0"
-uiToolingVersion = "1.11.0"
+uiToolingVersion = "1.11.2"
 gradleMavenPublishPlugin = "0.36.0"
 
 [libraries]
