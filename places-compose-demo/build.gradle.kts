@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 android {
     lint {
         sarifOutput = layout.buildDirectory.file("reports/lint-results.sarif").get().asFile
@@ -108,7 +112,7 @@ dependencies {
     implementation(libs.maps.compose)
     implementation(libs.maps.compose.utils)
     implementation(libs.maps.compose.widgets)
-    implementation(libs.maps.utils.ktx)
+    implementation(libs.android.maps.utils)
 
     // Accompanist permission helper
     implementation(libs.accompanist.permissions)
