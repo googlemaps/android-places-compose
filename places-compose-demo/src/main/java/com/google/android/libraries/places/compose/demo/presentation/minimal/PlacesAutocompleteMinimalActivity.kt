@@ -52,7 +52,7 @@ import com.google.android.libraries.places.compose.demo.data.repositories.Geocod
 import com.google.android.libraries.places.compose.demo.data.repositories.LocationRepository
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
-import com.google.maps.android.ktx.utils.withSphericalOffset
+import com.google.maps.android.withSphericalOffset
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
