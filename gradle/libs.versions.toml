@@ -17,8 +17,8 @@ kotlinxCoroutinesPlayServices = "1.10.2"
 ksp = "2.3.2"
 lifecycleRuntimeKtx = "2.10.0"
 lifecycleViewmodelCompose = "2.10.0"
-mapsCompose = "8.3.0"
-mapsUtilsKtx = "6.0.1"
+mapsCompose = "9.0.0-rc01"
+mapsUtils = "6.0.0-rc01"
 material-icons = "1.7.8"
 materialVersion = "1.13.0"
 navigationCompose = "2.9.8"
@@ -66,7 +66,8 @@ kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "ko
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", version.ref = "mapsCompose" }
 maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "mapsCompose" }
-maps-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtilsKtx" }
+android-maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "mapsUtils" }
+android-maps-utils-core = { module = "com.google.maps.android:android-maps-utils-core", version.ref = "mapsUtils" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "org-jacoco-core" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }

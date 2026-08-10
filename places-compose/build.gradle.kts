@@ -13,7 +13,7 @@ android {
     }
 
     namespace = "com.google.android.libraries.places.compose"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24
