@@ -7,13 +7,17 @@ plugins {
     alias(libs.plugins.compose.compiler)
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
 android {
     lint {
         sarifOutput = layout.buildDirectory.file("reports/lint-results.sarif").get().asFile
     }
 
     namespace = "com.google.android.libraries.places.compose.demo"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.google.android.libraries.places.compose.demo"
@@ -109,7 +113,7 @@ dependencies {
     implementation(libs.maps.compose)
     implementation(libs.maps.compose.utils)
     implementation(libs.maps.compose.widgets)
-    implementation(libs.maps.utils.ktx)
+    implementation(libs.android.maps.utils)
 
     // Accompanist permission helper
     implementation(libs.accompanist.permissions)
