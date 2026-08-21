@@ -14,6 +14,7 @@ android {
   defaultConfig {
     minSdk = libs.versions.minimumSdk.get().toInt()
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles("consumer-rules.pro")
   }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -41,8 +42,6 @@ dependencies {
   implementation(libs.play.services.maps)
   implementation(libs.startup.runtime)
   testImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.espresso.core)
-  androidTestImplementation(libs.androidx.junit)
   testImplementation(libs.robolectric)
   testImplementation(libs.mockk)
   testImplementation(libs.core.ktx)
