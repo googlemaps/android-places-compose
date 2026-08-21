@@ -26,6 +26,10 @@ information on using pull requests.
 
 Reviews will undergo strict enforcement of the [Jetpack Compose API guidelines](https://github.com/androidx/androidx/blob/androidx-main/compose/docs/compose-api-guidelines.md).
 
+## AI-Assisted Contributions
+
+We welcome contributions generated or assisted by AI/LLM tools, provided you adhere to our project guidelines and maintain full ownership of your work. As the submitting author, you assume complete responsibility and accountability for all submitted code, documentation, tests, and pull request descriptions. Please thoroughly review, test, and validate all generated output—ensuring it follows idiomatic Kotlin and Android architectural standards—before submitting. Contributions must comply with the standard Google Contributor License Agreement (CLA), AI tools must not be listed as authors or co-authors on commits or PRs, and running automated agents to submit mass issues, scripted linters, or unsolicited, bot-generated pull requests without prior human discussion is strictly prohibited.
+
 ## Community Guidelines
 
 This project follows
