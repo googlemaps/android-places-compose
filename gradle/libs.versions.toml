@@ -30,6 +30,16 @@ truth = "1.4.5"
 uiTestAndroid = "1.11.0"
 uiToolingVersion = "1.11.0"
 gradleMavenPublishPlugin = "0.36.0"
+mockk = "1.14.11"
+startup-runtime = "1.2.0"
+androidxTestCoreKtx = "1.7.0"
+playServicesMaps = "20.0.0"
+
+# --- Project Configuration ---
+compileSdk = "37"
+minimumSdk = "24"
+targetSdk = "37"
+
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -74,6 +84,10 @@ robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectr
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiToolingVersion" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiToolingVersion" }
 gradle-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "gradleMavenPublishPlugin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidxTestCoreKtx" }
+startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startup-runtime" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

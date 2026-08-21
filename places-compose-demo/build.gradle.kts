@@ -13,12 +13,12 @@ android {
     }
 
     namespace = "com.google.android.libraries.places.compose.demo"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.google.android.libraries.places.compose.demo"
-        minSdk = 24
-        targetSdk = 36
+        minSdk = libs.versions.minimumSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 
@@ -95,7 +95,7 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
+    implementation(project(":library"))
     // Hilt
     implementation(libs.dagger)
     ksp(libs.hilt.android.compiler)
