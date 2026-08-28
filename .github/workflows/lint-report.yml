@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up JDK 21
         uses: actions/setup-java@v5
@@ -40,7 +40,7 @@ jobs:
         run: ./gradlew lint
 
       - name: Upload SARIF for places-compose
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: places-compose/build/reports/lint-results.sarif
           category: places-compose

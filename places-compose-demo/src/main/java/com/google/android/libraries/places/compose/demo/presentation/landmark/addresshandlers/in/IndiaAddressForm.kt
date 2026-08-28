@@ -44,14 +44,18 @@ fun IndiaAddressForm(
             value = address.aptSuiteUnit,
             label = R.string.india_address_unit_number,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { onAddressChanged?.invoke(address.copy(aptSuiteUnit = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(aptSuiteUnit = it)) }
+            },
         )
 
         AddressTextField(
             value = address.streetAddress,
             label = R.string.india_address_street_address,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { onAddressChanged?.invoke(address.copy(streetAddress = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(streetAddress = it)) }
+            },
         )
 
         if (nearbyObjects.isNotEmpty()) {
@@ -66,7 +70,9 @@ fun IndiaAddressForm(
             value = address.city,
             label = R.string.india_address_city,
             modifier = Modifier.fillMaxWidth(),
-            onValueChange = { onAddressChanged?.invoke(address.copy(city = it)) },
+            onValueChange = onAddressChanged?.let {
+                { onAddressChanged.invoke(address.copy(city = it)) }
+            },
         )
 
         Row(
@@ -78,14 +84,18 @@ fun IndiaAddressForm(
                 value = address.state,
                 label = R.string.india_address_state,
                 modifier = Modifier.weight(1f),
-                onValueChange = { onAddressChanged?.invoke(address.copy(state = it)) },
+                onValueChange = onAddressChanged?.let {
+                    { onAddressChanged.invoke(address.copy(state = it)) }
+                },
             )
 
            AddressTextField(
                value = address.pinCode,
                label = R.string.india_address_pincode,
                modifier = Modifier.weight(1f),
-               onValueChange = { onAddressChanged?.invoke(address.copy(pinCode = it)) },
+               onValueChange = onAddressChanged?.let {
+                   { onAddressChanged.invoke(address.copy(pinCode = it)) }
+               },
            )
         }
 

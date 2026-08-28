@@ -13,14 +13,25 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.demo.presentation.landmark
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +47,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import androidx.compose.material3.LinearProgressIndicator
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.components.AddressDisplay
@@ -50,8 +63,11 @@ fun LandmarkSelectionContent(
     landmarkMarkers: List<LandmarkMarker>,
     address: DisplayAddress?,
     showMap: Boolean,
+    isLoading: Boolean = false,
     onMapClicked: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
+    onAddressChanged: ((DisplayAddress) -> Unit)? = null,
+    onConfirmAddress: (() -> Unit)? = null,
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(userLocation, 15f)
@@ -59,7 +75,11 @@ fun LandmarkSelectionContent(
 
     LaunchedEffect(userLocation) {
         userMarker.position = userLocation
-        cameraPositionState.position = CameraPosition.fromLatLngZoom(userLocation, 15f)
+        try {
+            cameraPositionState.animate(CameraUpdateFactory.newLatLng(userLocation))
+        } catch (_: Exception) {
+            cameraPositionState.position = CameraPosition.fromLatLngZoom(userLocation, 15f)
+        }
     }
 
     var selectedPlaceId by remember(landmarkMarkers) {
@@ -75,21 +95,123 @@ fun LandmarkSelectionContent(
                 userMarker = userMarker,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp),
-                onMapClick = onMapClicked,
+                    .height(300.dp),
+                onMapClick = { latLng ->
+                    userMarker.position = latLng
+                    onMapClicked(latLng)
+                },
                 selectedPlaceId = selectedPlaceId,
                 onLandmarkSelected = {
                     selectedPlaceId = it
                 },
                 landmarkMarkers = landmarkMarkers
             )
+            Text(
+                text = stringResource(R.string.map_tap_instruction),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 2.dp)
+            )
         }
+
+        if (isLoading) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp, vertical = 4.dp)
+            )
+            Text(
+                text = "Looking up address & landmarks for (${"%.4f".format(userLocation.latitude)}, ${"%.4f".format(userLocation.longitude)})...",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp)
+                .padding(horizontal = 24.dp, vertical = 12.dp)
                 .verticalScroll(rememberScrollState()),
         ) {
+            if (nearbyObjectsWithLocations.isEmpty()) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Info,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Text(
+                                text = stringResource(R.string.address_descriptors_info_title),
+                                style = MaterialTheme.typography.titleMedium
+                            )
+                        }
+                        Text(
+                            text = stringResource(R.string.address_descriptors_unavailable_message),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Button(
+                                onClick = { onMapClicked(LatLng(12.9794404, 77.7179181)) },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.switch_to_india_bangalore),
+                                    style = MaterialTheme.typography.labelMedium
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Place,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = stringResource(
+                                R.string.address_descriptors_available_hint,
+                                landmarkMarkers.size
+                            ),
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            }
 
             if (address != null) {
                 AddressDisplay(
@@ -97,10 +219,23 @@ fun LandmarkSelectionContent(
                     modifier = Modifier.fillMaxWidth(),
                     nearbyObjects = nearbyObjectsWithLocations.map { it.first },
                     selectedPlaceId = selectedPlaceId,
+                    onAddressChanged = onAddressChanged,
                     onNearbyLandmarkSelected = {
                         selectedPlaceId = it
                     }
                 )
+
+                Button(
+                    onClick = { onConfirmAddress?.invoke() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.confirm_address_button),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
             } else {
                 Box(
                     modifier = Modifier
