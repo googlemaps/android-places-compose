@@ -62,9 +62,12 @@ jobs:
         update-comment: true
 
     - name: Get the Coverage info
+      env:
+        COVERAGE_OVERALL: ${{ steps.jacoco.outputs.coverage-overall }}
+        COVERAGE_CHANGED_FILES: ${{ steps.jacoco.outputs.coverage-changed-files }}
       run: |
-        echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-        echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
+        echo "Total coverage $COVERAGE_OVERALL"
+        echo "Changed Files coverage $COVERAGE_CHANGED_FILES"
 
     - name: Upload test reports
       if: always()
