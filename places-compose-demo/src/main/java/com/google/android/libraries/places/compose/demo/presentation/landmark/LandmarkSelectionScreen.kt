@@ -63,9 +63,9 @@ fun LandmarkSelectionContent(
     landmarkMarkers: List<LandmarkMarker>,
     address: DisplayAddress?,
     showMap: Boolean,
-    isLoading: Boolean = false,
     onMapClicked: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
+    isLoading: Boolean = false,
     onAddressChanged: ((DisplayAddress) -> Unit)? = null,
     onConfirmAddress: (() -> Unit)? = null,
 ) {
