@@ -171,4 +171,58 @@ class PlacesAutocompleteTextFieldTest {
 
         assertThat(backClicked).isTrue()
     }
+
+    @Test
+    fun placesAutocompleteTextField_previewsRenderCleanly() {
+        composeTestRule.setContent {
+            AutocompleteFieldPreview()
+            AutocompletePlaceRowPreview()
+            AutocompletePlaceRowPreviewShortText()
+            AutocompletePlaceRowPreviewLongRows()
+        }
+
+        composeTestRule.onNodeWithText("463 km").assertIsDisplayed()
+        composeTestRule.onNodeWithText("this is a primary test").assertIsDisplayed()
+        composeTestRule.onNodeWithText("REI").assertIsDisplayed()
+    }
+
+    @Test
+    fun placesAutocompleteTextField_darkThemeAndNotScrollable() {
+        composeTestRule.setContent {
+            MaterialTheme(colorScheme = androidx.compose.material3.darkColorScheme()) {
+                PlacesAutocompleteTextField(
+                    searchText = "Dark test",
+                    predictions = samplePlaces,
+                    onQueryChanged = {},
+                    scrollable = false,
+                    selectedPlace = samplePlaces.first()
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Googleplex").assertIsDisplayed()
+    }
+
+    @Test
+    fun autocompletePlaceRow_expandedStateRendersAndInvokesCallbacks() {
+        var placeSelected = false
+        var expandedClicked = false
+
+        composeTestRule.setContent {
+            MaterialTheme {
+                AutocompletePlaceRow(
+                    autocompletePlace = samplePlaces.first(),
+                    isSelected = true,
+                    onPlaceSelected = { placeSelected = true },
+                    onExpandClick = { expandedClicked = true },
+                    isExpanded = true,
+                    primaryTextMaxLines = 1,
+                    secondaryTextMaxLines = 1
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Googleplex").performClick()
+        assertThat(placeSelected).isTrue()
+    }
 }
