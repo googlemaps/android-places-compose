@@ -28,7 +28,14 @@ class PublishingConventionPlugin : Plugin<Project> {
 
     private fun Project.configureJacoco() {
         configure<JacocoPluginExtension> {
-            toolVersion = "0.8.11" // Compatible with newer JDKs
+            toolVersion = "0.8.15" // Compatible with newer JDKs
+        }
+
+        tasks.withType<Test>().configureEach {
+            configure<JacocoTaskExtension> {
+                isIncludeNoLocationClasses = true
+                excludes = listOf("jdk.internal.*")
+            }
         }
 
         // AGP 9.0+ built-in Jacoco support or manual configuration.

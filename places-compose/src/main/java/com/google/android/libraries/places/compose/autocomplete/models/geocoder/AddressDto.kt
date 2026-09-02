@@ -17,9 +17,10 @@ import com.google.gson.annotations.SerializedName
 
 data class ReverseGeocodingResponse(
     @SerializedName("status") val status: String,
+    @SerializedName("error_message") val errorMessage: String? = null,
     @SerializedName("address_descriptor") val addressDescriptor: AddressDescriptor?,
     @SerializedName("plus_code") val plusCode: PlusCode?,
-    @SerializedName("results") val addresses: List<AddressDto>
+    @SerializedName("results") val addresses: List<AddressDto> = emptyList()
 )
 
 data class AddressDescriptor(

@@ -20,6 +20,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 import android.content.Intent
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AndroidPlacesComposeDemoTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize().systemBarsPadding(),
+                    modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     ActivityButtons()
@@ -70,11 +70,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+data class ActivityItem(
+    val activityClass: Class<*>,
+    val titleRes: Int,
+    val descRes: Int,
+)
+
 val activities = listOf(
-    AutocompleteActivity::class.java to R.string.autocomplete_button,
-    LandmarkSelectionActivity::class.java to R.string.landmark_selection_button,
-    AddressCompletionActivity::class.java to R.string.address_validation_button,
-    PlacesAutocompleteMinimalActivity::class.java to R.string.minimal_autocomplete_button
+    ActivityItem(AutocompleteActivity::class.java, R.string.autocomplete_button, R.string.autocomplete_button_desc),
+    ActivityItem(LandmarkSelectionActivity::class.java, R.string.landmark_selection_button, R.string.landmark_selection_button_desc),
+    ActivityItem(AddressCompletionActivity::class.java, R.string.address_validation_button, R.string.address_validation_button_desc),
+    ActivityItem(PlacesAutocompleteMinimalActivity::class.java, R.string.minimal_autocomplete_button, R.string.minimal_autocomplete_button_desc),
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,15 +104,33 @@ fun ActivityButtons() {
         Column(
             Modifier
                 .padding(paddingValues)
-                .padding(top = 16.dp)
                 .fillMaxSize()
+                .padding(horizontal = 24.dp, vertical = 20.dp)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            for ((activityClass, buttonTextResId) in activities) {
-                Button(onClick = { context.startActivity(Intent(context, activityClass)) }) {
-                    Text(stringResource(buttonTextResId))
+            for (item in activities) {
+                Button(
+                    onClick = { context.startActivity(Intent(context, item.activityClass)) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 4.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = stringResource(item.titleRes),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            text = stringResource(item.descRes),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f)
+                        )
+                    }
                 }
             }
         }

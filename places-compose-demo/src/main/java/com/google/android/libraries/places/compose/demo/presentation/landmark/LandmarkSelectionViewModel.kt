@@ -20,13 +20,16 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import com.google.android.libraries.places.compose.autocomplete.models.geocoder.ReverseGeocodingResponse
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
+import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
 import com.google.maps.android.compose.MarkerState
@@ -46,6 +49,11 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
+
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 data class LandmarkMarker(
     val landmark: NearbyObject.NearbyLandmark,
@@ -75,12 +83,13 @@ class LandmarkSelectionViewModel
         initialValue = LatLng(0.0, 0.0)
     )
 
-    private val geocoderResult = location.filterNotNull().mapNotNull { location ->
-        geocoderRepository.reverseGeocode(location, includeAddressDescriptors = true)
-    }
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
-    private val nearbyObjects = geocoderResult.mapNotNull { result ->
-        result.addressDescriptor?.toNearbyObjects()
+    private val _geocoderResult = MutableStateFlow<ReverseGeocodingResponse?>(null)
+
+    private val nearbyObjects: StateFlow<List<NearbyObject>> = _geocoderResult.map { result ->
+        result?.addressDescriptor?.toNearbyObjects() ?: emptyList()
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
@@ -88,11 +97,11 @@ class LandmarkSelectionViewModel
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    val nearbyObjectsWithLatLngs = nearbyObjects.mapLatest { nearbyObjects ->
-        nearbyObjects.map { nearbyObject ->
+    val nearbyObjectsWithLatLngs: StateFlow<List<Pair<NearbyObject, Place>>> = nearbyObjects.mapLatest { objects ->
+        objects.map { nearbyObject ->
             viewModelScope.async { placesRepository.getPlaceLatLng(nearbyObject.placeId) }
         }.awaitAll().map { place ->
-            nearbyObjects.first { address -> address.placeId == place.first } to place.second
+            objects.first { address -> address.placeId == place.first } to place.second
         }
     }.stateIn(
         scope = viewModelScope,
@@ -100,22 +109,58 @@ class LandmarkSelectionViewModel
         initialValue = emptyList()
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val displayAddress = geocoderResult.mapLatest { geocoderDto ->
-        geocoderDto.addresses.firstOrNull()?.let { address ->
-            address.toAddress(address.getCountryCode() ?: "US").toDisplayAddress()
-        } ?: UsDisplayAddress()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = null
-    )
+    private val _displayAddress = MutableStateFlow<DisplayAddress?>(null)
+    val displayAddress = _displayAddress.asStateFlow()
 
     private val _viewModelEventChannel = MutableSharedFlow<ViewModelEvent>()
     val viewModelEventChannel: SharedFlow<ViewModelEvent> = _viewModelEventChannel.asSharedFlow()
 
-    val landmarkMarkers = nearbyObjectsWithLatLngs.map { nearbyObjectsWithLatLngs ->
-        nearbyObjectsWithLatLngs.filter{
+    init {
+        viewModelScope.launch {
+            location.collect { loc ->
+                if (loc.latitude != 0.0 || loc.longitude != 0.0) {
+                    _isLoading.value = true
+                    try {
+                        val response = geocoderRepository.reverseGeocode(loc, includeAddressDescriptors = true)
+                        _geocoderResult.value = response
+                        if (response != null) {
+                            if (response.status == "OK") {
+                                val addr = response.addresses.firstOrNull()?.let { address ->
+                                    address.toAddress(address.getCountryCode() ?: "US").toDisplayAddress()
+                                } ?: UsDisplayAddress()
+                                _displayAddress.value = addr
+
+                                val landmarkCount = response.addressDescriptor?.landmarks?.size ?: 0
+                                if (landmarkCount > 0) {
+                                    _viewModelEventChannel.emit(
+                                        ViewModelEvent.UserMessage("Found $landmarkCount nearby landmarks.")
+                                    )
+                                }
+                            } else {
+                                val err = response.errorMessage ?: "Geocoding status: ${response.status}"
+                                _viewModelEventChannel.emit(
+                                    ViewModelEvent.UserMessage("Geocoding notice: $err")
+                                )
+                            }
+                        } else {
+                            _viewModelEventChannel.emit(
+                                ViewModelEvent.UserMessage("Reverse geocoding request failed. Check network or API key restrictions.")
+                            )
+                        }
+                    } catch (e: Exception) {
+                        _viewModelEventChannel.emit(
+                            ViewModelEvent.UserMessage("Geocoding error: ${e.localizedMessage ?: "Unknown"}")
+                        )
+                    } finally {
+                        _isLoading.value = false
+                    }
+                }
+            }
+        }
+    }
+
+    val landmarkMarkers: StateFlow<List<LandmarkMarker>> = nearbyObjectsWithLatLngs.map { list ->
+        list.filter {
             it.first is NearbyObject.NearbyLandmark
         }.mapNotNull { (nearbyObject, place) ->
             place.location?.let { latLng ->
@@ -125,7 +170,7 @@ class LandmarkSelectionViewModel
                     marker = MarkerState(position = latLng)
                 )
             }
-         }
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
@@ -138,11 +183,22 @@ class LandmarkSelectionViewModel
     fun onEvent(event: LandmarkSelectionEvent) {
         when (event) {
             is LandmarkSelectionEvent.OnUserLocationChanged -> {
+                viewModelScope.launch {
+                    val lat = "%.4f".format(event.location.latitude)
+                    val lng = "%.4f".format(event.location.longitude)
+                    _viewModelEventChannel.emit(
+                        ViewModelEvent.UserMessage("Pin set to ($lat, $lng). Looking up address...")
+                    )
+                }
                 mergedLocationRepository.setMockLocation(event.location)
             }
 
             is LandmarkSelectionEvent.OnNearbyObjectSelected ->  {
                 selectedNearbyObject = event.nearbyObject
+            }
+
+            is LandmarkSelectionEvent.OnAddressChanged -> {
+                _displayAddress.value = event.address
             }
 
             LandmarkSelectionEvent.OnCloseAddressDisplayClicked -> {
