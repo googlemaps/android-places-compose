@@ -15,6 +15,7 @@ package com.google.android.libraries.places.compose.demo.presentation.landmark
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
+import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 
 /**
  * A sealed class representing events that can occur during landmark selection.
@@ -22,6 +23,7 @@ import com.google.android.libraries.places.compose.autocomplete.models.NearbyObj
 sealed class LandmarkSelectionEvent {
     data class OnUserLocationChanged(val location: LatLng) : LandmarkSelectionEvent()
     data class OnNearbyObjectSelected(val nearbyObject: NearbyObject) : LandmarkSelectionEvent()
+    data class OnAddressChanged(val address: DisplayAddress) : LandmarkSelectionEvent()
 
     data object OnCloseAddressDisplayClicked: LandmarkSelectionEvent()
 }

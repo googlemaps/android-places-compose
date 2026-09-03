@@ -10,11 +10,14 @@ import com.google.android.libraries.places.compose.demo.data.repositories.Geocod
 import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import com.google.maps.android.ktx.utils.sphericalDistance
@@ -109,12 +112,18 @@ class CommonViewModel
         initialValue = CommonViewState()
     )
 
+    private val _snackbarMessage = MutableSharedFlow<String>()
+    val snackbarMessage = _snackbarMessage.asSharedFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("MissingPermission")
     fun onEvent(event: CommonEvent) {
         when (event) {
             is CommonEvent.OnNextMockLocation -> {
-                mergedLocationRepository.nextMockLocation()
+                val label = mergedLocationRepository.nextMockLocation()
+                viewModelScope.launch {
+                    _snackbarMessage.emit("Location: $label")
+                }
             }
             is CommonEvent.OnToggleMap -> {
                 _showMap.value = !_showMap.value
