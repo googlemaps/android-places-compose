@@ -13,28 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.libraries.places.compose.library.utils.attribution
+
+package com.google.android.libraries.places.compose.autocomplete.utils.attribution
 
 import android.content.Context
 import androidx.annotation.Keep
 import androidx.startup.Initializer
-import com.google.android.gms.maps.MapsApiSettings
-import com.google.android.libraries.places.compose.library.utils.meta.AttributionId
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.compose.autocomplete.utils.meta.AttributionId
 
 /**
- * Adds a usage attribution ID to the initializer, which helps Google understand which libraries
- * and samples are helpful to developers, such as usage of this library.
+ * Adds a usage attribution ID to the Places SDK initializer, which helps Google understand
+ * which libraries and samples are helpful to developers, such as usage of this library.
+ *
  * To opt out of sending the usage attribution ID, please remove this initializer from your manifest.
  */
 @Keep
 internal class AttributionIdInitializer : Initializer<Unit> {
     override fun create(context: Context) {
-        MapsApiSettings.addInternalUsageAttributionId(
-            // context =
-            context,
-            // internalUsageAttributionId =
-            AttributionId.VALUE,
-        )
+        Places.addInternalUsageAttributionId(AttributionId.VALUE)
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()

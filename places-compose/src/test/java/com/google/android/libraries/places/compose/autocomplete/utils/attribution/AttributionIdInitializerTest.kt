@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.libraries.places.compose.library.utils.attribution
+
+package com.google.android.libraries.places.compose.autocomplete.utils.attribution
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.google.android.gms.maps.MapsApiSettings
-import com.google.android.libraries.places.compose.library.utils.meta.AttributionId
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.compose.autocomplete.utils.meta.AttributionId
+import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkStatic
@@ -35,27 +37,30 @@ import org.robolectric.RobolectricTestRunner
 class AttributionIdInitializerTest {
     @Before
     fun setUp() {
-        mockkStatic(MapsApiSettings::class)
-        every { MapsApiSettings.addInternalUsageAttributionId(any(), any()) } just runs
+        mockkStatic(Places::class)
+        every { Places.addInternalUsageAttributionId(any()) } just runs
     }
 
     @After
     fun tearDown() {
-        unmockkStatic(MapsApiSettings::class)
+        unmockkStatic(Places::class)
     }
 
     @Test
-    fun `create adds internal usage attribution id`() {
+    fun create_addsInternalUsageAttributionIdToPlaces() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val initializer = AttributionIdInitializer()
 
         initializer.create(context)
 
         verify {
-            MapsApiSettings.addInternalUsageAttributionId(
-                context,
-                AttributionId.VALUE,
-            )
+            Places.addInternalUsageAttributionId(AttributionId.VALUE)
         }
+    }
+
+    @Test
+    fun dependencies_returnsEmptyList() {
+        val initializer = AttributionIdInitializer()
+        assertThat(initializer.dependencies()).isEmpty()
     }
 }
