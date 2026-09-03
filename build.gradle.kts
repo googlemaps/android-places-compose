@@ -10,8 +10,8 @@ plugins {
     alias(libs.plugins.hilt.android) apply false
     alias(libs.plugins.secrets.gradle.plugin) apply false
     alias(libs.plugins.compose.compiler) apply false
-    alias(libs.plugins.ksp)
-    id("org.jetbrains.dokka") version "2.1.0"
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.dokka) apply false
 }
 
 allprojects {
