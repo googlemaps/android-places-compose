@@ -12,6 +12,7 @@ class PublishingConventionPlugin : Plugin<Project> {
 
             applyPlugins()
             configureKover()
+            configureDokka()
             configureVanniktechPublishing()
         }
     }
@@ -31,6 +32,14 @@ class PublishingConventionPlugin : Plugin<Project> {
                         androidGeneratedClasses()
                     }
                 }
+            }
+        }
+    }
+
+    private fun Project.configureDokka() {
+        extensions.configure<org.jetbrains.dokka.gradle.DokkaExtension> {
+            dokkaSourceSets.configureEach {
+                suppress.set(name != "androidJvm")
             }
         }
     }
