@@ -36,6 +36,10 @@ class MockLocationRepository {
     userClickedLocation.value = LabeledLocation(location, "User selected")
   }
 
+  fun getCurrentMockLocation(): Pair<String, LatLng> {
+    return locations[_mockLocationNumber.value]
+  }
+
   fun nextMockLocation(): Pair<String, LatLng> {
     _mockLocationNumber.value = (_mockLocationNumber.value + 1) % locations.size
     return locations[_mockLocationNumber.value]

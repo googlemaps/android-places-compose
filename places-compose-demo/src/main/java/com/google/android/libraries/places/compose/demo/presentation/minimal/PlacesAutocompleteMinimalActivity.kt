@@ -63,6 +63,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlin.time.Duration.Companion.milliseconds
 
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TopAppBarDefaults
+
 class PlacesAutocompleteMinimalActivity : ComponentActivity() {
     @SuppressLint("MissingPermission")
     @OptIn(
@@ -71,6 +79,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         Places.initializeWithNewPlacesApiEnabled(this, BuildConfig.PLACES_API_KEY)
         val placesClient = Places.createClient(this)
@@ -86,56 +95,85 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
 
         setContent {
             AndroidPlacesComposeDemoTheme {
-                GetLocationPermission {
-                    val location by locationFlow.collectAsStateWithLifecycle()
+                val location by locationFlow.collectAsStateWithLifecycle()
 
-                    // We just want to get the last location once.
-                    LaunchedEffect(Unit) {
-                        locationFlow.value = locationRepository.getLastLocation()
+                // We just want to get the last location once.
+                LaunchedEffect(Unit) {
+                    val lastLoc = locationRepository.getLastLocation()
+                    if (lastLoc != null) {
+                        locationFlow.value = lastLoc
+                    } else if (locationFlow.value == null) {
+                        locationFlow.value = LatLng(40.01924246438453, -105.259858527573)
                     }
+                }
 
-                    val searchText by searchTextFlow.collectAsStateWithLifecycle()
+                val searchText by searchTextFlow.collectAsStateWithLifecycle()
 
-                    val country by remember {
-                        locationFlow.mapNotNull { location ->
-                            location?.let {
-                                geocoder.reverseGeocode(it).addresses.firstOrNull()
-                                    ?.getCountryCode() ?: deviceCountry
-                            }
+                val country by remember {
+                    locationFlow.mapNotNull { location ->
+                        location?.let {
+                            geocoder.reverseGeocode(it)?.addresses?.firstOrNull()
+                                ?.getCountryCode() ?: deviceCountry
                         }
-                    }.collectAsState(initial = deviceCountry)
-
-                    // Determine which units converter to use based on the country.
-                    val unitsConverter = remember(country) {
-                        getUnitsConverter(country)
                     }
+                }.collectAsState(initial = deviceCountry)
 
-                    // TODO: this feels like it would make a great UseCase.
-                    val predictions by remember(country, location) {
-                        searchTextFlow.debounce(500.milliseconds).map { query ->
-                            if (query.isBlank()) {
-                                emptyList()
-                            } else {
-                                placesClient.awaitFindAutocompletePredictions {
-                                    origin = location
-                                    locationBias = location?.toRectangularBounds()
-                                    typesFilter = listOf(PlaceTypes.ESTABLISHMENT)
-                                    this.query = query
-                                    countries = listOf(country)
-                                }.autocompletePredictions.map { it.toPlaceDetails() }
+                // Determine which units converter to use based on the country.
+                val unitsConverter = remember(country) {
+                    getUnitsConverter(country)
+                }
+
+                // TODO: this feels like it would make a great UseCase.
+                val predictions by remember(country, location) {
+                    searchTextFlow.debounce(500.milliseconds).map { query ->
+                        if (query.isBlank()) {
+                            emptyList()
+                        } else {
+                            placesClient.awaitFindAutocompletePredictions {
+                                origin = location
+                                locationBias = location?.toRectangularBounds()
+                                typesFilter = listOf(PlaceTypes.ESTABLISHMENT)
+                                this.query = query
+                                countries = listOf(country)
+                            }.autocompletePredictions.map { it.toPlaceDetails() }
+                        }
+                    }
+                }.collectAsState(initial = emptyList())
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            colors = TopAppBarDefaults.topAppBarColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                titleContentColor = MaterialTheme.colorScheme.primary,
+                                actionIconContentColor = MaterialTheme.colorScheme.primary,
+                                navigationIconContentColor = MaterialTheme.colorScheme.primary,
+                            ),
+                            title = { Text("Places Autocomplete") },
+                            navigationIcon = {
+                                IconButton(onClick = { finish() }) {
+                                    Icon(
+                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                                        contentDescription = stringResource(R.string.back)
+                                    )
+                                }
                             }
+                        )
+                    }
+                ) { paddingValues ->
+                    GetLocationPermission(
+                        modifier = Modifier.padding(paddingValues),
+                        onFallbackToMock = {
+                            locationFlow.value = LatLng(40.01924246438453, -105.259858527573)
+                            Toast.makeText(
+                                this@PlacesAutocompleteMinimalActivity,
+                                "Falling back to mock location (Boulder, CO)",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
-                    }.collectAsState(initial = emptyList())
-
-                    Scaffold(
-                        topBar = {
-                            TopAppBar(
-                                title = { Text("Places Autocomplete") }
-                            )
-                        }
-                    ) { paddingValues ->
+                    ) {
                         CompositionLocalProvider(LocalUnitsConverter provides unitsConverter) {
-
                             if (location == null) {
                                 Box(
                                     modifier = Modifier
