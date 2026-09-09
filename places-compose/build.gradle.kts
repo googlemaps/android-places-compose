@@ -49,6 +49,13 @@ android {
         }
     }
 
+    sourceSets {
+        getByName("main") {
+            java.directories.add("build/generated/source/artifactId")
+            kotlin.directories.add("build/generated/source/artifactId")
+        }
+    }
+
     buildFeatures {
         buildConfig = true
         compose = true
@@ -62,12 +69,46 @@ android {
     }
 }
 
+// Artifact ID logic for usage attribution
+val attributionId = "gmp_git_androidplacescompose_v$version"
+
+val generateArtifactIdFile = tasks.register("generateArtifactIdFile") {
+    val outputDir = layout.buildDirectory.dir("generated/source/artifactId")
+    val packageName = "com.google.android.libraries.places.compose.autocomplete.utils.meta"
+    val packagePath = packageName.replace('.', '/')
+    val outputFile = outputDir.get().file("$packagePath/ArtifactId.kt").asFile
+
+    outputs.file(outputFile)
+
+    doLast {
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            """
+            package $packageName
+
+            /**
+             * Automatically generated object containing the library's attribution ID.
+             * This is used to track library usage for analytics.
+             */
+            public object AttributionId {
+                public const val VALUE: String = "$attributionId"
+            }
+            """.trimIndent()
+        )
+    }
+}
+
+tasks.named("preBuild") {
+    dependsOn(generateArtifactIdFile)
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.places)
+    implementation(libs.startup.runtime)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.ui.test.android)
     androidTestImplementation(libs.androidx.junit)
