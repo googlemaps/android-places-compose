@@ -14,6 +14,7 @@ class PublishingConventionPlugin : Plugin<Project> {
         project.run {
 
             applyPlugins()
+            configureDokka()
             configureJacoco()
             configureVanniktechPublishing()
         }
@@ -24,6 +25,14 @@ class PublishingConventionPlugin : Plugin<Project> {
         apply(plugin = "org.jetbrains.dokka")
         apply(plugin = "org.gradle.jacoco")
         apply(plugin = "com.vanniktech.maven.publish")
+    }
+
+    private fun Project.configureDokka() {
+        extensions.configure<org.jetbrains.dokka.gradle.DokkaExtension> {
+            dokkaSourceSets.configureEach {
+                suppress.set(name != "androidJvm")
+            }
+        }
     }
 
     private fun Project.configureJacoco() {
