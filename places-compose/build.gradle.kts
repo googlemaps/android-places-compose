@@ -53,6 +53,13 @@ android {
         buildConfig = true
         compose = true
     }
+
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -83,6 +90,7 @@ dependencies {
     testImplementation(libs.google.truth)
     testImplementation(kotlin("test"))
     testImplementation(libs.robolectric)
+    testImplementation(libs.mockk)
 
     testImplementation(libs.ui.test.junit4)
     testImplementation(libs.ui.test.manifest)
