@@ -67,11 +67,12 @@ constructor(
    * If we are already sending the mock location, advance to the next mock location, otherwise
    * switch to presenting the mock location.
    */
-  fun nextMockLocation() {
-    if (_useMockLocation.value) {
-      mockLocationRepository.nextMockLocation()
+  fun nextMockLocation(): String {
+    return if (_useMockLocation.value) {
+      mockLocationRepository.nextMockLocation().first
     } else {
       _useMockLocation.value = true
+      mockLocationRepository.getCurrentMockLocation().first
     }
   }
 
