@@ -22,7 +22,7 @@ mapsUtilsKtx = "6.0.1"
 material-icons = "1.7.8"
 materialVersion = "1.13.0"
 navigationCompose = "2.9.8"
-org-jacoco-core = "0.8.14"
+kover = "0.9.9"
 places = "5.2.0"
 robolectric = "4.16.1"
 secretsGradlePlugin = "2.0.1"
@@ -68,7 +68,7 @@ maps-compose-utils = { module = "com.google.maps.android:maps-compose-utils", ve
 maps-compose-widgets = { module = "com.google.maps.android:maps-compose-widgets", version.ref = "mapsCompose" }
 maps-utils-ktx = { module = "com.google.maps.android:maps-utils-ktx", version.ref = "mapsUtilsKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
-org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "org-jacoco-core" }
+kover-gradle-plugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiToolingVersion" }

@@ -42,14 +42,14 @@ jobs:
       uses: gradle/actions/setup-gradle@v6
 
     - name: Build modules
-      run: ./gradlew build jacocoTestReport --stacktrace
+      run: ./gradlew build koverXmlReportDebug --stacktrace
 
-    - name: Jacoco Report to PR
+    - name: Coverage Report to PR
       id: jacoco
       uses: madrapps/jacoco-report@v1.7.2
       with:
         paths: |
-          ${{ github.workspace }}/places-compose/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
+          ${{ github.workspace }}/places-compose/build/reports/kover/reportDebug.xml
         token: ${{ secrets.SYNCED_GITHUB_TOKEN_REPO }}
         min-coverage-overall: 26
         min-coverage-changed-files: 60
