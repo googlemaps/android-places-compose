@@ -26,4 +26,3 @@ dependencyResolutionManagement {
 rootProject.name = "Android Places Compose"
 include(":places-compose-demo")
 include(":places-compose")
-include(":library")

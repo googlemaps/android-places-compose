@@ -95,7 +95,6 @@ dependencies {
     implementation(libs.kotlin.reflect)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(project(":library"))
     // Hilt
     implementation(libs.dagger)
     ksp(libs.hilt.android.compiler)
