@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Android Places Compose Demo</string>
 
     <string name="main_activity_title">Maps compose widgets</string>
@@ -78,4 +78,19 @@
     <string name="india_address_landmark">Landmark</string>
     <string name="india_address_area_sector_locality">Area/sector/locality</string>
     <string name="fill_address_from_current_location">Fill in the address from the current location</string>
+
+    <!-- Address Descriptors Messaging -->
+    <string name="address_descriptors_info_title">Address Descriptors</string>
+    <string name="address_descriptors_unavailable_message">Google Maps Address Descriptors (landmarks and areas) are available in select regions such as India. No landmarks are found for the current location.</string>
+    <string name="switch_to_india_bangalore">Try Bangalore, India (KTPO)</string>
+    <string name="address_descriptors_available_hint" tools:ignore="PluralsCandidate">Showing %1$d nearby landmarks. Tap a yellow marker on the map or select from the dropdown below to attach a landmark.</string>
+
+    <string name="map_tap_instruction">Tap anywhere on the map to set location &amp; reverse-geocode</string>
+    <string name="confirm_address_button">Save &amp; Confirm Address</string>
+
+    <!-- Activity Descriptions -->
+    <string name="autocomplete_button_desc">Search places with interactive predictions</string>
+    <string name="landmark_selection_button_desc">Address Descriptors &amp; nearby landmarks on map</string>
+    <string name="address_validation_button_desc">Autocomplete to structured address with descriptors</string>
+    <string name="minimal_autocomplete_button_desc">Standalone autocomplete text field</string>
 </resources>

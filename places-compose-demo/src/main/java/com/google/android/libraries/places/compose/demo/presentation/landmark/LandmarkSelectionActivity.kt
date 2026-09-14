@@ -25,8 +25,10 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
@@ -82,6 +84,8 @@ class LandmarkSelectionActivity : ComponentActivity() {
                 val userMarker = rememberUpdatedMarkerState(position = location)
                 val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
                 val landmarkMarkers by landmarkSelectionViewModel.landmarkMarkers.collectAsStateWithLifecycle()
+                val isLoading by landmarkSelectionViewModel.isLoading.collectAsStateWithLifecycle()
+                val coroutineScope = rememberCoroutineScope()
 
                 LandmarkSelectionContent(
                     modifier = Modifier
@@ -89,8 +93,39 @@ class LandmarkSelectionActivity : ComponentActivity() {
                         .padding(paddingValues),
                     userLocation = location,
                     userMarker = userMarker,
+                    isLoading = isLoading,
                     onMapClicked = { latLng ->
                         landmarkSelectionViewModel.onEvent(LandmarkSelectionEvent.OnUserLocationChanged(latLng))
+                    },
+                    onAddressChanged = { address ->
+                        landmarkSelectionViewModel.onEvent(LandmarkSelectionEvent.OnAddressChanged(address))
+                    },
+                    onConfirmAddress = {
+                        val formatted = when (val addr = displayAddress) {
+                            is com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.`in`.IndiaDisplayAddress -> listOfNotNull(
+                                addr.aptSuiteUnit.ifBlank { null },
+                                addr.streetAddress.ifBlank { null },
+                                addr.city.ifBlank { null },
+                                addr.state.ifBlank { null },
+                                addr.pinCode.ifBlank { null },
+                                addr.country.ifBlank { null }
+                            ).joinToString(", ")
+                            is com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress -> listOfNotNull(
+                                addr.streetAddress.ifBlank { null },
+                                addr.additionalAddressInfo.ifBlank { null },
+                                addr.city.ifBlank { null },
+                                addr.state.ifBlank { null },
+                                addr.zipCode.ifBlank { null },
+                                addr.country.ifBlank { null }
+                            ).joinToString(", ")
+                            else -> "No address selected"
+                        }
+                        coroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = "Address saved: $formatted",
+                                duration = SnackbarDuration.Short
+                            )
+                        }
                     },
                     nearbyObjectsWithLocations = nearbyObjectsWithLocations,
                     address = displayAddress,

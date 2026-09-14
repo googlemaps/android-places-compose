@@ -15,6 +15,7 @@ package com.google.android.libraries.places.compose.demo.data.repositories
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -47,6 +48,8 @@ class GeocoderRepository(
     private val context: Context,
     private val apiKeyProvider: ApiKeyProvider
 ) {
+    private val requestQueue by lazy { Volley.newRequestQueue(context.applicationContext) }
+
     private val gson: Gson = GsonBuilder()
         .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
         .create()
@@ -67,26 +70,44 @@ class GeocoderRepository(
     suspend fun reverseGeocode(
         latLng: LatLng,
         includeAddressDescriptors: Boolean = true
-    ): ReverseGeocodingResponse {
+    ): ReverseGeocodingResponse? {
         val url = buildRequestUrl(latLng, includeAddressDescriptors)
 
-        return suspendCancellableCoroutine { cont ->
-            val queue = Volley.newRequestQueue(context)
-            val stringRequest =
-                StringRequest(
-                    Request.Method.GET,
-                    url,
-                    { response -> cont.resume(parseFullGeocodeResponse(response)) },
-                    { error -> cont.resumeWithException(RuntimeException(error.localizedMessage)) },
-                )
-            queue.add(stringRequest)
+        return try {
+            suspendCancellableCoroutine { cont ->
+                val stringRequest =
+                    StringRequest(
+                        Request.Method.GET,
+                        url,
+                        { response ->
+                            try {
+                                cont.resume(parseFullGeocodeResponse(response))
+                            } catch (e: Exception) {
+                                Log.e("GeocoderRepository", "Error parsing geocoder response", e)
+                                cont.resume(null)
+                            }
+                        },
+                        { error ->
+                            Log.e("GeocoderRepository", "Volley reverse geocode error: ${error.networkResponse?.statusCode} - ${error.localizedMessage}", error)
+                            cont.resume(null)
+                        },
+                    )
+                cont.invokeOnCancellation {
+                    stringRequest.cancel()
+                }
+                requestQueue.add(stringRequest)
+            }
+        } catch (e: Exception) {
+            Log.e("GeocoderRepository", "Reverse geocode exception", e)
+            null
         }
     }
 
     private fun parseFullGeocodeResponse(response: String): ReverseGeocodingResponse {
         val fullResult = gson.fromJson(response, ReverseGeocodingResponse::class.java)
-        // TODO: handle the status -- consider a monad pattern (Result?)
-
+        if (fullResult.status != "OK" && fullResult.status != "ZERO_RESULTS") {
+            Log.w("GeocoderRepository", "Geocode API warning: status=${fullResult.status}, error_message=${fullResult.errorMessage}")
+        }
         return fullResult
     }
 
