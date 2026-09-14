@@ -106,4 +106,4 @@ fun Landmark.getSpatialRelationshipStringRes(): Int {
 }
 
 fun Landmark.distanceMeters(): Meters =
-  (if (travelDistanceMeters < 0) travelDistanceMeters else straightLineDistanceMeters).meters
+  (if (travelDistanceMeters >= 0) travelDistanceMeters else straightLineDistanceMeters).meters
