@@ -24,9 +24,11 @@ materialVersion = "1.14.0"
 navigationCompose = "2.10.0"
 kover = "0.9.11"
 places = "6.0.2"
+playServicesLocation = "21.4.0"
 robolectric = "4.17"
 secretsGradlePlugin = "2.0.1"
 truth = "1.4.5"
+volley = "1.2.1"
 uiTestAndroid = "1.12.0"
 uiToolingVersion = "1.12.0"
 gradleMavenPublishPlugin = "0.37.0"
@@ -81,7 +83,9 @@ android-maps-utils-core = { module = "com.google.maps.android:android-maps-utils
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 kover-gradle-plugin = { module = "org.jetbrains.kotlinx:kover-gradle-plugin", version.ref = "kover" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
+volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiToolingVersion" }
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiToolingVersion" }
 gradle-maven-publish-plugin = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "gradleMavenPublishPlugin" }

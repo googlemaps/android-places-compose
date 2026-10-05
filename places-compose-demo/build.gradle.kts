@@ -95,6 +95,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.places)
+    implementation(libs.play.services.location)
+    implementation(libs.volley)
 
     implementation(libs.kotlin.reflect)
     implementation(libs.androidx.navigation.compose)
