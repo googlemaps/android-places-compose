@@ -142,7 +142,7 @@ If you wish to disable this, you can do so by removing the initializer in your `
     android:exported="false"
     tools:node="merge">
     <meta-data
-        android:name="com.google.android.libraries.places.compose.library.utils.attribution.AttributionIdInitializer"
+        android:name="com.google.android.libraries.places.compose.autocomplete.utils.attribution.AttributionIdInitializer"
         tools:node="remove" />
 </provider>
 ```
