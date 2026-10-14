@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 @file:Suppress("unused")
+
 package com.google.android.libraries.places.compose.autocomplete.data
 
 import android.content.res.Resources
@@ -33,55 +34,55 @@ const val MILES_PER_METER = 0.0006213712
 @Immutable
 @JvmInline
 value class Meters(val value: Double) : Comparable<Meters> {
-  override fun compareTo(other: Meters) = value.compareTo(other.value)
+    override fun compareTo(other: Meters) = value.compareTo(other.value)
 
-  operator fun minus(other: Meters) = Meters(value = this.value - other.value)
+    operator fun minus(other: Meters) = Meters(value = this.value - other.value)
 }
 
 /** Create a Meters class from a [Number] */
 @Stable
 inline val Number.meters: Meters
-  get() = Meters(value = this.toDouble())
+    get() = Meters(value = this.toDouble())
 
 /** Create a Meters class from a [Number] */
 @Stable
 inline val Number.m: Meters
-  get() = Meters(value = this.toDouble())
+    get() = Meters(value = this.toDouble())
 
 /** Create a Meters class from a [Number] of kilometers */
 @Stable
 inline val Number.km: Meters
-  get() = Meters(value = this.toDouble() * METERS_PER_KILOMETER)
+    get() = Meters(value = this.toDouble() * METERS_PER_KILOMETER)
 
 /** Create a Meters class from a [Number] of feet */
 @Stable
 inline val Number.feet: Meters
-  get() = Meters(value = this.toDouble() * FEET_PER_METER)
+    get() = Meters(value = this.toDouble() * FEET_PER_METER)
 
 /** Create a Meters class from a [Number] of miles */
 @Stable
 inline val Number.miles: Meters
-  get() = Meters(value = this.toDouble() / MILES_PER_METER)
+    get() = Meters(value = this.toDouble() / MILES_PER_METER)
 
 /** Gets the number of equivalent feet from a meters value class */
 @Stable
 inline val Meters.toFeet: Double
-  get() = value * METERS_PER_FOOT
+    get() = value * METERS_PER_FOOT
 
 /** Gets the value of a meters class as a Double */
 @Stable
 inline val Meters.toMeters: Double
-  get() = value
+    get() = value
 
 /** Gets the number of equivalent kilometers from a meters value class */
 @Stable
 inline val Meters.toKilometers: Double
-  get() = value / METERS_PER_KILOMETER
+    get() = value / METERS_PER_KILOMETER
 
 /** Gets the number of equivalent kilometers from a meters value class */
 @Stable
 inline val Meters.toMiles: Double
-  get() = (value * MILES_PER_METER)
+    get() = (value * MILES_PER_METER)
 
 /**
  * A data class representing a value with a string resource ID for its units template.
@@ -95,18 +96,18 @@ data class ValueWithUnitsTemplate(val value: Double, @StringRes val unitsTemplat
  * Abstract base class for all units converters.
  */
 abstract class UnitsConverter {
-  abstract fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate
+    abstract fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate
 
-  @Composable
-  fun toDistanceString(meters: Meters): String {
-    val (value, resourceId) = toDistanceUnits(meters = meters)
-    return stringResource(id = resourceId, value)
-  }
+    @Composable
+    fun toDistanceString(meters: Meters): String {
+        val (value, resourceId) = toDistanceUnits(meters = meters)
+        return stringResource(id = resourceId, value)
+    }
 
-  fun toDistanceString(resources: Resources, meters: Meters): String {
-    val (value, resourceId) = toDistanceUnits(meters = meters)
-    return resources.getString(resourceId, value)
-  }
+    fun toDistanceString(resources: Resources, meters: Meters): String {
+        val (value, resourceId) = toDistanceUnits(meters = meters)
+        return resources.getString(resourceId, value)
+    }
 }
 
 /**
@@ -116,34 +117,30 @@ abstract class UnitsConverter {
  * @return The appropriate [UnitsConverter] for the specified country code.
  */
 fun getUnitsConverter(countryCode: String?): UnitsConverter {
-  // TODO: other counties that use imperial units for distances?
-  return if (countryCode == "US") {
-    ImperialUnitsConverter
-  } else {
-    MetricUnitsConverter
-  }
+    // TODO: other counties that use imperial units for distances?
+    return if (countryCode == "US") {
+        ImperialUnitsConverter
+    } else {
+        MetricUnitsConverter
+    }
 }
 
 /** Class to render measurements in imperial units. */
 object ImperialUnitsConverter : UnitsConverter() {
-  override fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate {
-    return if (meters < 0.25.miles) {
-      ValueWithUnitsTemplate(meters.toFeet, R.string.in_feet)
+    override fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate = if (meters < 0.25.miles) {
+        ValueWithUnitsTemplate(meters.toFeet, R.string.in_feet)
     } else {
-      ValueWithUnitsTemplate(meters.toMiles, R.string.in_miles)
+        ValueWithUnitsTemplate(meters.toMiles, R.string.in_miles)
     }
-  }
 }
 
 /** Class to render measurements in metric units. */
 object MetricUnitsConverter : UnitsConverter() {
-  override fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate {
-    return if (meters < 1000.meters) {
-      ValueWithUnitsTemplate(meters.toMeters, R.string.in_meters)
+    override fun toDistanceUnits(meters: Meters): ValueWithUnitsTemplate = if (meters < 1000.meters) {
+        ValueWithUnitsTemplate(meters.toMeters, R.string.in_meters)
     } else {
-      ValueWithUnitsTemplate(meters.toKilometers, R.string.in_kilometers)
+        ValueWithUnitsTemplate(meters.toKilometers, R.string.in_kilometers)
     }
-  }
 }
 
 /** A composition local that provides a [UnitsConverter] instance. */
@@ -151,6 +148,4 @@ val LocalUnitsConverter = compositionLocalOf<UnitsConverter> { MetricUnitsConver
 
 /** Creates a string to show the distance formatted with units */
 @Composable
-fun Meters.toDistanceString(): String {
-  return LocalUnitsConverter.current.toDistanceString(this)
-}
+fun Meters.toDistanceString(): String = LocalUnitsConverter.current.toDistanceString(this)

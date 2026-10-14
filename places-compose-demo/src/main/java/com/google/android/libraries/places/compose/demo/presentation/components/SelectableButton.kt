@@ -10,12 +10,7 @@ import androidx.compose.ui.res.stringResource
 import com.google.android.libraries.places.compose.demo.presentation.common.ButtonState
 
 @Composable
-fun SelectableButton(
-    buttonState: ButtonState,
-    onClick: () -> Unit,
-    iconId: Int,
-    contentDescription: Int,
-) {
+fun SelectableButton(buttonState: ButtonState, onClick: () -> Unit, iconId: Int, contentDescription: Int) {
     SelectableButton(
         buttonState = buttonState,
         onClick = onClick,
@@ -23,19 +18,15 @@ fun SelectableButton(
         Icon(
             painter = painterResource(iconId),
             contentDescription = stringResource(contentDescription),
-            tint = tint
+            tint = tint,
         )
     }
 }
 
 @Composable
-fun SelectableButton(
-    buttonState: ButtonState,
-    onClick: () -> Unit,
-    icon: @Composable (Color) -> Unit
-) {
+fun SelectableButton(buttonState: ButtonState, onClick: () -> Unit, icon: @Composable (Color) -> Unit) {
     IconButton(
-        onClick = onClick
+        onClick = onClick,
     ) {
         val tint = when (buttonState) {
             ButtonState.NORMAL -> MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)

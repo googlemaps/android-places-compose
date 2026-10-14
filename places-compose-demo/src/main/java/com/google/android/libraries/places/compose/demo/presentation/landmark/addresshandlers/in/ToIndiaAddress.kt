@@ -17,23 +17,17 @@ import com.google.android.libraries.places.compose.autocomplete.domain.mappers.A
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 
 fun Address.toIndiaDisplayAddress(): IndiaDisplayAddress {
-    fun getComponents(vararg types: AddressComponentType): List<String?> {
-        return types.asList().map {
-            componentMap.longName(it)
-        }
+    fun getComponents(vararg types: AddressComponentType): List<String?> = types.asList().map {
+        componentMap.longName(it)
     }
 
-    fun join(vararg types: AddressComponentType): String {
-        return types.asList().mapNotNull {
-            componentMap.longName(it)
-        }.filter { it.isNotBlank() }.joinToString(" ")
-    }
+    fun join(vararg types: AddressComponentType): String = types.asList().mapNotNull {
+        componentMap.longName(it)
+    }.filter { it.isNotBlank() }.joinToString(" ")
 
-    fun firstOf(vararg types: AddressComponentType): String? {
-        return types.asList().mapNotNull {
-            componentMap.longName(it)
-        }.firstOrNull { it.isNotBlank() }
-    }
+    fun firstOf(vararg types: AddressComponentType): String? = types.asList().mapNotNull {
+        componentMap.longName(it)
+    }.firstOrNull { it.isNotBlank() }
 
     val aptSuiteUnit = getComponents(
         AddressComponentType.SUBPREMISE,

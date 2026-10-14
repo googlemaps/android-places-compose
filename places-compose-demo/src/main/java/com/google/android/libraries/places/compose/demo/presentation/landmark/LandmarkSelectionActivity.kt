@@ -28,15 +28,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import kotlinx.coroutines.launch
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonScreen
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
+import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.`in`.IndiaDisplayAddress
+import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress
 import com.google.maps.android.compose.rememberMarkerState
 import com.google.maps.android.compose.rememberUpdatedMarkerState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * The activity for selecting a landmark.
@@ -64,7 +66,7 @@ class LandmarkSelectionActivity : ComponentActivity() {
                         is ViewModelEvent.UserMessage -> {
                             snackbarHostState.showSnackbar(
                                 message = event.message,
-                                duration = SnackbarDuration.Short
+                                duration = SnackbarDuration.Short,
                             )
                         }
                     }
@@ -75,10 +77,11 @@ class LandmarkSelectionActivity : ComponentActivity() {
                 titleId = R.string.landmark_selection_button,
                 commonViewModel = commonViewModel,
                 onNavigateUp = { finish() },
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
             ) { paddingValues ->
                 val location by landmarkSelectionViewModel.location.collectAsStateWithLifecycle()
-                val nearbyObjectsWithLocations by landmarkSelectionViewModel.nearbyObjectsWithLatLngs.collectAsStateWithLifecycle()
+                val nearbyObjectsWithLocations by
+                    landmarkSelectionViewModel.nearbyObjectsWithLatLngs.collectAsStateWithLifecycle()
                 val displayAddress by landmarkSelectionViewModel.displayAddress.collectAsStateWithLifecycle()
 
                 val userMarker = rememberUpdatedMarkerState(position = location)
@@ -102,35 +105,37 @@ class LandmarkSelectionActivity : ComponentActivity() {
                     },
                     onConfirmAddress = {
                         val formatted = when (val addr = displayAddress) {
-                            is com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.`in`.IndiaDisplayAddress -> listOfNotNull(
+                            is IndiaDisplayAddress -> listOfNotNull(
                                 addr.aptSuiteUnit.ifBlank { null },
                                 addr.streetAddress.ifBlank { null },
                                 addr.city.ifBlank { null },
                                 addr.state.ifBlank { null },
                                 addr.pinCode.ifBlank { null },
-                                addr.country.ifBlank { null }
+                                addr.country.ifBlank { null },
                             ).joinToString(", ")
-                            is com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.UsDisplayAddress -> listOfNotNull(
+
+                            is UsDisplayAddress -> listOfNotNull(
                                 addr.streetAddress.ifBlank { null },
                                 addr.additionalAddressInfo.ifBlank { null },
                                 addr.city.ifBlank { null },
                                 addr.state.ifBlank { null },
                                 addr.zipCode.ifBlank { null },
-                                addr.country.ifBlank { null }
+                                addr.country.ifBlank { null },
                             ).joinToString(", ")
+
                             else -> "No address selected"
                         }
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(
                                 message = "Address saved: $formatted",
-                                duration = SnackbarDuration.Short
+                                duration = SnackbarDuration.Short,
                             )
                         }
                     },
                     nearbyObjectsWithLocations = nearbyObjectsWithLocations,
                     address = displayAddress,
                     showMap = commonViewState.showMap,
-                    landmarkMarkers = landmarkMarkers
+                    landmarkMarkers = landmarkMarkers,
                 )
             }
         }

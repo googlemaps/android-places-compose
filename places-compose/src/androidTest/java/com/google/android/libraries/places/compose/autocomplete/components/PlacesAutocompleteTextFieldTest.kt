@@ -1,32 +1,32 @@
 package com.google.android.libraries.places.compose.autocomplete.components
 
+import android.text.SpannableString
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import android.text.SpannableString
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.printToLog
+import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
+import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 import com.google.android.libraries.places.compose.autocomplete.data.meters
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import org.junit.Rule
 import org.junit.Test
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.printToLog
-import com.google.android.libraries.places.compose.autocomplete.data.LocalUnitsConverter
-import com.google.android.libraries.places.compose.autocomplete.data.getUnitsConverter
 
 class PlacesAutocompleteTextFieldTest {
 
@@ -47,7 +47,7 @@ class PlacesAutocompleteTextFieldTest {
                 searchText = "",
                 predictions = emptyList(),
                 onQueryChanged = {},
-                modifier = Modifier.testTag("autocompleteTextField")
+                modifier = Modifier.testTag("autocompleteTextField"),
             )
         }
         composeTestRule.onNodeWithTag("placesAutocompleteSearchField")
@@ -63,7 +63,7 @@ class PlacesAutocompleteTextFieldTest {
                 searchText = query,
                 predictions = emptyList(),
                 onQueryChanged = { query = it },
-                modifier = Modifier.testTag("autocompleteTextField")
+                modifier = Modifier.testTag("autocompleteTextField"),
             )
         }
         composeTestRule.onNodeWithTag("placesAutocompleteSearchField")
@@ -123,27 +123,27 @@ class PlacesAutocompleteTextFieldTest {
                 autocompletePlace = testPlace.copy(
                     primaryText = SpannableString(
                         "Very long primary text that should be truncated" +
-                                "There is no strife, no prejudice, no national conflict in outer " +
-                                "space as yet. Its hazards are hostile to us all. Its conquest " +
-                                "deserves the best of all mankind, and its opportunity for " +
-                                "peaceful cooperation many never come again. " +
-                                "But why, some say, the moon? Why choose this as our goal? " +
-                                "And they may well ask why climb the highest mountain?"
+                            "There is no strife, no prejudice, no national conflict in outer " +
+                            "space as yet. Its hazards are hostile to us all. Its conquest " +
+                            "deserves the best of all mankind, and its opportunity for " +
+                            "peaceful cooperation many never come again. " +
+                            "But why, some say, the moon? Why choose this as our goal? " +
+                            "And they may well ask why climb the highest mountain?",
                     ),
                     secondaryText = SpannableString(
                         "Very long secondary text that should be truncated" +
-                                "It is for these reasons that I regard the decision last year to" +
-                                "shift our efforts in space from low to high gear as among the most " +
-                                "important decisions that will be made during my incumbency in the " +
-                                "office of the Presidency."
-                    )
+                            "It is for these reasons that I regard the decision last year to" +
+                            "shift our efforts in space from low to high gear as among the most " +
+                            "important decisions that will be made during my incumbency in the " +
+                            "office of the Presidency.",
+                    ),
                 ),
                 isSelected = false,
                 onPlaceSelected = {},
                 primaryTextMaxLines = 1,
                 secondaryTextMaxLines = 1,
                 isExpanded = isExpanded,
-                onExpandClick = { isExpanded = !isExpanded }
+                onExpandClick = { isExpanded = !isExpanded },
             )
         }
 

@@ -8,6 +8,7 @@ import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.demo.data.repositories.CompositeLocation
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
+import com.google.maps.android.sphericalDistance
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,24 +16,24 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
-import com.google.maps.android.sphericalDistance
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterNotNull
 
 enum class ButtonState {
-    NORMAL, SELECTED
+    NORMAL,
+    SELECTED,
 }
 
 data class ButtonStates(
     val currentLocation: ButtonState = ButtonState.NORMAL,
     val mockLocation: ButtonState = ButtonState.NORMAL,
-    val map: ButtonState = ButtonState.NORMAL
+    val map: ButtonState = ButtonState.NORMAL,
 )
 
 data class CommonViewState(
@@ -40,20 +41,20 @@ data class CommonViewState(
     val locationLabel: String? = null,
     val buttonStates: ButtonStates = ButtonStates(),
     val showMap: Boolean = false,
-    val countryCode: String? = null
+    val countryCode: String? = null,
 )
 
 @HiltViewModel
 class CommonViewModel
 @Inject constructor(
     private val geocoderRepository: GeocoderRepository,
-    private val mergedLocationRepository: MergedLocationRepository
+    private val mergedLocationRepository: MergedLocationRepository,
 ) : ViewModel() {
     @OptIn(ExperimentalCoroutinesApi::class)
     val location = mergedLocationRepository.location.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = CompositeLocation()
+        initialValue = CompositeLocation(),
     )
 
     private var lastGeocodedLocation: LatLng? = null
@@ -79,17 +80,17 @@ class CommonViewModel
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = "US"
+        initialValue = "US",
     )
 
     private var buttonStates = combine(
         location,
-        showMap
+        showMap,
     ) { location, showMap ->
         ButtonStates(
             currentLocation = if (location.isMockLocation) ButtonState.NORMAL else ButtonState.SELECTED,
             mockLocation = if (location.isMockLocation) ButtonState.SELECTED else ButtonState.NORMAL,
-            map = if (showMap) ButtonState.SELECTED else ButtonState.NORMAL
+            map = if (showMap) ButtonState.SELECTED else ButtonState.NORMAL,
         )
     }
 
@@ -97,19 +98,19 @@ class CommonViewModel
         location,
         buttonStates,
         showMap,
-        countryCode
+        countryCode,
     ) { location, buttonStates, showMap, countryCode ->
         CommonViewState(
             location = location.latLng,
             locationLabel = location.label,
             buttonStates = buttonStates,
             showMap = showMap,
-            countryCode = countryCode
+            countryCode = countryCode,
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = CommonViewState()
+        initialValue = CommonViewState(),
     )
 
     private val _snackbarMessage = MutableSharedFlow<String>()
@@ -125,12 +126,15 @@ class CommonViewModel
                     _snackbarMessage.emit("Location: $label")
                 }
             }
+
             is CommonEvent.OnToggleMap -> {
                 _showMap.value = !_showMap.value
             }
+
             is CommonEvent.OnUseSystemLocation -> {
                 mergedLocationRepository.useSystemLocation()
             }
+
             is CommonEvent.SetMapVisible -> {
                 _showMap.value = event.visible
             }

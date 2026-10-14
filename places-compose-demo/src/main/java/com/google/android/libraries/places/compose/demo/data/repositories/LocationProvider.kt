@@ -56,93 +56,92 @@ import kotlin.time.Duration.Companion.seconds
  * @param scope The coroutine scope in which the location updates will be emitted.
  */
 class LocationRepository(context: Context, private val scope: CoroutineScope) {
-  private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-  private var locationRequest = with(LocationRequest.Builder(/* intervalMillis = */ 10.seconds.inWholeMilliseconds)) {
-    setPriority(Priority.PRIORITY_HIGH_ACCURACY)
-    setWaitForAccurateLocation(true)
-    build()
-  }
+    private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private var locationRequest = with(LocationRequest.Builder(10.seconds.inWholeMilliseconds)) {
+        setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+        setWaitForAccurateLocation(true)
+        build()
+    }
 
-  private val _latestLocation = MutableStateFlow<LatLng?>(null)
-  val latestLocation: StateFlow<LatLng?> = _latestLocation
+    private val _latestLocation = MutableStateFlow<LatLng?>(null)
+    val latestLocation: StateFlow<LatLng?> = _latestLocation
 
-  @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
-  @SuppressLint("MissingPermission")
-  private val _locationUpdates = callbackFlow {
-    val callback = object : LocationCallback() {
-      override
-      fun onLocationResult(result: LocationResult) {
-        result.lastLocation?.let { location ->
-          trySend(location)
+    @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
+    @SuppressLint("MissingPermission")
+    private val _locationUpdates = callbackFlow {
+        val callback = object : LocationCallback() {
+            override fun onLocationResult(result: LocationResult) {
+                result.lastLocation?.let { location ->
+                    trySend(location)
+                }
+            }
         }
-      }
-    }
 
-    fusedLocationClient.requestLocationUpdates(
-      locationRequest,
-      callback,
-      Looper.getMainLooper()
-    ).addOnFailureListener {
-      close(it)
-    }
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            callback,
+            Looper.getMainLooper(),
+        ).addOnFailureListener {
+            close(it)
+        }
 
-    awaitClose {
-      fusedLocationClient.removeLocationUpdates(callback)
-    }
-  }.shareIn(
-    scope,
-    replay = 0,
-    started = SharingStarted.WhileSubscribed()
-  )
-
-  /**
-   * Provides a [Flow] of [Location] updates.
-   *
-   * This function requires the following permissions:
-   * - `ACCESS_COARSE_LOCATION`
-   * - `ACCESS_FINE_LOCATION`
-   *
-   * @param locationRequest The [LocationRequest] object specifying the desired location updates.
-   *  If null, the default location request will be used.
-   *
-   * @return A [Flow] that emits [Location] updates.
-   */
-  @ExperimentalCoroutinesApi
-  @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
-  fun continuousLocation(locationRequest: LocationRequest?): StateFlow<Location> {
-    if (locationRequest != null) {
-      this.locationRequest = locationRequest
-    }
-
-    return _locationUpdates.stateIn(
-      scope = scope,
-      SharingStarted.WhileSubscribed(5.seconds),
-      initialValue = Location("MockLocation")
+        awaitClose {
+            fusedLocationClient.removeLocationUpdates(callback)
+        }
+    }.shareIn(
+        scope,
+        replay = 0,
+        started = SharingStarted.WhileSubscribed(),
     )
-  }
 
-  @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
-  fun updateLocation() {
-    scope.launch {
-      _latestLocation.value = getLastLocation()
+    /**
+     * Provides a [Flow] of [Location] updates.
+     *
+     * This function requires the following permissions:
+     * - `ACCESS_COARSE_LOCATION`
+     * - `ACCESS_FINE_LOCATION`
+     *
+     * @param locationRequest The [LocationRequest] object specifying the desired location updates.
+     *  If null, the default location request will be used.
+     *
+     * @return A [Flow] that emits [Location] updates.
+     */
+    @ExperimentalCoroutinesApi
+    @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
+    fun continuousLocation(locationRequest: LocationRequest?): StateFlow<Location> {
+        if (locationRequest != null) {
+            this.locationRequest = locationRequest
+        }
+
+        return _locationUpdates.stateIn(
+            scope = scope,
+            SharingStarted.WhileSubscribed(5.seconds),
+            initialValue = Location("MockLocation"),
+        )
     }
-  }
 
-  @OptIn(ExperimentalCoroutinesApi::class)
-  @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
-  suspend fun getLastLocation(): LatLng? {
-    val cancellationTokenSource = CancellationTokenSource()
+    @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
+    fun updateLocation() {
+        scope.launch {
+            _latestLocation.value = getLastLocation()
+        }
+    }
 
-    val result = fusedLocationClient.getCurrentLocation(
-      CurrentLocationRequest.Builder()
-        .setPriority(PRIORITY_BALANCED_POWER_ACCURACY)
-        .setDurationMillis(5.seconds.inWholeMilliseconds)
-        .setMaxUpdateAgeMillis(1.minutes.inWholeMilliseconds)
-        .setGranularity(GRANULARITY_FINE)
-        .build(),
-      cancellationTokenSource.token,
-    ).await(cancellationTokenSource)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @RequiresPermission(allOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
+    suspend fun getLastLocation(): LatLng? {
+        val cancellationTokenSource = CancellationTokenSource()
 
-    return result?.let { LatLng(it.latitude, it.longitude) }
-  }
+        val result = fusedLocationClient.getCurrentLocation(
+            CurrentLocationRequest.Builder()
+                .setPriority(PRIORITY_BALANCED_POWER_ACCURACY)
+                .setDurationMillis(5.seconds.inWholeMilliseconds)
+                .setMaxUpdateAgeMillis(1.minutes.inWholeMilliseconds)
+                .setGranularity(GRANULARITY_FINE)
+                .build(),
+            cancellationTokenSource.token,
+        ).await(cancellationTokenSource)
+
+        return result?.let { LatLng(it.latitude, it.longitude) }
+    }
 }

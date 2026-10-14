@@ -30,6 +30,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -43,12 +44,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
-import androidx.compose.material3.LinearProgressIndicator
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.components.AddressDisplay
@@ -87,7 +87,7 @@ fun LandmarkSelectionContent(
     }
 
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         if (showMap) {
             NearbyLandmarksMap(
@@ -104,13 +104,13 @@ fun LandmarkSelectionContent(
                 onLandmarkSelected = {
                     selectedPlaceId = it
                 },
-                landmarkMarkers = landmarkMarkers
+                landmarkMarkers = landmarkMarkers,
             )
             Text(
                 text = stringResource(R.string.map_tap_instruction),
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 2.dp)
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 2.dp),
             )
         }
 
@@ -118,13 +118,15 @@ fun LandmarkSelectionContent(
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp, vertical = 4.dp)
+                    .padding(horizontal = 24.dp, vertical = 4.dp),
             )
             Text(
-                text = "Looking up address & landmarks for (${"%.4f".format(userLocation.latitude)}, ${"%.4f".format(userLocation.longitude)})...",
+                text = "Looking up address & landmarks for (${"%.4f".format(
+                    userLocation.latitude,
+                )}, ${"%.4f".format(userLocation.longitude)})...",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(horizontal = 24.dp)
+                modifier = Modifier.padding(horizontal = 24.dp),
             )
         }
 
@@ -141,42 +143,42 @@ fun LandmarkSelectionContent(
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Info,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
                             )
                             Text(
                                 text = stringResource(R.string.address_descriptors_info_title),
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleMedium,
                             )
                         }
                         Text(
                             text = stringResource(R.string.address_descriptors_unavailable_message),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Button(
                                 onClick = { onMapClicked(LatLng(12.9794404, 77.7179181)) },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             ) {
                                 Text(
                                     text = stringResource(R.string.switch_to_india_bangalore),
-                                    style = MaterialTheme.typography.labelMedium
+                                    style = MaterialTheme.typography.labelMedium,
                                 )
                             }
                         }
@@ -189,25 +191,25 @@ fun LandmarkSelectionContent(
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    ),
                 ) {
                     Row(
                         modifier = Modifier.padding(12.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Outlined.Place,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                         Text(
                             text = stringResource(
                                 R.string.address_descriptors_available_hint,
-                                landmarkMarkers.size
+                                landmarkMarkers.size,
                             ),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -222,29 +224,29 @@ fun LandmarkSelectionContent(
                     onAddressChanged = onAddressChanged,
                     onNearbyLandmarkSelected = {
                         selectedPlaceId = it
-                    }
+                    },
                 )
 
                 Button(
                     onClick = { onConfirmAddress?.invoke() },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 16.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.confirm_address_button),
-                        style = MaterialTheme.typography.labelLarge
+                        style = MaterialTheme.typography.labelLarge,
                     )
                 }
             } else {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(1f),
                 ) {
                     Text(
                         modifier = Modifier.align(Alignment.Center),
-                        text = stringResource(R.string.no_address_to_show)
+                        text = stringResource(R.string.no_address_to_show),
                     )
                 }
             }

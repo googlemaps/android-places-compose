@@ -37,7 +37,7 @@ import com.google.android.libraries.places.compose.demo.R
 fun NearbyObjectsSelector(
     nearbyObjects: List<NearbyObject>,
     onNearbyLandmarkSelected: (String?) -> Unit,
-    selectedPlaceId: String?
+    selectedPlaceId: String?,
 ) {
     var showLandmarks by rememberSaveable { mutableStateOf(true) }
     var showAreas by rememberSaveable { mutableStateOf(false) }
@@ -51,12 +51,16 @@ fun NearbyObjectsSelector(
                 showDialog = false
                 showLandmarks = showLandmarksNew
                 showAreas = showAreasNew
-            }
+            },
         )
     }
 
-    val landmarks by rememberSaveable(nearbyObjects) { mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyLandmark>()) }
-    val areas by rememberSaveable(nearbyObjects) { mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyArea>()) }
+    val landmarks by rememberSaveable(nearbyObjects) {
+        mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyLandmark>())
+    }
+    val areas by rememberSaveable(nearbyObjects) {
+        mutableStateOf(nearbyObjects.filterIsInstance<NearbyObject.NearbyArea>())
+    }
 
     if (landmarks.isNotEmpty()) {
         NearbyObjectsMenu(
@@ -75,7 +79,7 @@ fun NearbyObjectsSelector(
             titleId = R.string.nearby_areas,
             nearbyObjects = areas,
             modifier = Modifier,
-            selectedPlaceId = selectedPlaceId
+            selectedPlaceId = selectedPlaceId,
         )
     }
 }
@@ -84,7 +88,7 @@ fun NearbyObjectsSelector(
 private fun NearbyObjectsFilterDialog(
     showLandmarksInitial: Boolean,
     showAreasInitial: Boolean,
-    onDismissRequest: (Boolean, Boolean) -> Unit
+    onDismissRequest: (Boolean, Boolean) -> Unit,
 ) {
     var showLandmarks by rememberSaveable { mutableStateOf(showLandmarksInitial) }
     var showAreas by rememberSaveable { mutableStateOf(showAreasInitial) }
@@ -102,7 +106,7 @@ private fun NearbyObjectsFilterDialog(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = showLandmarks,
-                        onCheckedChange = { showLandmarks = it }
+                        onCheckedChange = { showLandmarks = it },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Landmarks")
@@ -110,12 +114,12 @@ private fun NearbyObjectsFilterDialog(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Checkbox(
                         checked = showAreas,
-                        onCheckedChange = { showAreas = it }
+                        onCheckedChange = { showAreas = it },
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text("Areas")
                 }
             }
-        }
+        },
     )
 }

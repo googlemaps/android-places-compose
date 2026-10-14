@@ -15,7 +15,4 @@ package com.google.android.libraries.places.compose.autocomplete.models
 
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.AddressComponentMultiMap
 
-data class Address(
-    val countryCode: String,
-    val componentMap: AddressComponentMultiMap,
-)
+data class Address(val countryCode: String, val componentMap: AddressComponentMultiMap)

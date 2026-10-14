@@ -20,18 +20,18 @@ data class ReverseGeocodingResponse(
     @SerializedName("error_message") val errorMessage: String? = null,
     @SerializedName("address_descriptor") val addressDescriptor: AddressDescriptor?,
     @SerializedName("plus_code") val plusCode: PlusCode?,
-    @SerializedName("results") val addresses: List<AddressDto> = emptyList()
+    @SerializedName("results") val addresses: List<AddressDto> = emptyList(),
 )
 
 data class AddressDescriptor(
     @SerializedName("areas") val areas: List<Area>,
-    @SerializedName("landmarks") val landmarks: List<Landmark>
+    @SerializedName("landmarks") val landmarks: List<Landmark>,
 )
 
 data class Area(
     @SerializedName("containment") val containment: String,
     @SerializedName("display_name") val displayName: DisplayName,
-    @SerializedName("place_id") val placeId: String
+    @SerializedName("place_id") val placeId: String,
 )
 
 data class Landmark(
@@ -40,17 +40,17 @@ data class Landmark(
     @SerializedName("spatial_relationship") val spatialRelationship: String,
     @SerializedName("straight_line_distance_meters") val straightLineDistanceMeters: Double,
     @SerializedName("travel_distance_meters") val travelDistanceMeters: Double,
-    @SerializedName("types") val types: List<String>
+    @SerializedName("types") val types: List<String>,
 )
 
 data class DisplayName(
     @SerializedName("language_code") val languageCode: String,
-    @SerializedName("text") val text: String
+    @SerializedName("text") val text: String,
 )
 
 data class PlusCode(
     @SerializedName("compound_code") val compoundCode: String,
-    @SerializedName("global_code") val globalCode: String
+    @SerializedName("global_code") val globalCode: String,
 )
 
 data class AddressDto(
@@ -59,37 +59,26 @@ data class AddressDto(
     @SerializedName("geometry") val geometry: Geometry,
     @SerializedName("place_id") val placeId: String,
     @SerializedName("plus_code") val plusCode: PlusCode,
-    @SerializedName("types") val types: List<String>
+    @SerializedName("types") val types: List<String>,
 ) {
-    fun getCountryCode(): String? {
-        return addressComponents.firstOrNull { it.types.contains("country") }?.shortName
-    }
+    fun getCountryCode(): String? = addressComponents.firstOrNull { it.types.contains("country") }?.shortName
 }
 
 data class AddressComponent(
     @SerializedName("long_name") val longName: String,
     @SerializedName("short_name") val shortName: String,
-    val types: List<String>
+    val types: List<String>,
 )
 
 data class Geometry(
     val location: Location,
     @SerializedName("location_type") val locationType: String,
     val viewport: Viewport,
-    val bounds: Bounds?
+    val bounds: Bounds?,
 )
 
-data class Location(
-    val lat: Double,
-    val lng: Double
-)
+data class Location(val lat: Double, val lng: Double)
 
-data class Viewport(
-    val northeast: Location,
-    val southwest: Location
-)
+data class Viewport(val northeast: Location, val southwest: Location)
 
-data class Bounds(
-    val northeast: Location,
-    val southwest: Location
-)
+data class Bounds(val northeast: Location, val southwest: Location)

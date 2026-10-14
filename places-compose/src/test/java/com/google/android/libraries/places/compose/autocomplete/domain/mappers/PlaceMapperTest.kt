@@ -33,7 +33,7 @@ class PlaceMapperTest {
                 .build(),
             AddressComponent.builder("Whitefield", listOf("sublocality", "political"))
                 .setShortName("Whitefield")
-                .build()
+                .build(),
         )
 
         val domainAddress = placesComponents.toAddress()
@@ -50,7 +50,7 @@ class PlaceMapperTest {
         val placesComponents = listOf(
             AddressComponent.builder("United States", listOf("country", "political"))
                 .setShortName(null)
-                .build()
+                .build(),
         )
 
         val domainAddress = placesComponents.toAddress()

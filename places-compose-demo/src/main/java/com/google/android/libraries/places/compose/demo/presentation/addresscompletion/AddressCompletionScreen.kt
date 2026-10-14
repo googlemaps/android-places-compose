@@ -15,12 +15,19 @@
 package com.google.android.libraries.places.compose.demo.presentation.addresscompletion
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,13 +37,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.compose.autocomplete.components.PlacesAutocompleteTextField
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
@@ -59,12 +59,12 @@ fun AddressCompletionMainContent(
     onAddressSelected: (AutocompletePlace) -> Unit,
     onMapCloseClick: () -> Unit,
     commonViewState: CommonViewState = CommonViewState(),
-    onQueryChanged: (String) -> Unit
+    onQueryChanged: (String) -> Unit,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
-        modifier = modifier
+        modifier = modifier,
     ) {
         when (addressCompletionViewState) {
             is AddressCompletionViewState.Autocomplete -> {
@@ -77,7 +77,7 @@ fun AddressCompletionMainContent(
                     onAddressSelected = { autocompletePlace ->
                         keyboardController?.hide()
                         onAddressSelected(autocompletePlace)
-                    }
+                    },
                 )
             }
 
@@ -87,7 +87,7 @@ fun AddressCompletionMainContent(
                         .fillMaxWidth()
                         .weight(1f),
                     onAddressChanged = onAddressChanged,
-                    addressEntry = addressCompletionViewState
+                    addressEntry = addressCompletionViewState,
                 )
             }
         }
@@ -119,10 +119,10 @@ fun PlaceAutocompleteScreen(
     autocompleteViewState: AutocompleteViewState,
     modifier: Modifier,
     onQueryChanged: (String) -> Unit,
-    onAddressSelected: (AutocompletePlace) -> Unit
+    onAddressSelected: (AutocompletePlace) -> Unit,
 ) {
     Column(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
         PlacesAutocompleteTextField(
             searchText = autocompleteViewState.searchText,
@@ -132,7 +132,7 @@ fun PlaceAutocompleteScreen(
             selectedPlace = autocompleteViewState.selectedPlace,
             textFieldMaxLines = 4,
             scrollable = true,
-            placeHolderText = stringResource(R.string.search_call_to_action)
+            placeHolderText = stringResource(R.string.search_call_to_action),
         )
     }
 }
@@ -150,13 +150,14 @@ private fun AddressEntryForm(
     ) {
         Text(
             text = stringResource(R.string.delivery_information),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
 
-        Column(modifier = Modifier
-            .weight(1f)
-            .padding(top = 16.dp)
-            .verticalScroll(rememberScrollState()),
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .padding(top = 16.dp)
+                .verticalScroll(rememberScrollState()),
         ) {
             if (addressEntry.nearbyObjects.isEmpty()) {
                 Card(
@@ -165,30 +166,30 @@ private fun AddressEntryForm(
                         .padding(bottom = 16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 ) {
                     Column(
                         modifier = Modifier.padding(14.dp),
-                        verticalArrangement = Arrangement.spacedBy(6.dp)
+                        verticalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Info,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
                             )
                             Text(
                                 text = stringResource(R.string.address_descriptors_info_title),
-                                style = MaterialTheme.typography.titleMedium
+                                style = MaterialTheme.typography.titleMedium,
                             )
                         }
                         Text(
                             text = stringResource(R.string.address_descriptors_unavailable_message),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }
@@ -211,7 +212,7 @@ private fun CartContentPreview_autocomplete() {
         autocompleteViewState = AutocompleteViewState(),
         modifier = Modifier.fillMaxSize(),
         onQueryChanged = { },
-        onAddressSelected = { }
+        onAddressSelected = { },
     )
 }
 
@@ -230,7 +231,7 @@ private fun CartContentPreview_us_addressEntry() {
                 country = "United States",
                 countryCode = "US",
             ),
-        )
+        ),
     )
 }
 
@@ -240,15 +241,15 @@ private fun CartContentPreview_in_addressEntry() {
     AddressEntryForm(
         onAddressChanged = {},
         addressEntry = AddressCompletionViewState.AddressEntry(
-                displayAddress = IndiaDisplayAddress(
-                    aptSuiteUnit = "Akshardham society 2/3",
-                    streetAddress = "Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha",
-                    city = "Surat",
-                    state = "Gujarat",
-                    pinCode = "395006",
-                    country = "India",
-                    countryCode = "IN",
-                ),
-        )
+            displayAddress = IndiaDisplayAddress(
+                aptSuiteUnit = "Akshardham society 2/3",
+                streetAddress = "Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha",
+                city = "Surat",
+                state = "Gujarat",
+                pinCode = "395006",
+                country = "India",
+                countryCode = "IN",
+            ),
+        ),
     )
 }

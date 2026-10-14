@@ -60,13 +60,13 @@ import com.google.android.libraries.places.compose.demo.R
 fun GetLocationPermission(
     modifier: Modifier = Modifier,
     onFallbackToMock: (() -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val locationPermissionsState = rememberMultiplePermissionsState(
         listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
-        )
+        ),
     )
 
     var useMockFallback by rememberSaveable { mutableStateOf(false) }
@@ -76,7 +76,7 @@ fun GetLocationPermission(
     } else {
         Box(
             modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Card(
                 modifier = Modifier
@@ -84,18 +84,18 @@ fun GetLocationPermission(
                     .padding(24.dp)
                     .verticalScroll(rememberScrollState()),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 ),
-                shape = MaterialTheme.shapes.large
+                shape = MaterialTheme.shapes.large,
             ) {
                 Column(
                     modifier = Modifier.padding(24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     val allPermissionsRevoked =
                         locationPermissionsState.permissions.size ==
-                                locationPermissionsState.revokedPermissions.size
+                            locationPermissionsState.revokedPermissions.size
 
                     val titleText = if (!allPermissionsRevoked) {
                         "Precise Location Access"
@@ -105,8 +105,8 @@ fun GetLocationPermission(
 
                     val textToShow = if (!allPermissionsRevoked) {
                         "Thank you for granting access to your approximate location. To provide you with " +
-                                "the most accurate and relevant information, please grant permission " +
-                                "to access your precise location."
+                            "the most accurate and relevant information, please grant permission " +
+                            "to access your precise location."
                     } else if (locationPermissionsState.shouldShowRationale) {
                         "Getting your location is important for this demo to provide relevant places and autocomplete suggestions."
                     } else {
@@ -123,7 +123,7 @@ fun GetLocationPermission(
                         painter = painterResource(R.drawable.baseline_my_location_24),
                         contentDescription = null,
                         modifier = Modifier.size(48.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
 
                     Text(
@@ -131,21 +131,21 @@ fun GetLocationPermission(
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
                     Text(
                         text = textToShow,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
                         onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(buttonText)
                     }
@@ -155,7 +155,7 @@ fun GetLocationPermission(
                             useMockFallback = true
                             onFallbackToMock?.invoke()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text("Use Mock Location Instead")
                     }

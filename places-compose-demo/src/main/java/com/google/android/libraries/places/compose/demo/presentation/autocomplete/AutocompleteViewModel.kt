@@ -51,7 +51,7 @@ data class AutocompleteViewState(
 
 private data class AutocompleteQuery(
     val query: String,
-    val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {}
+    val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {},
 )
 
 /**
@@ -87,7 +87,7 @@ constructor(
             } else {
                 emptyList()
             }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), emptyList())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5.seconds), emptyList())
 
     private val autocompletePlaces = predictions.map { predictions ->
         predictions.map(AutocompletePrediction::toPlaceDetails)
@@ -118,7 +118,7 @@ constructor(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = AutocompleteViewState()
+        initialValue = AutocompleteViewState(),
     )
 
     /**

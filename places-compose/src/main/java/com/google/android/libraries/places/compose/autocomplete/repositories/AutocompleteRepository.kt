@@ -25,9 +25,8 @@ class AutocompleteRepository(private val placesClient: PlacesClient) {
     // TODO: add session token
     private val token = AutocompleteSessionToken.newInstance()
 
-    suspend fun getAutocompletePlaces(request: FindAutocompletePredictionsRequest) : List<AutocompletePrediction> {
-        return withContext(Dispatchers.IO) {
-          placesClient.findAutocompletePredictions(request).await().autocompletePredictions
+    suspend fun getAutocompletePlaces(request: FindAutocompletePredictionsRequest): List<AutocompletePrediction> =
+        withContext(Dispatchers.IO) {
+            placesClient.findAutocompletePredictions(request).await().autocompletePredictions
         }
-    }
 }

@@ -26,12 +26,12 @@ class AddressDtoTest {
         val addressComponentCountry = AddressComponent(
             longName = "India",
             shortName = "IN",
-            types = listOf("country", "political")
+            types = listOf("country", "political"),
         )
         val addressComponentRoute = AddressComponent(
             longName = "Main Street",
             shortName = "Main St",
-            types = listOf("route")
+            types = listOf("route"),
         )
 
         val addressDto = AddressDto(
@@ -42,19 +42,19 @@ class AddressDtoTest {
                 locationType = "ROOFTOP",
                 viewport = Viewport(
                     northeast = Location(12.98, 77.60),
-                    southwest = Location(12.96, 77.58)
+                    southwest = Location(12.96, 77.58),
                 ),
                 bounds = Bounds(
                     northeast = Location(12.98, 77.60),
-                    southwest = Location(12.96, 77.58)
-                )
+                    southwest = Location(12.96, 77.58),
+                ),
             ),
             placeId = "ChIJbU60yXAWrjsR4E9-UejD3_g",
             plusCode = PlusCode(
                 compoundCode = "XHQQ+34 Bengaluru, Karnataka",
-                globalCode = "7J4VXHQQ+34"
+                globalCode = "7J4VXHQQ+34",
             ),
-            types = listOf("street_address")
+            types = listOf("street_address"),
         )
 
         assertThat(addressDto.getCountryCode()).isEqualTo("IN")
@@ -67,8 +67,8 @@ class AddressDtoTest {
                 AddressComponent(
                     longName = "Bengaluru",
                     shortName = "BLR",
-                    types = listOf("locality")
-                )
+                    types = listOf("locality"),
+                ),
             ),
             formattedAddress = "Bengaluru",
             geometry = Geometry(
@@ -76,16 +76,16 @@ class AddressDtoTest {
                 locationType = "APPROXIMATE",
                 viewport = Viewport(
                     northeast = Location(12.98, 77.60),
-                    southwest = Location(12.96, 77.58)
+                    southwest = Location(12.96, 77.58),
                 ),
-                bounds = null
+                bounds = null,
             ),
             placeId = "ChIJbU60yXAWrjsR4E9-UejD3_g",
             plusCode = PlusCode(
                 compoundCode = "XHQQ+34 Bengaluru",
-                globalCode = "7J4VXHQQ+34"
+                globalCode = "7J4VXHQQ+34",
             ),
-            types = listOf("locality")
+            types = listOf("locality"),
         )
 
         assertThat(addressDto.getCountryCode()).isNull()
@@ -97,7 +97,7 @@ class AddressDtoTest {
             status = "ZERO_RESULTS",
             errorMessage = "No results found",
             addressDescriptor = null,
-            plusCode = null
+            plusCode = null,
         )
 
         assertThat(response.status).isEqualTo("ZERO_RESULTS")
@@ -112,7 +112,7 @@ class AddressDtoTest {
         val area = Area(
             containment = "WITHIN",
             displayName = DisplayName(languageCode = "en", text = "Whitefield"),
-            placeId = "area_place_1"
+            placeId = "area_place_1",
         )
         val landmark = Landmark(
             displayName = DisplayName(languageCode = "en", text = "KTPO Convention Centre"),
@@ -120,11 +120,11 @@ class AddressDtoTest {
             spatialRelationship = "NEAR",
             straightLineDistanceMeters = 150.0,
             travelDistanceMeters = 200.0,
-            types = listOf("establishment", "point_of_interest")
+            types = listOf("establishment", "point_of_interest"),
         )
         val descriptor = AddressDescriptor(
             areas = listOf(area),
-            landmarks = listOf(landmark)
+            landmarks = listOf(landmark),
         )
 
         val json = gson.toJson(descriptor)

@@ -42,13 +42,10 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun providePlacesClient(
-        application: Application,
-        apiKeyProvider: ApiKeyProvider
-    ): PlacesClient {
+    fun providePlacesClient(application: Application, apiKeyProvider: ApiKeyProvider): PlacesClient {
         Places.initializeWithNewPlacesApiEnabled(
             application.applicationContext,
-            apiKeyProvider.placesApiKey
+            apiKeyProvider.placesApiKey,
         )
 
         return Places.createClient(application.applicationContext)
@@ -56,64 +53,47 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAutocompleteRepository(placesClient: PlacesClient): AutocompleteRepository {
-        return AutocompleteRepository(placesClient)
-    }
+    fun provideAutocompleteRepository(placesClient: PlacesClient): AutocompleteRepository =
+        AutocompleteRepository(placesClient)
 
     @Provides
     @Singleton
-    fun providesPlaceRepository(placesClient: PlacesClient): PlaceRepository {
-        return PlaceRepository(placesClient)
-    }
+    fun providesPlaceRepository(placesClient: PlacesClient): PlaceRepository = PlaceRepository(placesClient)
 
     @Provides
     @Singleton
-    fun provideGeocoderRepository(
-        application: Application,
-        apiKeyProvider: ApiKeyProvider
-    ): GeocoderRepository {
-        return GeocoderRepository(application.applicationContext, apiKeyProvider)
-    }
+    fun provideGeocoderRepository(application: Application, apiKeyProvider: ApiKeyProvider): GeocoderRepository =
+        GeocoderRepository(application.applicationContext, apiKeyProvider)
 
     @Provides
     @Singleton
-    fun provideFusedLocationProviderClient(application: Application): FusedLocationProviderClient {
-        return LocationServices.getFusedLocationProviderClient(application)
-    }
+    fun provideFusedLocationProviderClient(application: Application): FusedLocationProviderClient =
+        LocationServices.getFusedLocationProviderClient(application)
 
     @OptIn(DelicateCoroutinesApi::class)
     @Provides
     @Singleton
-    fun provideLocationRepository(application: Application): LocationRepository {
-        return LocationRepository(
-            application.applicationContext,
-            (application as PlacesComposeDemoApplication).applicationScope
-        )
-    }
+    fun provideLocationRepository(application: Application): LocationRepository = LocationRepository(
+        application.applicationContext,
+        (application as PlacesComposeDemoApplication).applicationScope,
+    )
 
     @Provides
     @Singleton
-    fun provideApiKeyProvider(application: Application): ApiKeyProvider {
-        return ApiKeyProvider(application.applicationContext)
-    }
+    fun provideApiKeyProvider(application: Application): ApiKeyProvider = ApiKeyProvider(application.applicationContext)
 
     @Provides
     @Singleton
-    fun provideRequestQueue(application: Application): RequestQueue {
-        return Volley.newRequestQueue(application.applicationContext)
-    }
+    fun provideRequestQueue(application: Application): RequestQueue =
+        Volley.newRequestQueue(application.applicationContext)
 
     @Provides
     @Singleton
-    fun provideCountriesRepository(): CountriesRepository {
-        return CountriesRepository()
-    }
+    fun provideCountriesRepository(): CountriesRepository = CountriesRepository()
 
     @Provides
     @Singleton
-    fun provideMockLocationRepository(application: Application): MockLocationRepository {
-        return MockLocationRepository()
-    }
+    fun provideMockLocationRepository(application: Application): MockLocationRepository = MockLocationRepository()
 
     @OptIn(DelicateCoroutinesApi::class)
     @Provides
@@ -121,12 +101,10 @@ object AppModule {
     fun provideApplication(
         application: Application,
         locationRepository: LocationRepository,
-        mockLocationRepository: MockLocationRepository
-    ): MergedLocationRepository {
-        return MergedLocationRepository(
-            scope = (application as PlacesComposeDemoApplication).applicationScope,
-            locationRepository = locationRepository,
-            mockLocationRepository = mockLocationRepository,
-        )
-    }
+        mockLocationRepository: MockLocationRepository,
+    ): MergedLocationRepository = MergedLocationRepository(
+        scope = (application as PlacesComposeDemoApplication).applicationScope,
+        locationRepository = locationRepository,
+        mockLocationRepository = mockLocationRepository,
+    )
 }

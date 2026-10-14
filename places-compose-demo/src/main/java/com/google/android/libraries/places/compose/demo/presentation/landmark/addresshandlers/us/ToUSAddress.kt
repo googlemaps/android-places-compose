@@ -16,17 +16,15 @@ package com.google.android.libraries.places.compose.demo.presentation.landmark.a
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.AddressComponentType
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 
-fun Address.toUsDisplayAddress(): UsDisplayAddress {
-    return UsDisplayAddress(
-        streetAddress = listOfNotNull(
-            componentMap.longName(AddressComponentType.STREET_NUMBER),
-            componentMap.longName(AddressComponentType.ROUTE)
-        ).filter { it.isNotBlank() }.joinToString(" "),
-        city = componentMap.longName(AddressComponentType.LOCALITY) ?: "",
-        state = componentMap.shortName(AddressComponentType.ADMINISTRATIVE_AREA_LEVEL_1) ?: "",
-        zipCode = componentMap.longName(AddressComponentType.POSTAL_CODE) ?: "",
-        additionalAddressInfo = componentMap.longName(AddressComponentType.SUBPREMISE) ?: "",
-        countryCode = componentMap.shortName(AddressComponentType.COUNTRY) ?: "",
-        country = componentMap.longName(AddressComponentType.COUNTRY) ?: "",
-    )
-}
+fun Address.toUsDisplayAddress(): UsDisplayAddress = UsDisplayAddress(
+    streetAddress = listOfNotNull(
+        componentMap.longName(AddressComponentType.STREET_NUMBER),
+        componentMap.longName(AddressComponentType.ROUTE),
+    ).filter { it.isNotBlank() }.joinToString(" "),
+    city = componentMap.longName(AddressComponentType.LOCALITY) ?: "",
+    state = componentMap.shortName(AddressComponentType.ADMINISTRATIVE_AREA_LEVEL_1) ?: "",
+    zipCode = componentMap.longName(AddressComponentType.POSTAL_CODE) ?: "",
+    additionalAddressInfo = componentMap.longName(AddressComponentType.SUBPREMISE) ?: "",
+    countryCode = componentMap.shortName(AddressComponentType.COUNTRY) ?: "",
+    country = componentMap.longName(AddressComponentType.COUNTRY) ?: "",
+)

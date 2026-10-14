@@ -16,13 +16,11 @@ package com.google.android.libraries.places.compose.demo.mappers
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.AddressDescriptor
 
-fun AddressDescriptor.toNearbyObjects() : List<NearbyObject> {
-  return buildList {
+fun AddressDescriptor.toNearbyObjects(): List<NearbyObject> = buildList {
     landmarks.map { landmark ->
-      add(NearbyObject.NearbyLandmark(landmark))
+        add(NearbyObject.NearbyLandmark(landmark))
     }
     areas.map { area ->
-      add(NearbyObject.NearbyArea(area))
+        add(NearbyObject.NearbyArea(area))
     }
-  }
 }

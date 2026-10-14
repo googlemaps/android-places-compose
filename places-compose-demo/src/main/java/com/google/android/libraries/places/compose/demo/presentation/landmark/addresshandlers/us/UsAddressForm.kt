@@ -30,9 +30,9 @@ import com.google.android.libraries.places.compose.autocomplete.models.geocoder.
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.data.repositories.CountriesRepository
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.AddressTextField
-import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.DisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.components.NearbyObjectsSelector
+import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
 
 @Composable
 fun UsAddressForm(
@@ -45,16 +45,15 @@ fun UsAddressForm(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
         AddressTextField(
             value = address.streetAddress,
             label = R.string.us_address_address,
             modifier = Modifier.fillMaxWidth(),
             onValueChange = onAddressChanged?.let {
                 { onAddressChanged.invoke(address.copy(streetAddress = it)) }
-            }
+            },
         )
 
         AddressTextField(
@@ -77,7 +76,7 @@ fun UsAddressForm(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             AddressTextField(
                 value = address.state,
@@ -101,7 +100,7 @@ fun UsAddressForm(
             NearbyObjectsSelector(
                 nearbyObjects = nearbyObjects,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedPlaceId = selectedPlaceId
+                selectedPlaceId = selectedPlaceId,
             )
         }
 
@@ -114,7 +113,7 @@ fun UsAddressForm(
             },
             onValueChange = onAddressChanged?.let {
                 { onAddressChanged.invoke(address.copy(country = it)) }
-            }
+            },
         )
     }
 }
@@ -133,7 +132,7 @@ fun USAddressPreviewNoNearbyObjects() {
                 state = "NY",
                 zipCode = "10001",
                 countryCode = "US",
-                country = "United States"
+                country = "United States",
             ),
             nearbyObjects = emptyList(),
         )
@@ -163,14 +162,14 @@ fun USAddressPreviewWithNearbyObjects() {
                             placeId = "placeId",
                             displayName = DisplayName(
                                 languageCode = "en",
-                                text = "Landmark"
+                                text = "Landmark",
                             ),
                             spatialRelationship = "",
                             straightLineDistanceMeters = 1000.0,
                             travelDistanceMeters = 1000.0,
-                            types = emptyList()
-                        )
-                    )
+                            types = emptyList(),
+                        ),
+                    ),
                 ),
             )
         }

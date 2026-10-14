@@ -61,7 +61,7 @@ fun NearbyObjectsMenu(
     ExposedDropdownMenuBox(
         modifier = modifier,
         expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
+        onExpandedChange = { expanded = !expanded },
     ) {
         OutlinedTextField(
             readOnly = true,
@@ -74,14 +74,14 @@ fun NearbyObjectsMenu(
             modifier = Modifier
                 .menuAnchor(
                     type = ExposedDropdownMenuAnchorType.PrimaryNotEditable,
-                    enabled = true
+                    enabled = true,
                 )
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
         ExposedDropdownMenu(
             modifier = Modifier.fillMaxWidth(),
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             nearbyObjects.forEachIndexed { index, option ->
                 DropdownMenuItem(
@@ -91,12 +91,12 @@ fun NearbyObjectsMenu(
                     text = {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Icon(
                                     imageVector = Icons.Outlined.Place,
-                                    contentDescription = stringResource(R.string.distance)
+                                    contentDescription = stringResource(R.string.distance),
                                 )
                                 if (option.getDistanceString().isNotBlank()) {
                                     Text(
@@ -117,12 +117,12 @@ fun NearbyObjectsMenu(
                         selectedOption = option
                         expanded = false
                         onNearbyObjectSelected(selectedOption)
-                    }
+                    },
                 )
                 if (index < nearbyObjects.size - 1) {
                     HorizontalDivider(
                         modifier = Modifier.fillMaxWidth(),
-                        thickness = 1.dp
+                        thickness = 1.dp,
                     )
                 }
             }

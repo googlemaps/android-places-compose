@@ -22,13 +22,12 @@ import com.google.android.libraries.places.compose.autocomplete.data.meters
  * @return A PlaceDetails object containing the extracted information from the
  *   AutocompletePrediction.
  */
-fun AutocompletePrediction.toPlaceDetails() =
-  AutocompletePlace(
+fun AutocompletePrediction.toPlaceDetails() = AutocompletePlace(
     placeId = placeId,
     primaryText = getPrimaryText(predictionStyleSpan),
     secondaryText = getSecondaryText(predictionStyleSpan),
     distance = distanceMeters?.meters,
-  )
+)
 
 /** StyleSpan applied by the to the [AutocompletePrediction]s to highlight the matches. */
 private val predictionStyleSpan = android.text.style.StyleSpan(android.graphics.Typeface.BOLD)

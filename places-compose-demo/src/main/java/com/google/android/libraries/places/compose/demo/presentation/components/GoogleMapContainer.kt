@@ -67,9 +67,10 @@ fun GoogleMapContainer(
 
     OutlinedCard(modifier = modifier) {
         Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(modifier = Modifier.weight(1f)) {
                     header()
@@ -79,12 +80,11 @@ fun GoogleMapContainer(
                     IconButton(onClick = onMapCloseClick) {
                         Icon(
                             Icons.Default.Clear,
-                            contentDescription = stringResource(R.string.close_the_map)
+                            contentDescription = stringResource(R.string.close_the_map),
                         )
                     }
                 }
             }
-
 
             if (markerLatLng != null) {
                 val markerState = rememberUpdatedMarkerState(position = markerLatLng)
@@ -94,8 +94,9 @@ fun GoogleMapContainer(
                     cameraPositionState.animate(
                         CameraUpdateFactory.newLatLngZoom(
                             markerLatLng,
-                            15f
-                        ), 1500
+                            15f,
+                        ),
+                        1500,
                     )
                 }
 
@@ -104,7 +105,7 @@ fun GoogleMapContainer(
                     onMapClick = onMapClick,
                     googleMapOptionsFactory = {
                         GoogleMapOptions().mapId(mapId)
-                    }
+                    },
                 ) {
                     AdvancedMarker(
                         state = markerState,
@@ -136,6 +137,6 @@ fun GoogleMapContainerPreview() {
                 )
             }
         },
-        onMapCloseClick = {}
+        onMapCloseClick = {},
     )
 }

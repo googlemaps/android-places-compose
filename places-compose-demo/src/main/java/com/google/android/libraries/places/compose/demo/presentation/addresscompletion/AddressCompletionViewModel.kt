@@ -19,8 +19,8 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.compose.autocomplete.domain.mappers.toAddress
 import com.google.android.libraries.places.compose.autocomplete.models.NearbyObject
-import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.GeocoderRepository
+import com.google.android.libraries.places.compose.demo.data.repositories.MergedLocationRepository
 import com.google.android.libraries.places.compose.demo.data.repositories.PlaceRepository
 import com.google.android.libraries.places.compose.demo.mappers.toNearbyObjects
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
@@ -43,7 +43,8 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 enum class UiState {
-    AUTOCOMPLETE, ADDRESS_ENTRY
+    AUTOCOMPLETE,
+    ADDRESS_ENTRY,
 }
 
 sealed class AddressCompletionViewState {
@@ -60,7 +61,7 @@ class AddressCompletionViewModel
 @Inject constructor(
     private val geocoderRepository: GeocoderRepository,
     private val placesRepository: PlaceRepository,
-    private val mergedLocationRepository: MergedLocationRepository
+    private val mergedLocationRepository: MergedLocationRepository,
 ) : ViewModel() {
     private val _viewModelEventChannel = MutableSharedFlow<ViewModelEvent>()
     val viewModelEventChannel: SharedFlow<ViewModelEvent> = _viewModelEventChannel.asSharedFlow()
@@ -76,7 +77,7 @@ class AddressCompletionViewModel
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     private val _uiState = MutableStateFlow(UiState.AUTOCOMPLETE)
@@ -85,17 +86,17 @@ class AddressCompletionViewModel
 
     private val _addressEntryViewState = combine(
         displayAddress,
-        _nearbyObjects
+        _nearbyObjects,
     ) { displayAddress, nearbyObjects ->
         AddressCompletionViewState.AddressEntry(
             displayAddress = displayAddress ?: UsDisplayAddress(),
-            nearbyObjects = nearbyObjects
+            nearbyObjects = nearbyObjects,
         )
     }
 
     val addressCompletionViewState = combine(
         _addressEntryViewState,
-        _uiState
+        _uiState,
     ) { addressEntryViewState, uiState ->
         when (uiState) {
             UiState.ADDRESS_ENTRY -> addressEntryViewState
@@ -104,7 +105,7 @@ class AddressCompletionViewModel
     }.stateIn(
         viewModelScope,
         SharingStarted.WhileSubscribed(5.seconds.inWholeMilliseconds),
-        AddressCompletionViewState.Autocomplete
+        AddressCompletionViewState.Autocomplete,
     )
 
     @SuppressLint("MissingPermission")
@@ -121,6 +122,7 @@ class AddressCompletionViewModel
                     _uiState.value = UiState.ADDRESS_ENTRY
                 }
             }
+
             is AddressCompletionEvent.OnAddressChanged -> {
                 displayAddress.value = event.displayAddress
             }

@@ -8,16 +8,14 @@ import javax.inject.Inject
 class GetAutocompletionPredictionsUseCase
 @Inject
 constructor(
-    private val autocompleteRepository: AutocompleteRepository
+    private val autocompleteRepository: AutocompleteRepository,
 ) {
     suspend operator fun invoke(
         query: String,
-        actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {}
-    ): List<AutocompletePrediction> {
-        return autocompleteRepository.getAutocompletePlaces(
-            FindAutocompletePredictionsRequest.builder().apply(
-                actions
-            ).setQuery(query).build()
-        )
-    }
+        actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {},
+    ): List<AutocompletePrediction> = autocompleteRepository.getAutocompletePlaces(
+        FindAutocompletePredictionsRequest.builder().apply(
+            actions,
+        ).setQuery(query).build(),
+    )
 }

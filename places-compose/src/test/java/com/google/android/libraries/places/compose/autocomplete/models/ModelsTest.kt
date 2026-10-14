@@ -51,7 +51,7 @@ class ModelsTest {
             primaryText = primary,
             secondaryText = secondary,
             distance = distance,
-            latLng = latLng
+            latLng = latLng,
         )
 
         assertThat(place.placeId).isEqualTo("place_123")
@@ -98,7 +98,7 @@ class ModelsTest {
             "DOWN_THE_ROAD" to R.string.spatial_relationship_down_the_road,
             "AROUND_THE_CORNER" to R.string.spatial_relationship_around_the_corner,
             "BEHIND" to R.string.spatial_relationship_behind,
-            "UNKNOWN" to R.string.spatial_relationship_near
+            "UNKNOWN" to R.string.spatial_relationship_near,
         )
 
         for ((relation, expectedResId) in expectedMappings) {
@@ -117,7 +117,7 @@ class ModelsTest {
             spatialRelationship = "NEAR",
             name = "Park",
             straightLine = 120.0,
-            travel = 150.0
+            travel = 150.0,
         )
         // When travelDistanceMeters >= 0, returns travelDistanceMeters
         assertThat(landmarkPositiveTravel.distanceMeters()).isEqualTo(150.meters)
@@ -126,7 +126,7 @@ class ModelsTest {
             spatialRelationship = "NEAR",
             name = "Tower",
             straightLine = 200.0,
-            travel = -1.0
+            travel = -1.0,
         )
         // When travelDistanceMeters < 0, falls back to straightLineDistanceMeters
         assertThat(landmarkNegativeTravel.distanceMeters()).isEqualTo(200.meters)
@@ -144,20 +144,20 @@ class ModelsTest {
     private fun createArea(containment: String, name: String) = Area(
         containment = containment,
         displayName = DisplayName(languageCode = "en", text = name),
-        placeId = "area_id"
+        placeId = "area_id",
     )
 
     private fun createLandmark(
         spatialRelationship: String,
         name: String,
         straightLine: Double = 100.0,
-        travel: Double = 150.0
+        travel: Double = 150.0,
     ) = Landmark(
         displayName = DisplayName(languageCode = "en", text = name),
         placeId = "landmark_id",
         spatialRelationship = spatialRelationship,
         straightLineDistanceMeters = straightLine,
         travelDistanceMeters = travel,
-        types = listOf("point_of_interest")
+        types = listOf("point_of_interest"),
     )
 }
