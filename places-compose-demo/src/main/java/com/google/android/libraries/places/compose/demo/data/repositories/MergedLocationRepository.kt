@@ -30,61 +30,59 @@ class MergedLocationRepository
 constructor(
     private val locationRepository: LocationRepository,
     private val mockLocationRepository: MockLocationRepository,
-    scope: CoroutineScope
+    scope: CoroutineScope,
 ) {
-  private val _useMockLocation = MutableStateFlow(true)
+    private val _useMockLocation = MutableStateFlow(true)
 
-  @SuppressLint("MissingPermission")
-  @ExperimentalCoroutinesApi
-  @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-  val location = _useMockLocation.flatMapLatest { useMockLocation ->
-    if (useMockLocation) {
-      mockLocationRepository.location.map {
-        CompositeLocation(
-            latLng = it.latLng,
-            label = it.label,
-            isMockLocation = true,
-        )
-      }
-    } else {
-      locationRepository.latestLocation.mapNotNull { latLng ->
-        latLng?.let {
-          CompositeLocation(
-            latLng = it,
-            label = "Current Location",
-            isMockLocation = false,
-          )
+    @SuppressLint("MissingPermission")
+    @ExperimentalCoroutinesApi
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    val location = _useMockLocation.flatMapLatest { useMockLocation ->
+        if (useMockLocation) {
+            mockLocationRepository.location.map {
+                CompositeLocation(
+                    latLng = it.latLng,
+                    label = it.label,
+                    isMockLocation = true,
+                )
+            }
+        } else {
+            locationRepository.latestLocation.mapNotNull { latLng ->
+                latLng?.let {
+                    CompositeLocation(
+                        latLng = it,
+                        label = "Current Location",
+                        isMockLocation = false,
+                    )
+                }
+            }
         }
-      }
-    }
-  }.shareIn(
-    scope = scope,
-    started = SharingStarted.WhileSubscribed(5.seconds),
-    replay = 1,
-  )
+    }.shareIn(
+        scope = scope,
+        started = SharingStarted.WhileSubscribed(5.seconds),
+        replay = 1,
+    )
 
-  /**
-   * If we are already sending the mock location, advance to the next mock location, otherwise
-   * switch to presenting the mock location.
-   */
-  fun nextMockLocation(): String {
-    return if (_useMockLocation.value) {
-      mockLocationRepository.nextMockLocation().first
+    /**
+     * If we are already sending the mock location, advance to the next mock location, otherwise
+     * switch to presenting the mock location.
+     */
+    fun nextMockLocation(): String = if (_useMockLocation.value) {
+        mockLocationRepository.nextMockLocation().first
     } else {
-      _useMockLocation.value = true
-      mockLocationRepository.getCurrentMockLocation().first
+        _useMockLocation.value = true
+        mockLocationRepository.getCurrentMockLocation().first
     }
-  }
 
-  @ExperimentalCoroutinesApi
-  @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-  fun useSystemLocation() {
-    _useMockLocation.value = false
-    locationRepository.updateLocation()
-  }
+    @ExperimentalCoroutinesApi
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
+    fun useSystemLocation() {
+        _useMockLocation.value = false
+        locationRepository.updateLocation()
+    }
 
-  fun setMockLocation(latLng: LatLng) {
-    mockLocationRepository.setMockLocation(latLng)
-    _useMockLocation.value = true
-  }
+    fun setMockLocation(latLng: LatLng) {
+        mockLocationRepository.setMockLocation(latLng)
+        _useMockLocation.value = true
+    }
 }

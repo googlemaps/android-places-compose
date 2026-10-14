@@ -25,22 +25,18 @@ import kotlinx.coroutines.withContext
  *
  * @param placesClient The client for interacting with the Places API.
  */
-class PlaceRepository(
-    private val placesClient: PlacesClient,
-) {
+class PlaceRepository(private val placesClient: PlacesClient) {
     private val placesIdsWithLocations = mutableStateMapOf<String, Place>()
 
-    suspend fun getPlaceLatLng(placeId: String): Pair<String, Place> {
-        return withContext(Dispatchers.Main) {
-            placeId to placesIdsWithLocations.getOrElse(placeId) {
-                withContext(Dispatchers.IO) {
-                    placesClient.awaitFetchPlace(
-                        placeId = placeId,
-                        placeFields = listOf(Place.Field.LOCATION)
-                    ).place.also { place ->
-                        withContext(Dispatchers.Main) {
-                            placesIdsWithLocations[placeId] = place
-                        }
+    suspend fun getPlaceLatLng(placeId: String): Pair<String, Place> = withContext(Dispatchers.Main) {
+        placeId to placesIdsWithLocations.getOrElse(placeId) {
+            withContext(Dispatchers.IO) {
+                placesClient.awaitFetchPlace(
+                    placeId = placeId,
+                    placeFields = listOf(Place.Field.LOCATION),
+                ).place.also { place ->
+                    withContext(Dispatchers.Main) {
+                        placesIdsWithLocations[placeId] = place
                     }
                 }
             }
@@ -62,7 +58,7 @@ class PlaceRepository(
                 withContext(Dispatchers.IO) {
                     placesClient.awaitFetchPlace(
                         placeId = placeId,
-                        placeFields = placeFields
+                        placeFields = placeFields,
                     ).place.also { place ->
                         withContext(Dispatchers.Main) {
                             placesIdsWithAddresses[placeId] = place

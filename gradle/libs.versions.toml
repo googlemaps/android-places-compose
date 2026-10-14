@@ -27,6 +27,7 @@ places = "6.0.2"
 playServicesLocation = "21.4.0"
 robolectric = "4.17"
 secretsGradlePlugin = "2.0.1"
+spotless = "8.9.0"
 truth = "1.4.5"
 volley = "1.2.1"
 uiTestAndroid = "1.12.0"
@@ -103,3 +104,4 @@ hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersi
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

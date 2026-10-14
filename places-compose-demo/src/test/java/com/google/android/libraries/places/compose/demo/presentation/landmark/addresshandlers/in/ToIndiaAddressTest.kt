@@ -25,13 +25,13 @@ internal class ToIndiaAddressTest {
     fun `can parse Gurugram India example to IndiaDisplayAddress`() {
         withResourceTestFile(
             fileName = "reverse_geocoded_test_data_gururam_india.json",
-            klass = ReverseGeocodingResponse::class.java
+            klass = ReverseGeocodingResponse::class.java,
         ) { geocodingResponse ->
             val address = geocodingResponse.addresses.first()
 
             assertThat(address.formattedAddress)
                 .isEqualTo(
-                    "93, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122022, India"
+                    "93, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122022, India",
                 )
 
             val indiaDisplayAddress = address.toAddress("IN").toDisplayAddress() as IndiaDisplayAddress
@@ -48,20 +48,22 @@ internal class ToIndiaAddressTest {
     fun `can parse India example to IndiaDisplayAddress`() {
         withResourceTestFile(
             fileName = "reverse_geocoded_test_data_in.json",
-            klass = ReverseGeocodingResponse::class.java
+            klass = ReverseGeocodingResponse::class.java,
         ) {
             val address = it.addresses.first()
 
             assertThat(address.formattedAddress)
                 .isEqualTo(
                     "akshardham society, 2/3, Sarthana - Kamrej Rd, " +
-                            "opp. navjivan restorant, Sarthana Jakat Naka, Nana Varachha, " +
-                            "Surat, Khadsad, Gujarat 395006, India"
+                        "opp. navjivan restorant, Sarthana Jakat Naka, Nana Varachha, " +
+                        "Surat, Khadsad, Gujarat 395006, India",
                 )
 
             val indiaDisplayAddress = address.toAddress("IN").toDisplayAddress() as IndiaDisplayAddress
             assertThat(indiaDisplayAddress.aptSuiteUnit).isEqualTo("akshardham society 2/3")
-            assertThat(indiaDisplayAddress.streetAddress).isEqualTo("Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha")
+            assertThat(
+                indiaDisplayAddress.streetAddress,
+            ).isEqualTo("Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha")
             assertThat(indiaDisplayAddress.city).isEqualTo("Surat")
             assertThat(indiaDisplayAddress.state).isEqualTo("Gujarat")
             assertThat(indiaDisplayAddress.country).isEqualTo("India")

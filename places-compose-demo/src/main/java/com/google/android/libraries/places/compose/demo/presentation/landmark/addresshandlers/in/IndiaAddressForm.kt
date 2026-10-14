@@ -38,7 +38,7 @@ fun IndiaAddressForm(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AddressTextField(
             value = address.aptSuiteUnit,
@@ -62,7 +62,7 @@ fun IndiaAddressForm(
             NearbyObjectsSelector(
                 nearbyObjects = nearbyObjects,
                 onNearbyLandmarkSelected = onNearbyLandmarkSelected,
-                selectedPlaceId = selectedPlaceId
+                selectedPlaceId = selectedPlaceId,
             )
         }
 
@@ -77,9 +77,8 @@ fun IndiaAddressForm(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-
             AddressTextField(
                 value = address.state,
                 label = R.string.india_address_state,
@@ -89,17 +88,16 @@ fun IndiaAddressForm(
                 },
             )
 
-           AddressTextField(
-               value = address.pinCode,
-               label = R.string.india_address_pincode,
-               modifier = Modifier.weight(1f),
-               onValueChange = onAddressChanged?.let {
-                   { onAddressChanged.invoke(address.copy(pinCode = it)) }
-               },
-           )
+            AddressTextField(
+                value = address.pinCode,
+                label = R.string.india_address_pincode,
+                modifier = Modifier.weight(1f),
+                onValueChange = onAddressChanged?.let {
+                    { onAddressChanged.invoke(address.copy(pinCode = it)) }
+                },
+            )
         }
 
         CountryField(address)
     }
 }
-

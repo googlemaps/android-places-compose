@@ -84,7 +84,6 @@ import com.google.android.libraries.places.compose.autocomplete.data.toDistanceS
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
 import kotlinx.coroutines.flow.filter
 
-
 @Composable
 private fun AutoCompleteTextField(
     modifier: Modifier = Modifier,
@@ -107,16 +106,17 @@ private fun AutoCompleteTextField(
                 IconButton(onClick = it) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
+                        contentDescription = stringResource(R.string.back),
                     )
                 }
             }
         },
         trailingIcon = {
-            if (queryText.isNotBlank())
+            if (queryText.isNotBlank()) {
                 IconButton(onClick = { onQueryChanged("") }) {
                     Icon(Icons.Default.Clear, contentDescription = stringResource(R.string.clear))
                 }
+            }
         },
         singleLine = maxLines == 1,
         maxLines = maxLines,
@@ -124,7 +124,7 @@ private fun AutoCompleteTextField(
             Text(
                 text = placeHolderText,
             )
-        }
+        },
     )
 }
 
@@ -144,14 +144,18 @@ internal fun AutocompletePlaceRow(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background,
+                color = if (isSelected) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else {
+                    MaterialTheme.colorScheme.background
+                },
             )
             .clickable { onPlaceSelected(autocompletePlace) }
             .padding(horizontal = 20.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         AutocompleteIcon(
-            caption = autocompletePlace.distance?.toDistanceString()
+            caption = autocompletePlace.distance?.toDistanceString(),
         )
         Spacer(modifier = Modifier.width(16.dp))
 
@@ -161,7 +165,6 @@ internal fun AutocompletePlaceRow(
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
-
             Column(
                 modifier = Modifier.weight(1f, true),
             ) {
@@ -178,7 +181,7 @@ internal fun AutocompletePlaceRow(
                 val isClipped by remember(autocompletePlace) {
                     derivedStateOf {
                         primaryTextLayoutResult?.hasVisualOverflow == true ||
-                                secondaryTextLayoutResult?.hasVisualOverflow == true
+                            secondaryTextLayoutResult?.hasVisualOverflow == true
                     }
                 }
 
@@ -201,8 +204,8 @@ internal fun AutocompletePlaceRow(
                                 Modifier.clickable { onExpandClick(autocompletePlace.placeId) }
                             } else {
                                 Modifier
-                            }
-                        )
+                            },
+                        ),
                 ) {
                     Column(
                         modifier = Modifier
@@ -213,8 +216,8 @@ internal fun AutocompletePlaceRow(
                                     Modifier.clickable { onPlaceSelected(autocompletePlace) }
                                 } else {
                                     Modifier
-                                }
-                            )
+                                },
+                            ),
                     ) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -235,13 +238,19 @@ internal fun AutocompletePlaceRow(
 
                     if (isClippable) {
                         Icon(
-                            imageVector = if (isClipped) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                            contentDescription = stringResource(if (isExpanded) R.string.collapse_entry else R.string.expand_entry),
+                            imageVector = if (isClipped) {
+                                Icons.Default.KeyboardArrowDown
+                            } else {
+                                Icons.Default.KeyboardArrowUp
+                            },
+                            contentDescription = stringResource(
+                                if (isExpanded) R.string.collapse_entry else R.string.expand_entry,
+                            ),
                             modifier = Modifier
                                 .size(targetSizeDp)
                                 .padding(top = 16.dp)
                                 .clickable { onExpandClick(autocompletePlace.placeId) }
-                                .align(Alignment.Bottom)
+                                .align(Alignment.Bottom),
                         )
                     }
                 }
@@ -254,13 +263,13 @@ internal fun AutocompletePlaceRow(
 private fun AutocompleteIcon(caption: String?, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.width(48.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier =
             Modifier
                 .background(color = Color.LightGray.copy(0.5f), shape = CircleShape)
-                .size(40.dp)
+                .size(40.dp),
         ) {
             Icon(
                 modifier = Modifier.padding(8.dp),
@@ -276,7 +285,7 @@ private fun AutocompleteIcon(caption: String?, modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxWidth(),
                 text = distanceString,
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -327,9 +336,9 @@ fun PlacesAutocompleteTextField(
                 .fillMaxWidth()
                 .background(
                     color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                    shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                 )
-                .then(if (scrollable) Modifier.verticalScroll(scrollState) else Modifier)
+                .then(if (scrollable) Modifier.verticalScroll(scrollState) else Modifier),
         ) {
             for (prediction in predictions) {
                 AutocompletePlaceRow(
@@ -352,7 +361,7 @@ fun PlacesAutocompleteTextField(
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 8.dp)
+                        .padding(horizontal = 8.dp),
                 )
             }
         }
@@ -372,7 +381,7 @@ fun PlacesAutocompleteTextField(
                 .align(Alignment.End)
                 .padding(16.dp),
             painter = painterResource(logoAsset),
-            contentDescription = stringResource(R.string.google)
+            contentDescription = stringResource(R.string.google),
         )
     }
 }
@@ -382,26 +391,24 @@ fun PlacesAutocompleteTextField(
  * general purpose solution. Instead, all of the spans are styled using the given [spanStyle] in the
  * resulting AnnotatedString.
  */
-internal fun Spannable.toAnnotatedString(spanStyle: SpanStyle?): AnnotatedString {
-    return buildAnnotatedString {
-        if (spanStyle == null) {
-            append(this@toAnnotatedString.toString())
-        } else {
-            var last = 0
-            for (span in getSpans(0, this@toAnnotatedString.length, Any::class.java)) {
-                val start = this@toAnnotatedString.getSpanStart(span)
-                val end = this@toAnnotatedString.getSpanEnd(span)
-                if (last < start) {
-                    append(this@toAnnotatedString.substring(last, start))
-                }
-                withStyle(spanStyle) {
-                    append(this@toAnnotatedString.substring(start, end))
-                }
-                last = end
+internal fun Spannable.toAnnotatedString(spanStyle: SpanStyle?): AnnotatedString = buildAnnotatedString {
+    if (spanStyle == null) {
+        append(this@toAnnotatedString.toString())
+    } else {
+        var last = 0
+        for (span in getSpans(0, this@toAnnotatedString.length, Any::class.java)) {
+            val start = this@toAnnotatedString.getSpanStart(span)
+            val end = this@toAnnotatedString.getSpanEnd(span)
+            if (last < start) {
+                append(this@toAnnotatedString.substring(last, start))
             }
-            if (last < this@toAnnotatedString.length) {
-                append(this@toAnnotatedString.substring(last))
+            withStyle(spanStyle) {
+                append(this@toAnnotatedString.substring(start, end))
             }
+            last = end
+        }
+        if (last < this@toAnnotatedString.length) {
+            append(this@toAnnotatedString.substring(last))
         }
     }
 }
@@ -460,26 +467,34 @@ fun AutocompletePlaceRowPreviewShortText() {
 @Composable
 fun AutocompletePlaceRowPreviewLongRows() {
     val longPrimaryText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et magna " +
-            "porta erat luctus semper. In non erat egestas, elementum lacus eget, pretium purus"
+        "porta erat luctus semper. In non erat egestas, elementum lacus eget, pretium purus"
 
     val longSecondaryText = "Nulla consequat libero et felis convallis, vel aliquam sem " +
-            "pellentesque. Praesent ac eros id tellus ornare rutrum ac sed magna. Ut a massa velit."
+        "pellentesque. Praesent ac eros id tellus ornare rutrum ac sed magna. Ut a massa velit."
 
     val primaryText = SpannableStringBuilder(longPrimaryText).apply {
         setSpan(
-            /* what = */ StyleSpan(Typeface.BOLD),
-            /* start = */ 0,
-            /* end = */ 8,
-            /* flags = */ SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            /* what = */
+            StyleSpan(Typeface.BOLD),
+            /* start = */
+            0,
+            /* end = */
+            8,
+            /* flags = */
+            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
     }
 
     val secondaryText = SpannableStringBuilder(longSecondaryText).apply {
         setSpan(
-            /* what = */ StyleSpan(Typeface.BOLD),
-            /* start = */ 8,
-            /* end = */ 13,
-            /* flags = */ SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+            /* what = */
+            StyleSpan(Typeface.BOLD),
+            /* start = */
+            8,
+            /* end = */
+            13,
+            /* flags = */
+            SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE,
         )
     }
 

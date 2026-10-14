@@ -59,7 +59,7 @@ class AutocompleteActivity : ComponentActivity() {
                 titleId = R.string.autocomplete_button,
                 commonViewModel = commonViewModel,
                 onNavigateUp = { finish() },
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
             ) { paddingValues ->
 
                 val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
@@ -77,14 +77,16 @@ class AutocompleteActivity : ComponentActivity() {
                                 autocompleteViewModel.onEvent(
                                     AutocompleteEvent.OnQueryChanged(query) {
                                         locationBias = CircularBounds.newInstance(
-                                            /* center = */ commonViewState.location,
-                                            /* radius = */ 1000.meters.value
+                                            /* center = */
+                                            commonViewState.location,
+                                            /* radius = */
+                                            1000.meters.value,
                                         )
                                         origin = commonViewState.location
                                         countries = listOf(commonViewState.countryCode)
-                                    }
+                                    },
                                 )
-                            }
+                            },
                         )
                     },
                     onPlaceSelected = { place ->

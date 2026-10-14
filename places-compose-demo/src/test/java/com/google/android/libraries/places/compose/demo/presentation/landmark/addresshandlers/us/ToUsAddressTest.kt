@@ -25,12 +25,12 @@ internal class ToUsAddressTest {
     fun `can parse US example to USDisplayAddress`() {
         withResourceTestFile(
             fileName = "reverse_geocoded_test_data_sf.json",
-            klass = ReverseGeocodingResponse::class.java
+            klass = ReverseGeocodingResponse::class.java,
         ) { geocodingResponse ->
             val address = geocodingResponse.addresses.first()
 
             assertThat(address.formattedAddress).isEqualTo(
-                "101 The Embarcadero suite 200, San Francisco, CA 94105, USA"
+                "101 The Embarcadero suite 200, San Francisco, CA 94105, USA",
             )
 
             val usAddress = address.toAddress("US").toDisplayAddress() as UsDisplayAddress

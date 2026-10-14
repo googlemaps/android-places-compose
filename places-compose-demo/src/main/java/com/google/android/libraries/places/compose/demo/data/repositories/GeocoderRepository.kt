@@ -16,6 +16,7 @@ package com.google.android.libraries.places.compose.demo.data.repositories
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import androidx.core.net.toUri
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
-import androidx.core.net.toUri
 
 inline fun buildUrl(baseUrl: String, block: Uri.Builder.() -> Unit): String {
     val builder = baseUrl.toUri().buildUpon()
@@ -44,10 +44,7 @@ inline fun buildUrl(baseUrl: String, block: Uri.Builder.() -> Unit): String {
  *
  * @param context The application context.
  */
-class GeocoderRepository(
-    private val context: Context,
-    private val apiKeyProvider: ApiKeyProvider
-) {
+class GeocoderRepository(private val context: Context, private val apiKeyProvider: ApiKeyProvider) {
     private val requestQueue by lazy { Volley.newRequestQueue(context.applicationContext) }
 
     private val gson: Gson = GsonBuilder()
@@ -57,20 +54,16 @@ class GeocoderRepository(
     private val _nearbyObjects = MutableStateFlow<List<NearbyObject>>(emptyList())
     val nearbyObjects: StateFlow<List<NearbyObject>> = _nearbyObjects.asStateFlow()
 
-    private fun buildRequestUrl(latLng: LatLng, includeAddressDescriptors: Boolean = true): String {
-        return buildUrl(BASE_URL) {
+    private fun buildRequestUrl(latLng: LatLng, includeAddressDescriptors: Boolean = true): String =
+        buildUrl(BASE_URL) {
             appendQueryParameter("latlng", "${latLng.latitude},${latLng.longitude}")
             appendQueryParameter("key", apiKeyProvider.mapsApiKey)
             if (includeAddressDescriptors) {
                 appendQueryParameter("enable_address_descriptor", "true")
             }
         }
-    }
 
-    suspend fun reverseGeocode(
-        latLng: LatLng,
-        includeAddressDescriptors: Boolean = true
-    ): ReverseGeocodingResponse? {
+    suspend fun reverseGeocode(latLng: LatLng, includeAddressDescriptors: Boolean = true): ReverseGeocodingResponse? {
         val url = buildRequestUrl(latLng, includeAddressDescriptors)
 
         return try {
@@ -88,7 +81,11 @@ class GeocoderRepository(
                             }
                         },
                         { error ->
-                            Log.e("GeocoderRepository", "Volley reverse geocode error: ${error.networkResponse?.statusCode} - ${error.localizedMessage}", error)
+                            Log.e(
+                                "GeocoderRepository",
+                                "Volley reverse geocode error: ${error.networkResponse?.statusCode} - ${error.localizedMessage}",
+                                error,
+                            )
                             cont.resume(null)
                         },
                     )
@@ -106,7 +103,10 @@ class GeocoderRepository(
     private fun parseFullGeocodeResponse(response: String): ReverseGeocodingResponse {
         val fullResult = gson.fromJson(response, ReverseGeocodingResponse::class.java)
         if (fullResult.status != "OK" && fullResult.status != "ZERO_RESULTS") {
-            Log.w("GeocoderRepository", "Geocode API warning: status=${fullResult.status}, error_message=${fullResult.errorMessage}")
+            Log.w(
+                "GeocoderRepository",
+                "Geocode API warning: status=${fullResult.status}, error_message=${fullResult.errorMessage}",
+            )
         }
         return fullResult
     }

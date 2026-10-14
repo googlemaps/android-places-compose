@@ -54,7 +54,7 @@ class ApiKeyProvider(private val context: Context) {
             Toast.makeText(
                 context,
                 "One or more API keys have not been set.  Please see the README.md file.",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_LONG,
             ).show()
             error("One or more API keys have not been set.  Please see the README.md file.")
         }

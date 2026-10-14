@@ -35,7 +35,7 @@ fun CountryField(address: DisplayAddress) {
             {
                 Text(it)
             }
-        }
+        },
     )
 }
 

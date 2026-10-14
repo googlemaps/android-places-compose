@@ -24,7 +24,7 @@ sealed class AutocompleteEvent {
     data class OnPlaceSelected(val autocompletePlace: AutocompletePlace) : AutocompleteEvent()
     data class OnQueryChanged(
         val query: String,
-        val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {}
+        val actions: FindAutocompletePredictionsRequest.Builder.() -> Unit = {},
     ) : AutocompleteEvent()
 
     data class OnMapClicked(val latLng: LatLng) : AutocompleteEvent()

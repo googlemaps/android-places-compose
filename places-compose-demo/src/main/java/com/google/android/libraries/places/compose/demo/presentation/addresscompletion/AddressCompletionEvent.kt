@@ -25,5 +25,5 @@ sealed class AddressCompletionEvent {
     data class OnAddressSelected(val autocompletePlace: AutocompletePlace) : AddressCompletionEvent()
     data class OnAddressChanged(val displayAddress: DisplayAddress) : AddressCompletionEvent()
     data class OnMapClicked(val latLng: LatLng) : AddressCompletionEvent()
-    data object OnNavigateUp: AddressCompletionEvent()
+    data object OnNavigateUp : AddressCompletionEvent()
 }

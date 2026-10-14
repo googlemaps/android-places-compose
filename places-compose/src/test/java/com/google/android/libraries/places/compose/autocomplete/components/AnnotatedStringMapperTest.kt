@@ -15,7 +15,7 @@ class AutoCompleteTextFieldTest {
         val words = listOf(
             "word1",
             "word2",
-            "word3"
+            "word3",
         )
 
         val text = words.joinToString(" ")
@@ -34,10 +34,14 @@ class AutoCompleteTextFieldTest {
     private fun testAnnotation(text: String, start: Int, end: Int, word: String) {
         val annotatedText = SpannableStringBuilder(text).apply {
             setSpan(
-                /* what = */ StyleSpan(Typeface.BOLD),
-                /* start = */ start,
-                /* end = */ end,
-                /* flags = */ SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE
+                /* what = */
+                StyleSpan(Typeface.BOLD),
+                /* start = */
+                start,
+                /* end = */
+                end,
+                /* flags = */
+                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE,
             )
         }.toAnnotatedString(predictionsHighlightStyle)
 

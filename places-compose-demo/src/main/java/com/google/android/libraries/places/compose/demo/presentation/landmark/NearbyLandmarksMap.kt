@@ -105,7 +105,7 @@ fun NearbyLandmarksMap(
         ) {
             AdvancedMarker(
                 state = userMarker,
-                zIndex = 2f
+                zIndex = 2f,
             )
             key(landmarkMarkers) {
                 if (showAsMarkers) {
@@ -125,7 +125,7 @@ fun NearbyLandmarksMap(
                             onClick = {
                                 onLandmarkSelected(landmarkMarker.landmark.placeId)
                                 false
-                            }
+                            },
                         )
                     }
                 } else {
@@ -140,13 +140,13 @@ fun NearbyLandmarksMap(
                                 onClick = {
                                     onLandmarkSelected(placeId)
                                     false
-                                }
+                                },
                             ) {
                                 LandmarkMarker(
                                     nearbyObject.name,
                                     textColor = MaterialTheme.colorScheme.onSecondaryContainer,
                                     borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer
+                                    backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
                                 )
                             }
                         } else {
@@ -156,7 +156,7 @@ fun NearbyLandmarksMap(
                                 onClick = {
                                     onLandmarkSelected(placeId)
                                     false
-                                }
+                                },
                             ) {
                                 LandmarkMarker(nearbyObject.name)
                             }
@@ -170,7 +170,7 @@ fun NearbyLandmarksMap(
             landmarkMarkers.forEach { landmarkMarker ->
                 if (landmarkMarker.landmark.placeId == selectedPlaceId) {
                     cameraPositionState.animate(
-                        update = CameraUpdateFactory.newLatLng(landmarkMarker.marker.position)
+                        update = CameraUpdateFactory.newLatLng(landmarkMarker.marker.position),
                     )
                     landmarkMarker.marker.showInfoWindow()
                 } else {
@@ -187,7 +187,7 @@ fun LandmarkMarker(
     label: String,
     textColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
     borderColor: Color = MaterialTheme.colorScheme.primary,
-    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer
+    backgroundColor: Color = MaterialTheme.colorScheme.secondaryContainer,
 ) {
     val dipSize = 16.dp
     val dipHeight = 12.dp
@@ -203,18 +203,18 @@ fun LandmarkMarker(
                     rect = Rect(
                         offset = Offset(
                             x = 0f,
-                            y = 0f
+                            y = 0f,
                         ),
                         size = Size(
                             width = size.width,
-                            height = size.height
-                        )
+                            height = size.height,
+                        ),
                     ),
                     topLeft = CornerRadius(cornerRadius.toPx()),
                     topRight = CornerRadius(cornerRadius.toPx()),
                     bottomRight = CornerRadius(cornerRadius.toPx()), // No corner radius at the dip
-                    bottomLeft = CornerRadius(cornerRadius.toPx()) // No corner radius at the dip
-                )
+                    bottomLeft = CornerRadius(cornerRadius.toPx()), // No corner radius at the dip
+                ),
             )
 
             moveTo(size.width / 2f, size.height + dipHeight.toPx())
@@ -229,17 +229,17 @@ fun LandmarkMarker(
             .border(
                 width = 1.dp,
                 color = borderColor,
-                shape = borderShape
+                shape = borderShape,
             )
             .background(
                 color = backgroundColor,
-                shape = borderShape
+                shape = borderShape,
             )
             .padding(
                 top = 2.dp,
                 bottom = 2.dp,
                 end = 6.dp,
-                start = 2.dp
+                start = 2.dp,
             ), // Add padding around the text
 
     ) {
@@ -250,19 +250,19 @@ fun LandmarkMarker(
                     shape = CircleShape,
                     color = borderColor,
                 ),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 modifier = Modifier.size(16.dp),
                 painter = painterResource(id = R.drawable.outline_pin_drop_24),
                 contentDescription = null,
-                tint = backgroundColor
+                tint = backgroundColor,
             )
         }
         Text(
             modifier = Modifier.padding(start = 4.dp),
             text = label,
-            color = textColor
+            color = textColor,
         )
     }
 }
@@ -283,7 +283,7 @@ fun LandmarkMarkerSelectedPreview() {
             label = "Landmark",
             textColor = MaterialTheme.colorScheme.onSecondaryContainer,
             borderColor = MaterialTheme.colorScheme.onSecondaryContainer,
-            backgroundColor = MaterialTheme.colorScheme.secondaryContainer
+            backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
         )
     }
 }

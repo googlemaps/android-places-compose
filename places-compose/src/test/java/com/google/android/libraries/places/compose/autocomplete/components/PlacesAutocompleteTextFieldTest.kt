@@ -56,14 +56,14 @@ class PlacesAutocompleteTextFieldTest {
             placeId = "place_1",
             primaryText = SpannableString("Googleplex"),
             secondaryText = SpannableString("1600 Amphitheatre Pkwy, Mountain View, CA"),
-            distance = 350.meters
+            distance = 350.meters,
         ),
         AutocompletePlace(
             placeId = "place_2",
             primaryText = SpannableString("Golden Gate Bridge"),
             secondaryText = SpannableString("San Francisco, CA"),
-            distance = 15000.meters
-        )
+            distance = 15000.meters,
+        ),
     )
 
     @Test
@@ -74,7 +74,7 @@ class PlacesAutocompleteTextFieldTest {
                     searchText = "",
                     predictions = samplePlaces,
                     onQueryChanged = {},
-                    placeHolderText = "Search Google Maps"
+                    placeHolderText = "Search Google Maps",
                 )
             }
         }
@@ -100,7 +100,7 @@ class PlacesAutocompleteTextFieldTest {
                     searchText = query,
                     predictions = emptyList(),
                     onQueryChanged = { query = it },
-                    placeHolderText = "Search here"
+                    placeHolderText = "Search here",
                 )
             }
         }
@@ -121,7 +121,7 @@ class PlacesAutocompleteTextFieldTest {
                     searchText = "Google",
                     predictions = samplePlaces,
                     onQueryChanged = {},
-                    onSelected = { selectedPlace = it }
+                    onSelected = { selectedPlace = it },
                 )
             }
         }
@@ -142,7 +142,7 @@ class PlacesAutocompleteTextFieldTest {
                 PlacesAutocompleteTextField(
                     searchText = query,
                     predictions = emptyList(),
-                    onQueryChanged = { query = it }
+                    onQueryChanged = { query = it },
                 )
             }
         }
@@ -162,7 +162,7 @@ class PlacesAutocompleteTextFieldTest {
                     searchText = "",
                     predictions = emptyList(),
                     onQueryChanged = {},
-                    onBackClicked = { backClicked = true }
+                    onBackClicked = { backClicked = true },
                 )
             }
         }
@@ -195,7 +195,7 @@ class PlacesAutocompleteTextFieldTest {
                     predictions = samplePlaces,
                     onQueryChanged = {},
                     scrollable = false,
-                    selectedPlace = samplePlaces.first()
+                    selectedPlace = samplePlaces.first(),
                 )
             }
         }
@@ -217,7 +217,7 @@ class PlacesAutocompleteTextFieldTest {
                     onExpandClick = { expandedClicked = true },
                     isExpanded = true,
                     primaryTextMaxLines = 1,
-                    secondaryTextMaxLines = 1
+                    secondaryTextMaxLines = 1,
                 )
             }
         }

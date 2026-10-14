@@ -32,18 +32,17 @@ import androidx.compose.ui.unit.dp
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.common.ButtonState
 
-
 @Composable
 fun NextLocationButton(
     buttonState: ButtonState,
     contentDescriptionId: Int = R.string.next_mock_location,
     onClick: () -> Unit,
 ) {
-   NextLocationButton(
-       isSelected = buttonState == ButtonState.SELECTED,
-       contentDescriptionId = contentDescriptionId,
-       onClick = onClick
-   )
+    NextLocationButton(
+        isSelected = buttonState == ButtonState.SELECTED,
+        contentDescriptionId = contentDescriptionId,
+        onClick = onClick,
+    )
 }
 
 /**
@@ -69,19 +68,19 @@ fun NextLocationButton(
                 .padding(0.dp)
                 .semantics {
                     contentDescription = description
-                }
+                },
         ) {
             Icon(
                 modifier = Modifier.align(Alignment.Center).size(24.dp).offset(x = (-6).dp),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = null,
-                tint = tint
+                tint = tint,
             )
             Icon(
                 modifier = Modifier.align(Alignment.Center).size(24.dp).offset(x = 6.dp),
                 imageVector = Icons.AutoMirrored.Default.KeyboardArrowRight,
                 contentDescription = null,
-                tint = tint
+                tint = tint,
             )
         }
     }

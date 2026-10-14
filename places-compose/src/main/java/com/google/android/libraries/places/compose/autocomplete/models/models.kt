@@ -26,75 +26,66 @@ import com.google.android.libraries.places.compose.autocomplete.models.geocoder.
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.Landmark
 
 data class AutocompletePlace(
-  val placeId: String,
-  val primaryText: Spannable,
-  val secondaryText: Spannable,
-  val distance: Meters? = null,
-  val latLng: LatLng? = null
+    val placeId: String,
+    val primaryText: Spannable,
+    val secondaryText: Spannable,
+    val distance: Meters? = null,
+    val latLng: LatLng? = null,
 )
 
 sealed class NearbyObject {
-  abstract val placeId: String
-  abstract val spatialRelationshipStringRes: Int
-  abstract val name: String
-
-  @Composable
-  abstract fun getDistanceString(): String
-
-  @Composable
-  fun spatialRelationship(): String {
-    return buildString {
-      append(stringResource(spatialRelationshipStringRes, name))
-    }
-  }
-
-  data class NearbyLandmark(val landmark: Landmark) : NearbyObject() {
-    override val name: String
-      get() = landmark.displayName.text
-
-    override val spatialRelationshipStringRes: Int
-      @StringRes
-      get() = landmark.getSpatialRelationshipStringRes()
-
-    override val placeId: String
-      get() = landmark.placeId
+    abstract val placeId: String
+    abstract val spatialRelationshipStringRes: Int
+    abstract val name: String
 
     @Composable
-    override fun getDistanceString(): String {
-      return landmark.distanceMeters().toDistanceString()
-    }
-  }
-
-  data class NearbyArea(val area: Area) : NearbyObject() {
-    override val name: String
-      get() = area.displayName.text
-
-    override val spatialRelationshipStringRes: Int
-      @StringRes
-      get() = area.getSpatialRelationshipStringRes()
-
-    override val placeId: String
-      get() = area.placeId
+    abstract fun getDistanceString(): String
 
     @Composable
-    override fun getDistanceString(): String {
-      return ""
+    fun spatialRelationship(): String = buildString {
+        append(stringResource(spatialRelationshipStringRes, name))
     }
-  }
+
+    data class NearbyLandmark(val landmark: Landmark) : NearbyObject() {
+        override val name: String
+            get() = landmark.displayName.text
+
+        override val spatialRelationshipStringRes: Int
+            @StringRes
+            get() = landmark.getSpatialRelationshipStringRes()
+
+        override val placeId: String
+            get() = landmark.placeId
+
+        @Composable
+        override fun getDistanceString(): String = landmark.distanceMeters().toDistanceString()
+    }
+
+    data class NearbyArea(val area: Area) : NearbyObject() {
+        override val name: String
+            get() = area.displayName.text
+
+        override val spatialRelationshipStringRes: Int
+            @StringRes
+            get() = area.getSpatialRelationshipStringRes()
+
+        override val placeId: String
+            get() = area.placeId
+
+        @Composable
+        override fun getDistanceString(): String = ""
+    }
 }
 
 @StringRes
-fun Area.getSpatialRelationshipStringRes(): Int {
-  return when (containment) {
+fun Area.getSpatialRelationshipStringRes(): Int = when (containment) {
     "OUTSKIRTS" -> R.string.spatial_relationship_outskirts_of
     "WITHIN" -> R.string.spatial_relationship_within
     else -> R.string.spatial_relationship_near
-  }
 }
 
 @StringRes
-fun Landmark.getSpatialRelationshipStringRes(): Int {
-  return when (spatialRelationship) {
+fun Landmark.getSpatialRelationshipStringRes(): Int = when (spatialRelationship) {
     "WITHIN" -> R.string.spatial_relationship_within
     "BESIDE" -> R.string.spatial_relationship_beside
     "ACROSS_THE_ROAD" -> R.string.spatial_relationship_across_the_road
@@ -102,8 +93,14 @@ fun Landmark.getSpatialRelationshipStringRes(): Int {
     "AROUND_THE_CORNER" -> R.string.spatial_relationship_around_the_corner
     "BEHIND" -> R.string.spatial_relationship_behind
     else -> R.string.spatial_relationship_near
-  }
 }
 
-fun Landmark.distanceMeters(): Meters =
-  (if (travelDistanceMeters >= 0) travelDistanceMeters else straightLineDistanceMeters).meters
+fun Landmark.distanceMeters(): Meters = (
+    if (travelDistanceMeters >=
+        0
+    ) {
+        travelDistanceMeters
+    } else {
+        straightLineDistanceMeters
+    }
+    ).meters

@@ -38,38 +38,38 @@ class AddressMapperTest {
         AddressComponent(
             longName = "1600",
             shortName = "1600",
-            types = listOf("street_number")
+            types = listOf("street_number"),
         ),
         AddressComponent(
             longName = "Amphitheatre Parkway",
             shortName = "Amphitheatre Pkwy",
-            types = listOf("route")
+            types = listOf("route"),
         ),
         AddressComponent(
             longName = "Mountain View",
             shortName = "Mountain View",
-            types = listOf("locality", "political")
+            types = listOf("locality", "political"),
         ),
         AddressComponent(
             longName = "Santa Clara County",
             shortName = "Santa Clara",
-            types = listOf("administrative_area_level_2", "political")
+            types = listOf("administrative_area_level_2", "political"),
         ),
         AddressComponent(
             longName = "California",
             shortName = "CA",
-            types = listOf("administrative_area_level_1", "political")
+            types = listOf("administrative_area_level_1", "political"),
         ),
         AddressComponent(
             longName = "United States",
             shortName = "US",
-            types = listOf("country", "political")
+            types = listOf("country", "political"),
         ),
         AddressComponent(
             longName = "94043",
             shortName = "94043",
-            types = listOf("postal_code")
-        )
+            types = listOf("postal_code"),
+        ),
     )
 
     // ----------------------------------------------------------------------------------
@@ -154,13 +154,13 @@ class AddressMapperTest {
                 locationType = "ROOFTOP",
                 viewport = Viewport(
                     northeast = Location(37.423, -122.083),
-                    southwest = Location(37.421, -122.085)
+                    southwest = Location(37.421, -122.085),
                 ),
-                bounds = null
+                bounds = null,
             ),
             placeId = "ChIJ2eUgeAK6j4ARbn5u_wAGqWA",
             plusCode = PlusCode("849VCWC8+R9", "849VCWC8+R9 Mountain View"),
-            types = listOf("street_address")
+            types = listOf("street_address"),
         )
 
         val address = addressDto.toAddress("US")

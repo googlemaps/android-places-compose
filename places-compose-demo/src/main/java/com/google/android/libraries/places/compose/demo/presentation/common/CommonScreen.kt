@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -21,7 +22,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,10 +35,6 @@ import com.google.android.libraries.places.compose.demo.presentation.components.
 import com.google.android.libraries.places.compose.demo.presentation.components.SelectableButton
 import com.google.android.libraries.places.compose.demo.presentation.landmark.GetLocationPermission
 import com.google.android.libraries.places.compose.demo.ui.theme.AndroidPlacesComposeDemoTheme
-import androidx.compose.ui.platform.LocalConfiguration
-
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -62,7 +61,7 @@ fun CommonScreen(
         commonViewModel.snackbarMessage.collect { message ->
             snackbarHostState.showSnackbar(
                 message = message,
-                duration = SnackbarDuration.Short
+                duration = SnackbarDuration.Short,
             )
         }
     }
@@ -88,7 +87,7 @@ fun CommonScreen(
                             IconButton(onClick = { onNavigateUp() }) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                    contentDescription = stringResource(R.string.back)
+                                    contentDescription = stringResource(R.string.back),
                                 )
                             }
                         },
@@ -97,11 +96,11 @@ fun CommonScreen(
                                 buttonState = commonViewState.buttonStates.currentLocation,
                                 onClick = { onEvent(CommonEvent.OnUseSystemLocation) },
                                 iconId = R.drawable.baseline_my_location_24,
-                                contentDescription = R.string.fill_address_from_current_location
+                                contentDescription = R.string.fill_address_from_current_location,
                             )
 
                             NextLocationButton(
-                                isSelected = commonViewState.buttonStates.mockLocation == ButtonState.SELECTED
+                                isSelected = commonViewState.buttonStates.mockLocation == ButtonState.SELECTED,
                             ) {
                                 onEvent(CommonEvent.OnNextMockLocation)
                             }
@@ -110,9 +109,9 @@ fun CommonScreen(
                                 buttonState = commonViewState.buttonStates.map,
                                 iconId = R.drawable.baseline_map_24,
                                 contentDescription = R.string.toggle_map,
-                                onClick = { onEvent(CommonEvent.OnToggleMap) }
+                                onClick = { onEvent(CommonEvent.OnToggleMap) },
                             )
-                        }
+                        },
                     )
                 },
                 snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -122,11 +121,12 @@ fun CommonScreen(
                     onFallbackToMock = {
                         coroutineScope.launch {
                             snackbarHostState.showSnackbar(
-                                message = "Falling back to mock locations. You can cycle preset locations via the top bar.",
-                                duration = SnackbarDuration.Long
+                                message = "Falling back to mock locations. " +
+                                    "You can cycle preset locations via the top bar.",
+                                duration = SnackbarDuration.Long,
                             )
                         }
-                    }
+                    },
                 ) {
                     content(paddingValues)
                 }

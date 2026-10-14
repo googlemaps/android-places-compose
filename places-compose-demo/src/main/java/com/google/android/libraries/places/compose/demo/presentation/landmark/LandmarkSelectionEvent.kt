@@ -25,5 +25,5 @@ sealed class LandmarkSelectionEvent {
     data class OnNearbyObjectSelected(val nearbyObject: NearbyObject) : LandmarkSelectionEvent()
     data class OnAddressChanged(val address: DisplayAddress) : LandmarkSelectionEvent()
 
-    data object OnCloseAddressDisplayClicked: LandmarkSelectionEvent()
+    data object OnCloseAddressDisplayClicked : LandmarkSelectionEvent()
 }

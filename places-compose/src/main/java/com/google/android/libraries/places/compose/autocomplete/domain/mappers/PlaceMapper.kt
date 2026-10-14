@@ -17,15 +17,12 @@ package com.google.android.libraries.places.compose.autocomplete.domain.mappers
 import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.AddressComponent
 
-private fun com.google.android.libraries.places.api.model.AddressComponent.toAddressComponent() =
-    AddressComponent(
-        longName = this.name,
-        shortName = this.shortName ?: "",
-        types = this.types
-    )
+private fun com.google.android.libraries.places.api.model.AddressComponent.toAddressComponent() = AddressComponent(
+    longName = this.name,
+    shortName = this.shortName ?: "",
+    types = this.types,
+)
 
-fun List<com.google.android.libraries.places.api.model.AddressComponent>.toAddress(): Address =
-    map { it.toAddressComponent() }.toAddressComponentMultiMap().toAddress()
-
-
-
+fun List<com.google.android.libraries.places.api.model.AddressComponent>.toAddress(): Address = map {
+    it.toAddressComponent()
+}.toAddressComponentMultiMap().toAddress()

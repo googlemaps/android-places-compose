@@ -18,13 +18,13 @@ import com.google.android.libraries.places.compose.demo.presentation.landmark.ad
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.us.toUsDisplayAddress
 
 // TODO: Make this dynamic and pluggable
-fun Address.toDisplayAddress(): DisplayAddress {
-    return when(countryCode) {
-        "US" -> this.toUsDisplayAddress()
-        "IN" -> this.toIndiaDisplayAddress()
-        else -> {
-            // Fallback to US address format
-            this.toUsDisplayAddress()
-        }
+fun Address.toDisplayAddress(): DisplayAddress = when (countryCode) {
+    "US" -> this.toUsDisplayAddress()
+
+    "IN" -> this.toIndiaDisplayAddress()
+
+    else -> {
+        // Fallback to US address format
+        this.toUsDisplayAddress()
     }
 }

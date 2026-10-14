@@ -45,80 +45,80 @@ fun AutocompleteDemo(
     onMapClick: (LatLng) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-        Column(modifier.fillMaxSize()) {
-            val selectedPlace = autocompleteViewState.selectedPlace
+    Column(modifier.fillMaxSize()) {
+        val selectedPlace = autocompleteViewState.selectedPlace
 
-            PlacesAutocompleteTextField(
-                modifier = Modifier.weight(1f),
-                searchText = autocompleteViewState.searchText,
-                predictions = autocompleteViewState.predictions,
-                onQueryChanged = onQueryChanged,
-                onSelected = { autocompletePlace ->
-                    onPlaceSelected(autocompletePlace)
-                },
-                selectedPlace = selectedPlace,
-                textFieldMaxLines = 4,
-                scrollable = true,
-                placeHolderText = stringResource(R.string.search_call_to_action)
-            )
+        PlacesAutocompleteTextField(
+            modifier = Modifier.weight(1f),
+            searchText = autocompleteViewState.searchText,
+            predictions = autocompleteViewState.predictions,
+            onQueryChanged = onQueryChanged,
+            onSelected = { autocompletePlace ->
+                onPlaceSelected(autocompletePlace)
+            },
+            selectedPlace = selectedPlace,
+            textFieldMaxLines = 4,
+            scrollable = true,
+            placeHolderText = stringResource(R.string.search_call_to_action),
+        )
 
-            val mapMarkerLocation = selectedPlace?.latLng ?: location
+        val mapMarkerLocation = selectedPlace?.latLng ?: location
 
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(mapMarkerLocation, 15f)
-            }
+        val cameraPositionState = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(mapMarkerLocation, 15f)
+        }
 
-            if (showMap) {
-                if (selectedPlace != null) {
-                    GoogleMapContainer(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        cameraPositionState = cameraPositionState,
-                        header = {
-                            Column {
-                                Text(
-                                    text = selectedPlace.primaryText.toString(),
-                                    style = MaterialTheme.typography.labelMedium,
-                                    maxLines = 1,
-                                    overflow = Ellipsis
-                                )
-                                Text(
-                                    text = selectedPlace.secondaryText.toString(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                    maxLines = 1,
-                                    overflow = Ellipsis
-                                )
-                            }
-                        },
-                        markerLatLng = selectedPlace.latLng,
-                        markerTitle = selectedPlace.primaryText.toString(),
-                        markerSnippet = selectedPlace.secondaryText.toString(),
-                        onMapCloseClick = onMapCloseClick,
-                        onMapClick = onMapClick
-                    )
-                } else {
-                    val label = locationLabel ?: stringResource(R.string.unlabeled_location)
-
-                    GoogleMapContainer(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        cameraPositionState = cameraPositionState,
-                        header = {
+        if (showMap) {
+            if (selectedPlace != null) {
+                GoogleMapContainer(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    cameraPositionState = cameraPositionState,
+                    header = {
+                        Column {
                             Text(
-                                text = label,
+                                text = selectedPlace.primaryText.toString(),
                                 style = MaterialTheme.typography.labelMedium,
+                                maxLines = 1,
+                                overflow = Ellipsis,
                             )
-                        },
-                        markerLatLng = location,
-                        markerTitle = label,
-                        onMapCloseClick = onMapCloseClick,
-                        onMapClick = onMapClick
-                    )
-                }
+                            Text(
+                                text = selectedPlace.secondaryText.toString(),
+                                style = MaterialTheme.typography.labelSmall,
+                                maxLines = 1,
+                                overflow = Ellipsis,
+                            )
+                        }
+                    },
+                    markerLatLng = selectedPlace.latLng,
+                    markerTitle = selectedPlace.primaryText.toString(),
+                    markerSnippet = selectedPlace.secondaryText.toString(),
+                    onMapCloseClick = onMapCloseClick,
+                    onMapClick = onMapClick,
+                )
+            } else {
+                val label = locationLabel ?: stringResource(R.string.unlabeled_location)
+
+                GoogleMapContainer(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    cameraPositionState = cameraPositionState,
+                    header = {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    },
+                    markerLatLng = location,
+                    markerTitle = label,
+                    onMapCloseClick = onMapCloseClick,
+                    onMapClick = onMapClick,
+                )
             }
         }
+    }
 }

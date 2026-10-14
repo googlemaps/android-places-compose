@@ -18,13 +18,20 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -63,19 +70,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlin.time.Duration.Companion.milliseconds
 
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TopAppBarDefaults
-
 class PlacesAutocompleteMinimalActivity : ComponentActivity() {
     @SuppressLint("MissingPermission")
     @OptIn(
-        ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class, FlowPreview::class,
-        DelicateCoroutinesApi::class
+        ExperimentalMaterial3Api::class,
+        ExperimentalCoroutinesApi::class,
+        FlowPreview::class,
+        DelicateCoroutinesApi::class,
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,12 +156,12 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
                                 IconButton(onClick = { finish() }) {
                                     Icon(
                                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                        contentDescription = stringResource(R.string.back)
+                                        contentDescription = stringResource(R.string.back),
                                     )
                                 }
-                            }
+                            },
                         )
-                    }
+                    },
                 ) { paddingValues ->
                     GetLocationPermission(
                         modifier = Modifier.padding(paddingValues),
@@ -169,16 +170,16 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
                             Toast.makeText(
                                 this@PlacesAutocompleteMinimalActivity,
                                 "Falling back to mock location (Boulder, CO)",
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_LONG,
                             ).show()
-                        }
+                        },
                     ) {
                         CompositionLocalProvider(LocalUnitsConverter provides unitsConverter) {
                             if (location == null) {
                                 Box(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .padding(paddingValues)
+                                        .padding(paddingValues),
                                 ) {
                                     Text(
                                         modifier = Modifier.align(Center),
@@ -198,7 +199,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
                                         Toast.makeText(
                                             this@PlacesAutocompleteMinimalActivity,
                                             "Selected: ${autocompletePlace.primaryText}",
-                                            Toast.LENGTH_SHORT
+                                            Toast.LENGTH_SHORT,
                                         ).show()
                                     },
                                     scrollable = false,
@@ -219,9 +220,7 @@ class PlacesAutocompleteMinimalActivity : ComponentActivity() {
  * @param offset The distance in meters for the radius of the bounds. Defaults to 1000 meters.
  * @return A RectangularBounds object representing the area around this LatLng.
  */
-private fun LatLng.toRectangularBounds(offset: Meters = 1000.meters): RectangularBounds {
-    return RectangularBounds.newInstance(
-        withSphericalOffset(offset.value, -135.0), // SW lat, lng
-        withSphericalOffset(offset.value, 45.0), // NE lat, lng
-    )
-}
+private fun LatLng.toRectangularBounds(offset: Meters = 1000.meters): RectangularBounds = RectangularBounds.newInstance(
+    withSphericalOffset(offset.value, -135.0), // SW lat, lng
+    withSphericalOffset(offset.value, 45.0), // NE lat, lng
+)

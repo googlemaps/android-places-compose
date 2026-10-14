@@ -38,28 +38,23 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.WhileSubscribed
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-
-data class LandmarkMarker(
-    val landmark: NearbyObject.NearbyLandmark,
-    val marker: MarkerState,
-    val latLng: LatLng,
-)
+data class LandmarkMarker(val landmark: NearbyObject.NearbyLandmark, val marker: MarkerState, val latLng: LatLng)
 
 /**
  * ViewModel for the landmark selection screen.
@@ -72,7 +67,7 @@ class LandmarkSelectionViewModel
 @Inject constructor(
     private val mergedLocationRepository: MergedLocationRepository,
     private val geocoderRepository: GeocoderRepository,
-    private val placesRepository: PlaceRepository
+    private val placesRepository: PlaceRepository,
 ) : ViewModel() {
     private var selectedNearbyObject by mutableStateOf<NearbyObject?>(null)
 
@@ -80,7 +75,7 @@ class LandmarkSelectionViewModel
     val location = mergedLocationRepository.location.map { it.latLng }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = LatLng(0.0, 0.0)
+        initialValue = LatLng(0.0, 0.0),
     )
 
     private val _isLoading = MutableStateFlow(false)
@@ -93,7 +88,7 @@ class LandmarkSelectionViewModel
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -106,7 +101,7 @@ class LandmarkSelectionViewModel
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     private val _displayAddress = MutableStateFlow<DisplayAddress?>(null)
@@ -133,23 +128,25 @@ class LandmarkSelectionViewModel
                                 val landmarkCount = response.addressDescriptor?.landmarks?.size ?: 0
                                 if (landmarkCount > 0) {
                                     _viewModelEventChannel.emit(
-                                        ViewModelEvent.UserMessage("Found $landmarkCount nearby landmarks.")
+                                        ViewModelEvent.UserMessage("Found $landmarkCount nearby landmarks."),
                                     )
                                 }
                             } else {
                                 val err = response.errorMessage ?: "Geocoding status: ${response.status}"
                                 _viewModelEventChannel.emit(
-                                    ViewModelEvent.UserMessage("Geocoding notice: $err")
+                                    ViewModelEvent.UserMessage("Geocoding notice: $err"),
                                 )
                             }
                         } else {
                             _viewModelEventChannel.emit(
-                                ViewModelEvent.UserMessage("Reverse geocoding request failed. Check network or API key restrictions.")
+                                ViewModelEvent.UserMessage(
+                                    "Reverse geocoding request failed. Check network or API key restrictions.",
+                                ),
                             )
                         }
                     } catch (e: Exception) {
                         _viewModelEventChannel.emit(
-                            ViewModelEvent.UserMessage("Geocoding error: ${e.localizedMessage ?: "Unknown"}")
+                            ViewModelEvent.UserMessage("Geocoding error: ${e.localizedMessage ?: "Unknown"}"),
                         )
                     } finally {
                         _isLoading.value = false
@@ -167,14 +164,14 @@ class LandmarkSelectionViewModel
                 LandmarkMarker(
                     landmark = nearbyObject as NearbyObject.NearbyLandmark,
                     latLng = latLng,
-                    marker = MarkerState(position = latLng)
+                    marker = MarkerState(position = latLng),
                 )
             }
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5.seconds),
-        initialValue = emptyList()
+        initialValue = emptyList(),
     )
 
     /**
@@ -187,13 +184,13 @@ class LandmarkSelectionViewModel
                     val lat = "%.4f".format(event.location.latitude)
                     val lng = "%.4f".format(event.location.longitude)
                     _viewModelEventChannel.emit(
-                        ViewModelEvent.UserMessage("Pin set to ($lat, $lng). Looking up address...")
+                        ViewModelEvent.UserMessage("Pin set to ($lat, $lng). Looking up address..."),
                     )
                 }
                 mergedLocationRepository.setMockLocation(event.location)
             }
 
-            is LandmarkSelectionEvent.OnNearbyObjectSelected ->  {
+            is LandmarkSelectionEvent.OnNearbyObjectSelected -> {
                 selectedNearbyObject = event.nearbyObject
             }
 

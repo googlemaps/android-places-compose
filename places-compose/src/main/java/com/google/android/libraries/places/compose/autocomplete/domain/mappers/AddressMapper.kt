@@ -13,6 +13,7 @@
 // limitations under the License.
 
 @file:Suppress("unused")
+
 package com.google.android.libraries.places.compose.autocomplete.domain.mappers
 
 import android.util.Log
@@ -20,16 +21,12 @@ import com.google.android.libraries.places.compose.autocomplete.models.Address
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.AddressComponent
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.AddressDto
 
-fun AddressDto.toAddress(countryCode: String): Address {
-    return Address(
-        countryCode = countryCode,
-        componentMap = AddressComponentMultiMap(addressComponents),
-    )
-}
+fun AddressDto.toAddress(countryCode: String): Address = Address(
+    countryCode = countryCode,
+    componentMap = AddressComponentMultiMap(addressComponents),
+)
 
-fun Collection<AddressComponent>.toAddressComponentMultiMap(): AddressComponentMultiMap {
-    return AddressComponentMultiMap(this)
-}
+fun Collection<AddressComponent>.toAddressComponentMultiMap(): AddressComponentMultiMap = AddressComponentMultiMap(this)
 
 fun AddressComponentMultiMap.toAddress(): Address {
     val countryCode = shortName(AddressComponentType.COUNTRY) ?: run {
@@ -43,31 +40,29 @@ fun AddressComponentMultiMap.toAddress(): Address {
     )
 }
 
-fun Collection<AddressComponent>.toAddress(): Address {
-    return this.toAddressComponentMultiMap().toAddress()
-}
+fun Collection<AddressComponent>.toAddress(): Address = this.toAddressComponentMultiMap().toAddress()
 
-fun List<AddressComponent>.toAddress(): Address {
-    return this.toAddressComponentMultiMap().toAddress()
-}
+fun List<AddressComponent>.toAddress(): Address = this.toAddressComponentMultiMap().toAddress()
 
 class AddressComponentMultiMap(components: Collection<AddressComponent>) {
     // Initialize a map to store address components grouped by their types
     private val componentsByType: Map<String, List<AddressComponent>> = components
-        .flatMap { addressComponent -> 
-            addressComponent.types.map { type -> type to addressComponent } 
+        .flatMap { addressComponent ->
+            addressComponent.types.map { type -> type to addressComponent }
         }
         .groupBy({ it.first }, { it.second })
 
-    operator fun get(type: AddressComponentType) =
-        componentsByType[type.name.lowercase()]
+    operator fun get(type: AddressComponentType) = componentsByType[type.name.lowercase()]
 
-    fun getValue(type: AddressComponentType) =
-        componentsByType.getValue(type.name.lowercase())
+    fun getValue(type: AddressComponentType) = componentsByType.getValue(type.name.lowercase())
 
-    fun longName(type: AddressComponentType, separator: String = " ") = get(type)?.joinToString(separator) { it.longName }
+    fun longName(type: AddressComponentType, separator: String = " ") = get(type)?.joinToString(separator) {
+        it.longName
+    }
 
-    fun shortName(type: AddressComponentType, separator: String = " ") = get(type)?.joinToString(separator) { it.shortName }
+    fun shortName(type: AddressComponentType, separator: String = " ") = get(type)?.joinToString(separator) {
+        it.shortName
+    }
 }
 
 // From https://developers.google.com/maps/documentation/geocoding/requests-geocoding#Types

@@ -32,11 +32,11 @@ import com.google.android.libraries.places.compose.autocomplete.data.meters
 import com.google.android.libraries.places.compose.demo.R
 import com.google.android.libraries.places.compose.demo.presentation.ViewModelEvent
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteEvent
-import dagger.hilt.android.AndroidEntryPoint
 import com.google.android.libraries.places.compose.demo.presentation.autocomplete.AutocompleteViewModel
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonEvent
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonScreen
 import com.google.android.libraries.places.compose.demo.presentation.common.CommonViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AddressCompletionActivity : ComponentActivity() {
@@ -55,9 +55,10 @@ class AddressCompletionActivity : ComponentActivity() {
                 titleId = R.string.cart,
                 commonViewModel = commonViewModel,
                 onNavigateUp = { finish() },
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
             ) { paddingValues ->
-                val addressCompletionViewState by addressCompletionViewModel.addressCompletionViewState.collectAsStateWithLifecycle()
+                val addressCompletionViewState by
+                    addressCompletionViewModel.addressCompletionViewState.collectAsStateWithLifecycle()
                 val autocompleteViewState by autocompleteViewModel.autocompleteViewState.collectAsStateWithLifecycle()
                 val commonViewState by commonViewModel.commonViewState.collectAsStateWithLifecycle()
 
@@ -67,7 +68,7 @@ class AddressCompletionActivity : ComponentActivity() {
                             is ViewModelEvent.UserMessage -> {
                                 snackbarHostState.showSnackbar(
                                     message = event.message,
-                                    duration = SnackbarDuration.Short
+                                    duration = SnackbarDuration.Short,
                                 )
                             }
                         }
@@ -97,14 +98,16 @@ class AddressCompletionActivity : ComponentActivity() {
                         autocompleteViewModel.onEvent(
                             AutocompleteEvent.OnQueryChanged(query) {
                                 locationBias = CircularBounds.newInstance(
-                                    /* center = */ commonViewState.location,
-                                    /* radius = */ 1000.meters.value
+                                    /* center = */
+                                    commonViewState.location,
+                                    /* radius = */
+                                    1000.meters.value,
                                 )
                                 origin = commonViewState.location
                                 countries = listOf(commonViewState.countryCode)
-                            }
+                            },
                         )
-                    }
+                    },
                 )
             }
         }
