@@ -14,6 +14,12 @@
 package com.google.android.libraries.places.compose.demo.presentation.landmark
 
 import android.Manifest
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,19 +39,31 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.google.android.libraries.places.compose.demo.R
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
+}
 
 /**
  * A composable that handles the logic for requesting location permissions, with an optional
@@ -55,23 +73,58 @@ import com.google.android.libraries.places.compose.demo.R
  * @param onFallbackToMock Callback invoked when the user elects to use mock location fallback.
  * @param content The content to display if permissions are granted or mock fallback is selected.
  */
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun GetLocationPermission(
     modifier: Modifier = Modifier,
     onFallbackToMock: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    val locationPermissionsState = rememberMultiplePermissionsState(
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val permissions = remember {
         listOf(
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_FINE_LOCATION,
-        ),
-    )
+        )
+    }
+
+    fun checkGranted(): Map<String, Boolean> = permissions.associateWith { perm ->
+        ContextCompat.checkSelfPermission(context, perm) == PackageManager.PERMISSION_GRANTED
+    }
+
+    var grantedMap by remember { mutableStateOf(checkGranted()) }
+    var shouldShowRationale by remember { mutableStateOf(false) }
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+    ) { result ->
+        grantedMap = checkGranted() + result
+        val activity = context.findActivity()
+        shouldShowRationale = activity != null && permissions.any { perm ->
+            ActivityCompat.shouldShowRequestPermissionRationale(activity, perm)
+        }
+    }
+
+    DisposableEffect(lifecycleOwner, context) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                grantedMap = checkGranted()
+                val activity = context.findActivity()
+                shouldShowRationale = activity != null && permissions.any { perm ->
+                    ActivityCompat.shouldShowRequestPermissionRationale(activity, perm)
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
+    val allPermissionsGranted = grantedMap.values.all { it }
+    val allPermissionsRevoked = grantedMap.values.none { it }
 
     var useMockFallback by rememberSaveable { mutableStateOf(false) }
 
-    if (locationPermissionsState.allPermissionsGranted || useMockFallback) {
+    if (allPermissionsGranted || useMockFallback) {
         content()
     } else {
         Box(
@@ -93,10 +146,6 @@ fun GetLocationPermission(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    val allPermissionsRevoked =
-                        locationPermissionsState.permissions.size ==
-                            locationPermissionsState.revokedPermissions.size
-
                     val titleText = if (!allPermissionsRevoked) {
                         "Precise Location Access"
                     } else {
@@ -107,7 +156,7 @@ fun GetLocationPermission(
                         "Thank you for granting access to your approximate location. To provide you with " +
                             "the most accurate and relevant information, please grant permission " +
                             "to access your precise location."
-                    } else if (locationPermissionsState.shouldShowRationale) {
+                    } else if (shouldShowRationale) {
                         "Getting your location is important for this demo to provide relevant places and autocomplete suggestions."
                     } else {
                         "This feature requires location permission to bias place suggestions and display relevant map markers."
@@ -144,7 +193,7 @@ fun GetLocationPermission(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Button(
-                        onClick = { locationPermissionsState.launchMultiplePermissionRequest() },
+                        onClick = { launcher.launch(permissions.toTypedArray()) },
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(buttonText)

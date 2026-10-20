@@ -96,16 +96,16 @@ dependencies {
 
     implementation(libs.places)
     implementation(libs.play.services.location)
+    implementation(libs.kotlinx.coroutines.play.services)
     implementation(libs.volley)
+    implementation(libs.gson)
 
     implementation(libs.kotlin.reflect)
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     // Hilt
     implementation(libs.dagger)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-    implementation(kotlin("reflect"))
 
     // TODO: Kotlin power assert?
     testImplementation(libs.google.truth)
@@ -116,8 +116,6 @@ dependencies {
     implementation(libs.maps.compose.widgets)
     implementation(libs.android.maps.utils)
 
-    // Accompanist permission helper
-    implementation(libs.accompanist.permissions)
     testImplementation(kotlin("test"))
 }
 
