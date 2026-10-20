@@ -28,11 +28,11 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.google.android.libraries.places.compose.autocomplete.data.meters
 import com.google.android.libraries.places.compose.autocomplete.models.AutocompletePlace
-import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import kotlin.test.assertNotNull
 
 /**
  * UI unit tests verifying the [PlacesAutocompleteTextField] and [AutocompletePlaceRow] composables.
@@ -108,7 +108,7 @@ class PlacesAutocompleteTextFieldTest {
         composeTestRule.onNodeWithTag("placesAutocompleteSearchField")
             .performTextInput("Mountain View")
 
-        assertThat(query).isEqualTo("Mountain View")
+        assert(query == "Mountain View")
     }
 
     @Test
@@ -128,9 +128,9 @@ class PlacesAutocompleteTextFieldTest {
 
         composeTestRule.onNodeWithText("Googleplex").performClick()
 
-        assertThat(selectedPlace).isNotNull()
-        assertThat(selectedPlace?.placeId).isEqualTo("place_1")
-        assertThat(selectedPlace?.primaryText.toString()).isEqualTo("Googleplex")
+        val place = assertNotNull(selectedPlace)
+        assert(place.placeId == "place_1")
+        assert(place.primaryText.toString() == "Googleplex")
     }
 
     @Test
@@ -149,7 +149,7 @@ class PlacesAutocompleteTextFieldTest {
 
         composeTestRule.onNodeWithContentDescription("Clear").performClick()
 
-        assertThat(query).isEmpty()
+        assert(query.isEmpty())
     }
 
     @Test
@@ -169,7 +169,7 @@ class PlacesAutocompleteTextFieldTest {
 
         composeTestRule.onNodeWithContentDescription("Back").performClick()
 
-        assertThat(backClicked).isTrue()
+        assert(backClicked)
     }
 
     @Test
@@ -223,6 +223,6 @@ class PlacesAutocompleteTextFieldTest {
         }
 
         composeTestRule.onNodeWithText("Googleplex").performClick()
-        assertThat(placeSelected).isTrue()
+        assert(placeSelected)
     }
 }
