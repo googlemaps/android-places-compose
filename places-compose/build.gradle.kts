@@ -8,7 +8,7 @@ plugins {
     id("android.places.compose.PublishingConventionPlugin")
 }
 
-@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinPowerAssert::class)
+@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 powerAssert {
     functions = listOf(
         "kotlin.assert",
