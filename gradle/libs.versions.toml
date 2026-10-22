@@ -28,7 +28,6 @@ playServicesLocation = "21.4.0"
 robolectric = "4.17"
 secretsGradlePlugin = "2.0.1"
 spotless = "8.10.3"
-truth = "1.4.5"
 volley = "1.2.1"
 uiTestAndroid = "1.12.0"
 uiToolingVersion = "1.12.0"
@@ -68,7 +67,6 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 dagger = { group = "com.google.dagger", name = "dagger", version.ref = "hiltVersion" }
 dokka-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
-google-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hiltVersion" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltVersion" }
@@ -102,6 +100,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-power-assert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 secrets-gradle-plugin = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secretsGradlePlugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

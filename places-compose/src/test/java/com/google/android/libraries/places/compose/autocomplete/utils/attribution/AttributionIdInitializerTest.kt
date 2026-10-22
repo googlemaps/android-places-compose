@@ -20,7 +20,6 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.compose.autocomplete.utils.meta.AttributionId
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockkStatic
@@ -61,6 +60,6 @@ class AttributionIdInitializerTest {
     @Test
     fun dependencies_returnsEmptyList() {
         val initializer = AttributionIdInitializer()
-        assertThat(initializer.dependencies()).isEmpty()
+        assert(initializer.dependencies().isEmpty())
     }
 }

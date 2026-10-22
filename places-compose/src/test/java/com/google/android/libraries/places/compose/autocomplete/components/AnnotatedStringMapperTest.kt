@@ -3,7 +3,6 @@ package com.google.android.libraries.places.compose.autocomplete.components
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import com.google.common.truth.Truth.assertThat
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
@@ -48,9 +47,9 @@ class AutoCompleteTextFieldTest {
         annotatedText.getStringAnnotations(0, annotatedText.length)
 
         val annotations = annotatedText.spanStyles
-        assertThat(annotations).hasSize(1)
-        assertThat(annotations[0].start).isEqualTo(start)
-        assertThat(annotations[0].end).isEqualTo(end)
-        assertThat(annotatedText.substring(start, end)).isEqualTo(word)
+        assert(annotations.size == 1)
+        assert(annotations[0].start == start)
+        assert(annotations[0].end == end)
+        assert(annotatedText.substring(start, end) == word)
     }
 }
