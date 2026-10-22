@@ -1,5 +1,4 @@
 [versions]
-accompanistPermissions = "0.37.3"
 activityCompose = "1.13.0"
 agp = "9.4.1"
 appcompat = "1.8.0"
@@ -21,7 +20,6 @@ mapsCompose = "9.0.1"
 mapsUtils = "6.0.0"
 material-icons = "1.7.8"
 materialVersion = "1.14.0"
-navigationCompose = "2.10.2"
 kover = "0.9.11"
 places = "6.0.2"
 playServicesLocation = "21.4.0"
@@ -30,8 +28,8 @@ secretsGradlePlugin = "2.0.1"
 spotless = "8.10.3"
 truth = "1.4.5"
 volley = "1.2.1"
-uiTestAndroid = "1.12.0"
-uiToolingVersion = "1.12.0"
+uiTestAndroid = "1.12.1"
+uiToolingVersion = "1.12.1"
 gradleMavenPublishPlugin = "0.37.0"
 mockk = "1.14.11"
 startup-runtime = "1.2.0"
@@ -45,7 +43,6 @@ targetSdk = "37"
 
 
 [libraries]
-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -58,7 +55,6 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
