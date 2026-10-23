@@ -47,13 +47,13 @@ jobs:
         run: ./gradlew lint
 
       - name: Upload SARIF for places-compose
-        uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
+        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
         with:
           sarif_file: places-compose/build/reports/lint-results.sarif
           category: places-compose
 
       - name: Upload SARIF for places-compose-demo
-        uses: github/codeql-action/upload-sarif@5595ccaf912efad79be6eef63a5619ff05969be3 # v4.37.6
+        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
         with:
           sarif_file: places-compose-demo/build/reports/lint-results.sarif
           category: places-compose-demo
