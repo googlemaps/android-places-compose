@@ -1,10 +1,25 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.power.assert)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.secrets.gradle.plugin)
     alias(libs.plugins.compose.compiler)
+}
+
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
+powerAssert {
+    functions = listOf(
+        "kotlin.assert",
+        "kotlin.test.assertTrue",
+        "kotlin.test.assertEquals",
+        "kotlin.test.assertNull",
+        "kotlin.test.assertNotNull",
+    )
+    includedSourceSets = listOf("debugUnitTest", "releaseUnitTest", "debugAndroidTest")
 }
 
 hilt {
@@ -106,9 +121,6 @@ dependencies {
     implementation(libs.dagger)
     ksp(libs.hilt.android.compiler)
     implementation(libs.hilt.android)
-
-    // TODO: Kotlin power assert?
-    testImplementation(libs.google.truth)
 
     // Google Maps Compose
     implementation(libs.maps.compose)

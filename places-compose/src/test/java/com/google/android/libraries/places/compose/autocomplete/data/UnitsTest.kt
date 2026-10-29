@@ -15,10 +15,10 @@ package com.google.android.libraries.places.compose.autocomplete.data
 
 import android.content.res.Resources
 import com.google.android.libraries.places.compose.R
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
+import kotlin.math.abs
 
 /**
  * Unit tests verifying distance measurement units, unit conversions, and localized formatting.
@@ -40,9 +40,9 @@ class UnitsTest {
         val shortDistance = 100.meters
         val longDistance = 500.meters
 
-        assertThat(shortDistance).isLessThan(longDistance)
-        assertThat(longDistance).isGreaterThan(shortDistance)
-        assertThat(100.meters).isEquivalentAccordingToCompareTo(100.meters)
+        assert(shortDistance < longDistance)
+        assert(longDistance > shortDistance)
+        assert(100.meters.compareTo(100.meters) == 0)
     }
 
     @Test
@@ -52,7 +52,7 @@ class UnitsTest {
 
         val difference = distanceA - distanceB
 
-        assertThat(difference.value).isEqualTo(350.0)
+        assert(difference.value == 350.0)
     }
 
     // ----------------------------------------------------------------------------------
@@ -61,29 +61,29 @@ class UnitsTest {
 
     @Test
     fun numberExtensions_constructMetersEquivalently() {
-        assertThat(50.meters.value).isEqualTo(50.0)
-        assertThat(50.m.value).isEqualTo(50.0)
+        assert(50.meters.value == 50.0)
+        assert(50.m.value == 50.0)
 
         // 1 km = 1,000 meters
-        assertThat(2.km.value).isEqualTo(2000.0)
+        assert(2.km.value == 2000.0)
 
         // Feet to meters
         val feetMeters = 328.084.feet
-        assertThat(feetMeters.toFeet).isWithin(0.1).of(328.084)
+        assert(abs(feetMeters.toFeet - 328.084) <= 0.1)
 
         // Miles to meters
         val oneMile = 1.0.miles
-        assertThat(oneMile.toMiles).isWithin(0.001).of(1.0)
+        assert(abs(oneMile.toMiles - 1.0) <= 0.001)
     }
 
     @Test
     fun metersExtensions_convertToScalarsCorrectly() {
         val distance = 1500.meters
 
-        assertThat(distance.toMeters).isEqualTo(1500.0)
-        assertThat(distance.toKilometers).isEqualTo(1.5)
-        assertThat(distance.toFeet).isWithin(0.01).of(1500.0 * METERS_PER_FOOT)
-        assertThat(distance.toMiles).isWithin(0.001).of(1500.0 * MILES_PER_METER)
+        assert(distance.toMeters == 1500.0)
+        assert(distance.toKilometers == 1.5)
+        assert(abs(distance.toFeet - 1500.0 * METERS_PER_FOOT) <= 0.01)
+        assert(abs(distance.toMiles - 1500.0 * MILES_PER_METER) <= 0.001)
     }
 
     // ----------------------------------------------------------------------------------
@@ -93,14 +93,14 @@ class UnitsTest {
     @Test
     fun getUnitsConverter_returnsImperialForUnitedStates() {
         val converter = getUnitsConverter("US")
-        assertThat(converter).isSameInstanceAs(ImperialUnitsConverter)
+        assert(converter === ImperialUnitsConverter)
     }
 
     @Test
     fun getUnitsConverter_returnsMetricForNonUsAndNull() {
-        assertThat(getUnitsConverter("IN")).isSameInstanceAs(MetricUnitsConverter)
-        assertThat(getUnitsConverter("GB")).isSameInstanceAs(MetricUnitsConverter)
-        assertThat(getUnitsConverter(null)).isSameInstanceAs(MetricUnitsConverter)
+        assert(getUnitsConverter("IN") === MetricUnitsConverter)
+        assert(getUnitsConverter("GB") === MetricUnitsConverter)
+        assert(getUnitsConverter(null) === MetricUnitsConverter)
     }
 
     // ----------------------------------------------------------------------------------
@@ -113,8 +113,8 @@ class UnitsTest {
         val distance = 0.1.miles
         val result = ImperialUnitsConverter.toDistanceUnits(distance)
 
-        assertThat(result.unitsTemplate).isEqualTo(R.string.in_feet)
-        assertThat(result.value).isWithin(0.1).of(distance.toFeet)
+        assert(result.unitsTemplate == R.string.in_feet)
+        assert(abs(result.value - distance.toFeet) <= 0.1)
     }
 
     @Test
@@ -122,8 +122,8 @@ class UnitsTest {
         val distance = 2.5.miles
         val result = ImperialUnitsConverter.toDistanceUnits(distance)
 
-        assertThat(result.unitsTemplate).isEqualTo(R.string.in_miles)
-        assertThat(result.value).isEqualTo(2.5)
+        assert(result.unitsTemplate == R.string.in_miles)
+        assert(result.value == 2.5)
     }
 
     // ----------------------------------------------------------------------------------
@@ -135,8 +135,8 @@ class UnitsTest {
         val distance = 450.meters
         val result = MetricUnitsConverter.toDistanceUnits(distance)
 
-        assertThat(result.unitsTemplate).isEqualTo(R.string.in_meters)
-        assertThat(result.value).isEqualTo(450.0)
+        assert(result.unitsTemplate == R.string.in_meters)
+        assert(result.value == 450.0)
     }
 
     @Test
@@ -144,8 +144,8 @@ class UnitsTest {
         val distance = 2500.meters
         val result = MetricUnitsConverter.toDistanceUnits(distance)
 
-        assertThat(result.unitsTemplate).isEqualTo(R.string.in_kilometers)
-        assertThat(result.value).isEqualTo(2.5)
+        assert(result.unitsTemplate == R.string.in_kilometers)
+        assert(result.value == 2.5)
     }
 
     @Test
@@ -155,9 +155,9 @@ class UnitsTest {
         every { mockResources.getString(R.string.in_kilometers, *anyVararg()) } returns "2.5 km"
 
         val imperialString = ImperialUnitsConverter.toDistanceString(mockResources, 0.1.miles)
-        assertThat(imperialString).isEqualTo("528 ft")
+        assert(imperialString == "528 ft")
 
         val metricString = MetricUnitsConverter.toDistanceString(mockResources, 2500.meters)
-        assertThat(metricString).isEqualTo("2.5 km")
+        assert(metricString == "2.5 km")
     }
 }

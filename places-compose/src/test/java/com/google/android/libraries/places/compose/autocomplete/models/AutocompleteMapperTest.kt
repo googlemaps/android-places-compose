@@ -16,10 +16,10 @@ package com.google.android.libraries.places.compose.autocomplete.models
 import android.text.SpannableString
 import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.compose.autocomplete.data.meters
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Test
+import kotlin.test.assertNull
 
 /**
  * Unit tests verifying conversion from [AutocompletePrediction] to [AutocompletePlace].
@@ -39,10 +39,10 @@ class AutocompleteMapperTest {
 
         val placeDetails = prediction.toPlaceDetails()
 
-        assertThat(placeDetails.placeId).isEqualTo("place_xyz")
-        assertThat(placeDetails.primaryText).isSameInstanceAs(primarySpannable)
-        assertThat(placeDetails.secondaryText).isSameInstanceAs(secondarySpannable)
-        assertThat(placeDetails.distance).isEqualTo(1200.meters)
+        assert(placeDetails.placeId == "place_xyz")
+        assert(placeDetails.primaryText === primarySpannable)
+        assert(placeDetails.secondaryText === secondarySpannable)
+        assert(placeDetails.distance == 1200.meters)
     }
 
     @Test
@@ -58,7 +58,7 @@ class AutocompleteMapperTest {
 
         val placeDetails = prediction.toPlaceDetails()
 
-        assertThat(placeDetails.placeId).isEqualTo("place_no_dist")
-        assertThat(placeDetails.distance).isNull()
+        assert(placeDetails.placeId == "place_no_dist")
+        assertNull(placeDetails.distance)
     }
 }

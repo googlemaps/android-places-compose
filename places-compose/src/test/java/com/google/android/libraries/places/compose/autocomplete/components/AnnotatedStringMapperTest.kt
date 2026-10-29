@@ -3,7 +3,6 @@ package com.google.android.libraries.places.compose.autocomplete.components
 import android.graphics.Typeface
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import com.google.common.truth.Truth.assertThat
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import kotlin.test.Test
@@ -31,6 +30,22 @@ class AutoCompleteTextFieldTest {
         }
     }
 
+    @Test
+    fun toAnnotatedStringTest_nullSpanStyle_returnsUnstyledText() {
+        val text = "Mountain View, CA"
+        val annotatedText = SpannableStringBuilder(text).apply {
+            setSpan(
+                StyleSpan(Typeface.BOLD),
+                0,
+                8,
+                SpannableStringBuilder.SPAN_EXCLUSIVE_EXCLUSIVE,
+            )
+        }.toAnnotatedString(null)
+
+        assert(annotatedText.text == text)
+        assert(annotatedText.spanStyles.isEmpty())
+    }
+
     private fun testAnnotation(text: String, start: Int, end: Int, word: String) {
         val annotatedText = SpannableStringBuilder(text).apply {
             setSpan(
@@ -48,9 +63,9 @@ class AutoCompleteTextFieldTest {
         annotatedText.getStringAnnotations(0, annotatedText.length)
 
         val annotations = annotatedText.spanStyles
-        assertThat(annotations).hasSize(1)
-        assertThat(annotations[0].start).isEqualTo(start)
-        assertThat(annotations[0].end).isEqualTo(end)
-        assertThat(annotatedText.substring(start, end)).isEqualTo(word)
+        assert(annotations.size == 1)
+        assert(annotations[0].start == start)
+        assert(annotations[0].end == end)
+        assert(annotatedText.substring(start, end) == word)
     }
 }
