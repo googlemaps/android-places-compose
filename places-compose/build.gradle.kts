@@ -1,10 +1,24 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.power.assert)
     alias(libs.plugins.compose.compiler)
     id("android.places.compose.PublishingConventionPlugin")
+}
+
+@OptIn(ExperimentalKotlinGradlePluginApi::class)
+powerAssert {
+    functions = listOf(
+        "kotlin.assert",
+        "kotlin.test.assertTrue",
+        "kotlin.test.assertEquals",
+        "kotlin.test.assertNull",
+        "kotlin.test.assertNotNull",
+    )
+    includedSourceSets = listOf("debugUnitTest", "releaseUnitTest", "debugAndroidTest")
 }
 
 android {
@@ -126,7 +140,6 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.core)
     debugImplementation(libs.androidx.compose.ui.ui.tooling)
 
-    testImplementation(libs.google.truth)
     testImplementation(kotlin("test"))
     testImplementation(libs.robolectric)
     testImplementation(libs.mockk)

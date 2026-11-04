@@ -17,7 +17,6 @@ import com.google.android.libraries.places.compose.autocomplete.domain.mappers.t
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.ReverseGeocodingResponse
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.withResourceTestFile
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
 internal class ToUsAddressTest {
@@ -29,18 +28,36 @@ internal class ToUsAddressTest {
         ) { geocodingResponse ->
             val address = geocodingResponse.addresses.first()
 
-            assertThat(address.formattedAddress).isEqualTo(
-                "101 The Embarcadero suite 200, San Francisco, CA 94105, USA",
+            assert(
+                address.formattedAddress ==
+                    "101 The Embarcadero suite 200, San Francisco, CA 94105, USA",
             )
 
             val usAddress = address.toAddress("US").toDisplayAddress() as UsDisplayAddress
-            assertThat(usAddress.streetAddress).isEqualTo("101 The Embarcadero")
-            assertThat(usAddress.additionalAddressInfo).isEqualTo("suite 200")
-            assertThat(usAddress.city).isEqualTo("San Francisco")
-            assertThat(usAddress.state).isEqualTo("CA")
-            assertThat(usAddress.zipCode).isEqualTo("94105")
-            assertThat(usAddress.countryCode).isEqualTo("US")
-            assertThat(usAddress.country).isEqualTo("United States")
+            assert(usAddress.streetAddress == "101 The Embarcadero")
+            assert(usAddress.additionalAddressInfo == "suite 200")
+            assert(usAddress.city == "San Francisco")
+            assert(usAddress.state == "CA")
+            assert(usAddress.zipCode == "94105")
+            assert(usAddress.countryCode == "US")
+            assert(usAddress.country == "United States")
+            assert(
+                usAddress.toFormattedAddress() ==
+                    "101 The Embarcadero suite 200\nSan Francisco, CA 94105\nUnited States",
+            )
+        }
+    }
+
+    @Test
+    fun `unrecognized countryCode falls back to UsDisplayAddress`() {
+        withResourceTestFile(
+            fileName = "reverse_geocoded_test_data_sf.json",
+            klass = ReverseGeocodingResponse::class.java,
+        ) { geocodingResponse ->
+            val address = geocodingResponse.addresses.first()
+            val fallbackAddress = address.toAddress("CA").toDisplayAddress()
+
+            assert(fallbackAddress is UsDisplayAddress && fallbackAddress.city == "San Francisco")
         }
     }
 }

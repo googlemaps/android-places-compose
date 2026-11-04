@@ -19,8 +19,9 @@ import com.google.android.libraries.places.compose.autocomplete.models.geocoder.
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.Location
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.PlusCode
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.Viewport
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 /**
  * Unit tests verifying address component mapping and multimap lookups.
@@ -80,13 +81,12 @@ class AddressMapperTest {
     fun multiMap_groupsByTypesCorrectly() {
         val multiMap = sampleComponents.toAddressComponentMultiMap()
 
-        val country = multiMap[AddressComponentType.COUNTRY]
-        assertThat(country).isNotNull()
-        assertThat(country).hasSize(1)
-        assertThat(country?.first()?.longName).isEqualTo("United States")
+        val country = assertNotNull(multiMap[AddressComponentType.COUNTRY])
+        assert(country.size == 1)
+        assert(country.first().longName == "United States")
 
         val politicalComponents = multiMap.getValue(AddressComponentType.POLITICAL)
-        assertThat(politicalComponents).hasSize(4)
+        assert(politicalComponents.size == 4)
     }
 
     @Test
@@ -94,13 +94,13 @@ class AddressMapperTest {
         val multiMap = sampleComponents.toAddressComponentMultiMap()
 
         val routeLong = multiMap.longName(AddressComponentType.ROUTE)
-        assertThat(routeLong).isEqualTo("Amphitheatre Parkway")
+        assert(routeLong == "Amphitheatre Parkway")
 
         val routeShort = multiMap.shortName(AddressComponentType.ROUTE)
-        assertThat(routeShort).isEqualTo("Amphitheatre Pkwy")
+        assert(routeShort == "Amphitheatre Pkwy")
 
         val politicalShort = multiMap.shortName(AddressComponentType.POLITICAL, separator = ", ")
-        assertThat(politicalShort).isEqualTo("Mountain View, Santa Clara, CA, US")
+        assert(politicalShort == "Mountain View, Santa Clara, CA, US")
     }
 
     @Test
@@ -108,9 +108,9 @@ class AddressMapperTest {
         val multiMap = sampleComponents.toAddressComponentMultiMap()
 
         val airport = multiMap[AddressComponentType.AIRPORT]
-        assertThat(airport).isNull()
-        assertThat(multiMap.longName(AddressComponentType.AIRPORT)).isNull()
-        assertThat(multiMap.shortName(AddressComponentType.AIRPORT)).isNull()
+        assertNull(airport)
+        assertNull(multiMap.longName(AddressComponentType.AIRPORT))
+        assertNull(multiMap.shortName(AddressComponentType.AIRPORT))
     }
 
     // ----------------------------------------------------------------------------------
@@ -122,8 +122,8 @@ class AddressMapperTest {
         val multiMap = sampleComponents.toAddressComponentMultiMap()
         val address = multiMap.toAddress()
 
-        assertThat(address.countryCode).isEqualTo("US")
-        assertThat(address.componentMap).isEqualTo(multiMap)
+        assert(address.countryCode == "US")
+        assert(address.componentMap == multiMap)
     }
 
     @Test
@@ -132,16 +132,16 @@ class AddressMapperTest {
         val multiMap = componentsWithoutCountry.toAddressComponentMultiMap()
 
         val address = multiMap.toAddress()
-        assertThat(address.countryCode).isEqualTo("US")
+        assert(address.countryCode == "US")
     }
 
     @Test
     fun toAddress_fromCollectionAndList_convertsCorrectly() {
         val addressFromCollection = (sampleComponents as Collection<AddressComponent>).toAddress()
-        assertThat(addressFromCollection.countryCode).isEqualTo("US")
+        assert(addressFromCollection.countryCode == "US")
 
         val addressFromList = sampleComponents.toAddress()
-        assertThat(addressFromList.countryCode).isEqualTo("US")
+        assert(addressFromList.countryCode == "US")
     }
 
     @Test
@@ -164,7 +164,7 @@ class AddressMapperTest {
         )
 
         val address = addressDto.toAddress("US")
-        assertThat(address.countryCode).isEqualTo("US")
-        assertThat(address.componentMap[AddressComponentType.STREET_NUMBER]?.first()?.longName).isEqualTo("1600")
+        assert(address.countryCode == "US")
+        assert(address.componentMap[AddressComponentType.STREET_NUMBER]?.first()?.longName == "1600")
     }
 }

@@ -13,9 +13,9 @@
 // limitations under the License.
 package com.google.android.libraries.places.compose.autocomplete.models.geocoder
 
-import com.google.common.truth.Truth.assertThat
 import com.google.gson.Gson
 import org.junit.Test
+import kotlin.test.assertNull
 
 class AddressDtoTest {
 
@@ -57,7 +57,7 @@ class AddressDtoTest {
             types = listOf("street_address"),
         )
 
-        assertThat(addressDto.getCountryCode()).isEqualTo("IN")
+        assert(addressDto.getCountryCode() == "IN")
     }
 
     @Test
@@ -88,7 +88,7 @@ class AddressDtoTest {
             types = listOf("locality"),
         )
 
-        assertThat(addressDto.getCountryCode()).isNull()
+        assertNull(addressDto.getCountryCode())
     }
 
     @Test
@@ -100,11 +100,11 @@ class AddressDtoTest {
             plusCode = null,
         )
 
-        assertThat(response.status).isEqualTo("ZERO_RESULTS")
-        assertThat(response.errorMessage).isEqualTo("No results found")
-        assertThat(response.addressDescriptor).isNull()
-        assertThat(response.plusCode).isNull()
-        assertThat(response.addresses).isEmpty()
+        assert(response.status == "ZERO_RESULTS")
+        assert(response.errorMessage == "No results found")
+        assertNull(response.addressDescriptor)
+        assertNull(response.plusCode)
+        assert(response.addresses.isEmpty())
     }
 
     @Test
@@ -130,15 +130,15 @@ class AddressDtoTest {
         val json = gson.toJson(descriptor)
         val deserialized = gson.fromJson(json, AddressDescriptor::class.java)
 
-        assertThat(deserialized.areas).hasSize(1)
-        assertThat(deserialized.areas[0].displayName.text).isEqualTo("Whitefield")
-        assertThat(deserialized.areas[0].containment).isEqualTo("WITHIN")
-        assertThat(deserialized.landmarks).hasSize(1)
-        assertThat(deserialized.landmarks[0].displayName.text).isEqualTo("KTPO Convention Centre")
-        assertThat(deserialized.landmarks[0].spatialRelationship).isEqualTo("NEAR")
-        assertThat(deserialized.landmarks[0].straightLineDistanceMeters).isEqualTo(150.0)
-        assertThat(deserialized.landmarks[0].travelDistanceMeters).isEqualTo(200.0)
-        assertThat(deserialized.landmarks[0].types).contains("point_of_interest")
+        assert(deserialized.areas.size == 1)
+        assert(deserialized.areas[0].displayName.text == "Whitefield")
+        assert(deserialized.areas[0].containment == "WITHIN")
+        assert(deserialized.landmarks.size == 1)
+        assert(deserialized.landmarks[0].displayName.text == "KTPO Convention Centre")
+        assert(deserialized.landmarks[0].spatialRelationship == "NEAR")
+        assert(deserialized.landmarks[0].straightLineDistanceMeters == 150.0)
+        assert(deserialized.landmarks[0].travelDistanceMeters == 200.0)
+        assert("point_of_interest" in deserialized.landmarks[0].types)
     }
 
     @Test
@@ -209,12 +209,12 @@ class AddressDtoTest {
 
         val response = gson.fromJson(jsonInput, ReverseGeocodingResponse::class.java)
 
-        assertThat(response.status).isEqualTo("OK")
-        assertThat(response.errorMessage).isNull()
-        assertThat(response.addresses).hasSize(1)
-        assertThat(response.addresses[0].getCountryCode()).isEqualTo("IN")
-        assertThat(response.addressDescriptor?.areas).hasSize(1)
-        assertThat(response.addressDescriptor?.landmarks).hasSize(1)
-        assertThat(response.plusCode?.globalCode).isEqualTo("7J4VXHQQ+34")
+        assert(response.status == "OK")
+        assertNull(response.errorMessage)
+        assert(response.addresses.size == 1)
+        assert(response.addresses[0].getCountryCode() == "IN")
+        assert(response.addressDescriptor?.areas?.size == 1)
+        assert(response.addressDescriptor?.landmarks?.size == 1)
+        assert(response.plusCode?.globalCode == "7J4VXHQQ+34")
     }
 }

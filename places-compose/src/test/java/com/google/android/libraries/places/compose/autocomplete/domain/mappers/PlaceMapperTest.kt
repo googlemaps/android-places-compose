@@ -14,8 +14,8 @@
 package com.google.android.libraries.places.compose.autocomplete.domain.mappers
 
 import com.google.android.libraries.places.api.model.AddressComponent
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import kotlin.test.assertNotNull
 
 /**
  * Unit tests verifying conversion of Places SDK [AddressComponent] lists into domain [Address] models.
@@ -38,11 +38,10 @@ class PlaceMapperTest {
 
         val domainAddress = placesComponents.toAddress()
 
-        assertThat(domainAddress.countryCode).isEqualTo("IN")
-        val countryComponent = domainAddress.componentMap[AddressComponentType.COUNTRY]
-        assertThat(countryComponent).isNotNull()
-        assertThat(countryComponent?.first()?.longName).isEqualTo("India")
-        assertThat(countryComponent?.first()?.shortName).isEqualTo("IN")
+        assert(domainAddress.countryCode == "IN")
+        val countryComponent = assertNotNull(domainAddress.componentMap[AddressComponentType.COUNTRY])
+        assert(countryComponent.first().longName == "India")
+        assert(countryComponent.first().shortName == "IN")
     }
 
     @Test
@@ -55,7 +54,7 @@ class PlaceMapperTest {
 
         val domainAddress = placesComponents.toAddress()
 
-        val countryComponent = domainAddress.componentMap[AddressComponentType.COUNTRY]
-        assertThat(countryComponent?.first()?.shortName).isEmpty()
+        val countryComponent = assertNotNull(domainAddress.componentMap[AddressComponentType.COUNTRY])
+        assert(countryComponent.first().shortName.isEmpty())
     }
 }

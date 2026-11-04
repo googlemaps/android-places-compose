@@ -18,7 +18,6 @@ import com.google.android.libraries.places.api.model.AutocompletePrediction
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -44,7 +43,6 @@ class AutocompleteRepositoryTest {
         val repository = AutocompleteRepository(placesClient)
         val result = repository.getAutocompletePlaces(request)
 
-        assertThat(result).hasSize(2)
-        assertThat(result).containsExactly(prediction1, prediction2).inOrder()
+        assert(result == listOf(prediction1, prediction2))
     }
 }

@@ -17,7 +17,6 @@ import com.google.android.libraries.places.compose.autocomplete.domain.mappers.t
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.ReverseGeocodingResponse
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.toDisplayAddress
 import com.google.android.libraries.places.compose.demo.presentation.landmark.addresshandlers.withResourceTestFile
-import com.google.common.truth.Truth.assertThat
 import kotlin.test.Test
 
 internal class ToIndiaAddressTest {
@@ -29,18 +28,22 @@ internal class ToIndiaAddressTest {
         ) { geocodingResponse ->
             val address = geocodingResponse.addresses.first()
 
-            assertThat(address.formattedAddress)
-                .isEqualTo(
+            assert(
+                address.formattedAddress ==
                     "93, White Wood St, Malibu Town, Sector 47, Gurugram, Haryana 122022, India",
-                )
+            )
 
             val indiaDisplayAddress = address.toAddress("IN").toDisplayAddress() as IndiaDisplayAddress
-            assertThat(indiaDisplayAddress.aptSuiteUnit).isEqualTo("93")
-            assertThat(indiaDisplayAddress.streetAddress).isEqualTo("White Wood Street Malibu Town Sector 47")
-            assertThat(indiaDisplayAddress.city).isEqualTo("Gurugram")
-            assertThat(indiaDisplayAddress.state).isEqualTo("Haryana")
-            assertThat(indiaDisplayAddress.country).isEqualTo("India")
-            assertThat(indiaDisplayAddress.countryCode).isEqualTo("IN")
+            assert(indiaDisplayAddress.aptSuiteUnit == "93")
+            assert(indiaDisplayAddress.streetAddress == "White Wood Street Malibu Town Sector 47")
+            assert(indiaDisplayAddress.city == "Gurugram")
+            assert(indiaDisplayAddress.state == "Haryana")
+            assert(indiaDisplayAddress.country == "India")
+            assert(indiaDisplayAddress.countryCode == "IN")
+            assert(
+                indiaDisplayAddress.toFormattedAddress() ==
+                    "93\nWhite Wood Street Malibu Town Sector 47\nGurugram, Haryana 122022\nIndia",
+            )
         }
     }
 
@@ -52,22 +55,23 @@ internal class ToIndiaAddressTest {
         ) {
             val address = it.addresses.first()
 
-            assertThat(address.formattedAddress)
-                .isEqualTo(
+            assert(
+                address.formattedAddress ==
                     "akshardham society, 2/3, Sarthana - Kamrej Rd, " +
-                        "opp. navjivan restorant, Sarthana Jakat Naka, Nana Varachha, " +
-                        "Surat, Khadsad, Gujarat 395006, India",
-                )
+                    "opp. navjivan restorant, Sarthana Jakat Naka, Nana Varachha, " +
+                    "Surat, Khadsad, Gujarat 395006, India",
+            )
 
             val indiaDisplayAddress = address.toAddress("IN").toDisplayAddress() as IndiaDisplayAddress
-            assertThat(indiaDisplayAddress.aptSuiteUnit).isEqualTo("akshardham society 2/3")
-            assertThat(
-                indiaDisplayAddress.streetAddress,
-            ).isEqualTo("Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha")
-            assertThat(indiaDisplayAddress.city).isEqualTo("Surat")
-            assertThat(indiaDisplayAddress.state).isEqualTo("Gujarat")
-            assertThat(indiaDisplayAddress.country).isEqualTo("India")
-            assertThat(indiaDisplayAddress.countryCode).isEqualTo("IN")
+            assert(indiaDisplayAddress.aptSuiteUnit == "akshardham society 2/3")
+            assert(
+                indiaDisplayAddress.streetAddress ==
+                    "Sarthana - Kamrej Road Sarthana Jakat Naka Nana Varachha",
+            )
+            assert(indiaDisplayAddress.city == "Surat")
+            assert(indiaDisplayAddress.state == "Gujarat")
+            assert(indiaDisplayAddress.country == "India")
+            assert(indiaDisplayAddress.countryCode == "IN")
         }
     }
 }

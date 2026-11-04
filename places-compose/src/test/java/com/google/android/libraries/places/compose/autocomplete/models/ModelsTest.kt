@@ -20,7 +20,6 @@ import com.google.android.libraries.places.compose.autocomplete.data.meters
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.Area
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.DisplayName
 import com.google.android.libraries.places.compose.autocomplete.models.geocoder.Landmark
-import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
 /**
@@ -54,11 +53,11 @@ class ModelsTest {
             latLng = latLng,
         )
 
-        assertThat(place.placeId).isEqualTo("place_123")
-        assertThat(place.primaryText).isEqualTo(primary)
-        assertThat(place.secondaryText).isEqualTo(secondary)
-        assertThat(place.distance).isEqualTo(distance)
-        assertThat(place.latLng).isEqualTo(latLng)
+        assert(place.placeId == "place_123")
+        assert(place.primaryText === primary)
+        assert(place.secondaryText === secondary)
+        assert(place.distance == distance)
+        assert(place.latLng == latLng)
     }
 
     // ----------------------------------------------------------------------------------
@@ -68,21 +67,18 @@ class ModelsTest {
     @Test
     fun area_spatialRelationship_resolvesExpectedResource() {
         val outskirtsArea = createArea(containment = "OUTSKIRTS", name = "City Limits")
-        assertThat(outskirtsArea.getSpatialRelationshipStringRes())
-            .isEqualTo(R.string.spatial_relationship_outskirts_of)
+        assert(outskirtsArea.getSpatialRelationshipStringRes() == R.string.spatial_relationship_outskirts_of)
 
         val withinArea = createArea(containment = "WITHIN", name = "Indiranagar")
-        assertThat(withinArea.getSpatialRelationshipStringRes())
-            .isEqualTo(R.string.spatial_relationship_within)
+        assert(withinArea.getSpatialRelationshipStringRes() == R.string.spatial_relationship_within)
 
         val defaultArea = createArea(containment = "NEAR", name = "Downtown")
-        assertThat(defaultArea.getSpatialRelationshipStringRes())
-            .isEqualTo(R.string.spatial_relationship_near)
+        assert(defaultArea.getSpatialRelationshipStringRes() == R.string.spatial_relationship_near)
 
         val nearbyArea = NearbyObject.NearbyArea(withinArea)
-        assertThat(nearbyArea.name).isEqualTo("Indiranagar")
-        assertThat(nearbyArea.placeId).isEqualTo("area_id")
-        assertThat(nearbyArea.spatialRelationshipStringRes).isEqualTo(R.string.spatial_relationship_within)
+        assert(nearbyArea.name == "Indiranagar")
+        assert(nearbyArea.placeId == "area_id")
+        assert(nearbyArea.spatialRelationshipStringRes == R.string.spatial_relationship_within)
     }
 
     // ----------------------------------------------------------------------------------
@@ -103,7 +99,7 @@ class ModelsTest {
 
         for ((relation, expectedResId) in expectedMappings) {
             val landmark = createLandmark(spatialRelationship = relation, name = "Target Landmark")
-            assertThat(landmark.getSpatialRelationshipStringRes()).isEqualTo(expectedResId)
+            assert(landmark.getSpatialRelationshipStringRes() == expectedResId)
         }
     }
 
@@ -120,7 +116,7 @@ class ModelsTest {
             travel = 150.0,
         )
         // When travelDistanceMeters >= 0, returns travelDistanceMeters
-        assertThat(landmarkPositiveTravel.distanceMeters()).isEqualTo(150.meters)
+        assert(landmarkPositiveTravel.distanceMeters() == 150.meters)
 
         val landmarkNegativeTravel = createLandmark(
             spatialRelationship = "NEAR",
@@ -129,12 +125,12 @@ class ModelsTest {
             travel = -1.0,
         )
         // When travelDistanceMeters < 0, falls back to straightLineDistanceMeters
-        assertThat(landmarkNegativeTravel.distanceMeters()).isEqualTo(200.meters)
+        assert(landmarkNegativeTravel.distanceMeters() == 200.meters)
 
         val nearbyLandmark = NearbyObject.NearbyLandmark(landmarkPositiveTravel)
-        assertThat(nearbyLandmark.name).isEqualTo("Park")
-        assertThat(nearbyLandmark.placeId).isEqualTo("landmark_id")
-        assertThat(nearbyLandmark.spatialRelationshipStringRes).isEqualTo(R.string.spatial_relationship_near)
+        assert(nearbyLandmark.name == "Park")
+        assert(nearbyLandmark.placeId == "landmark_id")
+        assert(nearbyLandmark.spatialRelationshipStringRes == R.string.spatial_relationship_near)
     }
 
     // ----------------------------------------------------------------------------------
