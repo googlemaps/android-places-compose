@@ -37,6 +37,8 @@ playServicesMaps = "20.1.0"
 
 # --- Project Configuration ---
 compileSdk = "37"
+# Compose 1.13 (BOM 2026.11.01) requires compiling against Android 37.1 or later.
+compileSdkMinor = "1"
 minimumSdk = "24"
 targetSdk = "37"
 
