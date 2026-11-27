@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/googlemaps/android-places-compose/compare/v0.3.0...v0.4.0) (2026-11-27)
+
+
+### Features
+
+* **deps:** update to Compose BOM 2026.11.01 (Compose 1.13), which requires apps to compile against Android 37.1 and use AGP 9.1.0 or later ([72e9d48](https://github.com/googlemaps/android-places-compose/commit/72e9d480dc10cd4ab1a72cc30c6dac3545c60e61))
+
 ## [0.3.0](https://github.com/googlemaps/android-places-compose/compare/v0.2.1...v0.3.0) (2026-09-14)
 
 
